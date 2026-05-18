@@ -1,0 +1,4152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Coach">
+<meta name="theme-color" content="#0a0a0a">
+<title>Coach — Gabriel</title>
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23ff6b00'/%3E%3Ctext x='50' y='68' font-size='56' text-anchor='middle' fill='white' font-family='system-ui' font-weight='900'%3EG%3C/text%3E%3C/svg%3E">
+<style>
+:root {
+  --bg: #0a0a0a;
+  --surface: #161616;
+  --surface-2: #1f1f1f;
+  --border: #2a2a2a;
+  --text: #f5f5f5;
+  --text-dim: #999;
+  --text-faint: #666;
+  --accent: #ff6b00;
+  --accent-dim: #ff6b0033;
+  --green: #4ade80;
+  --safe-top: env(safe-area-inset-top);
+  --safe-bottom: env(safe-area-inset-bottom);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased;
+}
+body { padding-top: var(--safe-top); padding-bottom: var(--safe-bottom); }
+button, input { font-family: inherit; font-size: inherit; color: inherit; }
+button { border: none; background: none; cursor: pointer; }
+
+/* HEADER */
+.header {
+  position: sticky; top: 0; z-index: 10;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.header h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+.header h1 .accent { color: var(--accent); }
+.header .sub { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+
+/* NAV TABS */
+.tabs {
+  display: flex; gap: 4px;
+  padding: 12px 16px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.tab {
+  padding: 10px 18px;
+  background: var(--surface);
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dim);
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.tab.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* PAGES */
+.page { display: none; padding: 20px 16px 100px; }
+.page.active { display: block; }
+
+/* SESSION CARD */
+.session-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all 0.15s;
+}
+.session-card:active { transform: scale(0.98); }
+.session-letter {
+  width: 52px; height: 52px;
+  background: var(--accent);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; font-weight: 800; color: #fff;
+  flex-shrink: 0;
+}
+.session-info { flex: 1; }
+.session-info .title { font-size: 17px; font-weight: 700; }
+.session-info .desc { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+.session-info .last { font-size: 11px; color: var(--text-faint); margin-top: 4px; }
+.session-card .arrow { color: var(--text-faint); font-size: 24px; }
+
+/* EXERCISE CARD */
+.exo-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+.exo-head {
+  display: flex; gap: 12px; align-items: flex-start;
+  margin-bottom: 12px;
+}
+.exo-img {
+  width: 68px; height: 68px;
+  background: var(--surface-2);
+  border-radius: 10px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border);
+}
+.exo-img svg { width: 100%; height: 100%; }
+.exo-title-block { flex: 1; min-width: 0; }
+.exo-title { font-size: 16px; font-weight: 700; line-height: 1.25; }
+.exo-target { font-size: 12px; color: var(--text-dim); margin-top: 3px; }
+.exo-tip {
+  font-size: 11.5px;
+  color: var(--accent);
+  margin-top: 6px;
+  padding: 5px 8px;
+  background: var(--accent-dim);
+  border-radius: 6px;
+  line-height: 1.35;
+}
+
+/* SETS GRID */
+.sets-grid { display: grid; gap: 8px; }
+.set-row {
+  display: grid;
+  grid-template-columns: 36px 1fr 1fr 44px;
+  gap: 8px;
+  align-items: center;
+}
+.set-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-align: center;
+}
+.set-input {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 8px;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  width: 100%;
+  -webkit-appearance: none;
+}
+.set-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--bg);
+}
+.set-input::placeholder { color: var(--text-faint); font-weight: 400; }
+.set-check {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  transition: all 0.15s;
+}
+.set-check.done {
+  background: var(--green);
+  border-color: var(--green);
+  color: #000;
+}
+.input-headers {
+  display: grid;
+  grid-template-columns: 36px 1fr 1fr 44px;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+  padding: 0 2px;
+}
+.input-headers span { text-align: center; }
+
+/* SESSION HEADER (in exo page) */
+.session-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 18px;
+}
+.session-header .title { font-size: 24px; font-weight: 800; letter-spacing: -0.02em; }
+.session-header .title small { font-size: 13px; color: var(--text-dim); font-weight: 500; display: block; margin-top: 2px; }
+.back-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* FINISH BUTTON */
+.finish-btn {
+  position: fixed;
+  bottom: calc(20px + var(--safe-bottom));
+  left: 16px; right: 16px;
+  background: var(--accent);
+  color: #fff;
+  padding: 16px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(255, 107, 0, 0.3);
+  z-index: 20;
+}
+
+/* HISTORY */
+.history-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
+}
+.history-item .h-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px;
+}
+.history-item .h-date { font-size: 14px; font-weight: 700; }
+.history-item .h-session {
+  background: var(--accent);
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.history-item .h-stats {
+  font-size: 12px;
+  color: var(--text-dim);
+  display: flex; gap: 14px;
+}
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-faint);
+}
+.empty-state .icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
+
+/* GUIDE */
+.guide-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 14px;
+}
+.guide-section h3 {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--accent);
+}
+.guide-section p {
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+.guide-section ul {
+  font-size: 14px;
+  padding-left: 18px;
+  line-height: 1.6;
+}
+.guide-section ul li { margin-bottom: 4px; }
+.warning {
+  background: #2a1810;
+  border: 1px solid #ff6b00;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 14px;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.warning strong { color: var(--accent); }
+
+/* MODAL */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 100;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.modal-overlay.show { display: block; opacity: 1; }
+.modal {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--surface);
+  border-radius: 24px 24px 0 0;
+  z-index: 101;
+  max-height: 90vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  padding-bottom: calc(20px + var(--safe-bottom));
+}
+.modal.show { transform: translateY(0); }
+.modal-handle {
+  width: 40px; height: 5px;
+  background: var(--border);
+  border-radius: 100px;
+  margin: 10px auto 0;
+}
+.modal-close {
+  position: absolute;
+  top: 18px; right: 18px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  color: var(--text-dim);
+}
+.modal-content { padding: 22px 20px 0; }
+.modal-img-wrap {
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0a0a0a;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+  line-height: 0;
+}
+.modal-img-wrap svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.modal-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.modal h2 {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+.modal .target-badge {
+  display: inline-block;
+  background: var(--accent-dim);
+  color: var(--accent);
+  padding: 5px 11px;
+  border-radius: 100px;
+  font-size: 12.5px;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+.modal-section {
+  margin-bottom: 18px;
+}
+.modal-section h4 {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 6px;
+}
+.modal-section ol, .modal-section ul {
+  font-size: 14.5px;
+  line-height: 1.55;
+  padding-left: 22px;
+}
+.modal-section ol li, .modal-section ul li {
+  margin-bottom: 6px;
+}
+.modal-section ol li::marker {
+  color: var(--accent);
+  font-weight: 700;
+}
+.modal-warn {
+  background: #2a1810;
+  border: 1px solid #ff6b0050;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  margin-bottom: 18px;
+  color: #ffb585;
+}
+.modal-warn strong { color: var(--accent); }
+.exo-img { cursor: pointer; position: relative; }
+.exo-img::after {
+  content: '👁';
+  position: absolute;
+  bottom: 2px; right: 2px;
+  font-size: 10px;
+  background: var(--accent);
+  color: #fff;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 1.5px solid var(--surface);
+}
+
+/* ============ WEIGHT PAGE ============ */
+.w-hero {
+  background: linear-gradient(135deg, #ff6b00 0%, #ff8c42 50%, #ffb380 100%);
+  border-radius: 20px;
+  padding: 22px 20px;
+  margin-bottom: 18px;
+  position: relative;
+  overflow: hidden;
+}
+.w-hero::before {
+  content: '';
+  position: absolute;
+  top: -50%; right: -20%;
+  width: 200px; height: 200px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50%;
+  filter: blur(30px);
+}
+.w-hero-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.9);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  position: relative;
+}
+.w-hero-value {
+  font-size: 48px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  position: relative;
+}
+.w-hero-value .unit { font-size: 22px; font-weight: 700; opacity: 0.85; margin-left: 4px; }
+.w-hero-trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(0,0,0,0.25);
+  padding: 6px 12px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  margin-top: 10px;
+  position: relative;
+}
+.w-hero-sub {
+  font-size: 13px;
+  color: rgba(255,255,255,0.85);
+  margin-top: 10px;
+  position: relative;
+}
+
+.w-add-btn {
+  width: 100%;
+  background: var(--accent);
+  color: #fff;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.w-add-btn:active { transform: scale(0.98); }
+
+.w-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.w-stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 10px;
+  text-align: center;
+}
+.w-stat-label {
+  font-size: 10px;
+  color: var(--text-faint);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+.w-stat-value {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+.w-stat-value.green { color: var(--green); }
+.w-stat-value.orange { color: var(--accent); }
+
+.w-chart-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px 14px 14px;
+  margin-bottom: 18px;
+}
+.w-chart-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  padding: 0 4px;
+}
+.w-chart-title {
+  font-size: 15px;
+  font-weight: 700;
+}
+.w-chart-range {
+  display: flex;
+  gap: 4px;
+  background: var(--surface-2);
+  border-radius: 100px;
+  padding: 3px;
+}
+.w-range-btn {
+  padding: 5px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+.w-range-btn.active { background: var(--accent); color: #fff; }
+
+.w-chart {
+  width: 100%;
+  height: 220px;
+  display: block;
+}
+
+.w-goal-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 18px;
+}
+.w-goal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.w-goal-title { font-size: 14px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+.w-goal-edit { font-size: 12px; color: var(--accent); font-weight: 700; }
+.w-goal-progress-bar {
+  height: 10px;
+  background: var(--surface-2);
+  border-radius: 100px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.w-goal-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4ade80, #ff6b00);
+  border-radius: 100px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.w-goal-text {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+.w-goal-current { font-weight: 700; }
+.w-goal-target { color: var(--text-dim); }
+
+.w-entries {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.w-entries-head {
+  padding: 14px 16px 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.w-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+}
+.w-entry:first-of-type { border-top: none; }
+.w-entry-date { font-size: 14px; color: var(--text); }
+.w-entry-right { display: flex; align-items: center; gap: 10px; }
+.w-entry-value { font-size: 15px; font-weight: 700; }
+.w-entry-diff { font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 100px; }
+.w-entry-diff.down { background: #1a3a1a; color: var(--green); }
+.w-entry-diff.up { background: #3a1a1a; color: #ff6b6b; }
+.w-entry-diff.same { background: var(--surface-2); color: var(--text-dim); }
+.w-entry-del { color: var(--text-faint); padding: 4px 6px; font-size: 14px; }
+
+.w-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-faint);
+}
+.w-empty .icon { font-size: 56px; margin-bottom: 12px; opacity: 0.6; }
+
+/* Input modal for weight */
+.w-input-modal { padding: 28px 20px 0; }
+.w-input-modal h2 { text-align: center; margin-bottom: 20px; }
+.w-input-big {
+  width: 100%;
+  background: var(--surface-2);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  font-size: 36px;
+  font-weight: 800;
+  text-align: center;
+  -webkit-appearance: none;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+.w-input-big:focus { outline: none; border-color: var(--accent); }
+.w-input-date {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 14px;
+  text-align: center;
+  -webkit-appearance: none;
+  margin-bottom: 20px;
+  color: var(--text);
+  color-scheme: dark;
+}
+.w-save-btn {
+  width: 100%;
+  background: var(--accent);
+  color: #fff;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* GOAL MODAL */
+.g-modal { padding: 24px 20px 0; }
+.g-modal h2 { text-align: center; margin-bottom: 18px; }
+.g-section { margin-bottom: 18px; }
+.g-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+.g-height-row {
+  display: flex; gap: 10px; align-items: center;
+}
+.g-height-input {
+  flex: 1;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  -webkit-appearance: none;
+  text-align: center;
+  color: var(--text);
+}
+.g-height-input:focus { outline: none; border-color: var(--accent); }
+
+.g-suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.g-suggestion {
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.g-suggestion:active { transform: scale(0.98); }
+.g-suggestion.selected {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+.g-suggestion-left { flex: 1; min-width: 0; }
+.g-suggestion-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.g-suggestion-desc {
+  font-size: 11.5px;
+  color: var(--text-dim);
+  line-height: 1.3;
+}
+.g-suggestion-value {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--accent);
+  margin-left: 12px;
+  white-space: nowrap;
+}
+.g-suggestion.selected .g-suggestion-value { color: var(--accent); }
+
+.g-custom-row {
+  display: flex; gap: 10px;
+  align-items: stretch;
+}
+.g-custom-input {
+  flex: 1;
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 22px;
+  font-weight: 800;
+  text-align: center;
+  -webkit-appearance: none;
+  color: var(--text);
+}
+.g-custom-input:focus { outline: none; border-color: var(--accent); }
+.g-custom-unit {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+
+.g-bmi-info {
+  background: var(--surface-2);
+  border-radius: 10px;
+  padding: 11px 12px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--text-dim);
+  margin-top: 10px;
+}
+.g-bmi-info .bmi-now { color: var(--text); font-weight: 700; }
+
+.g-actions {
+  display: flex; gap: 10px;
+  margin-top: 8px;
+}
+.g-btn-secondary {
+  flex: 1;
+  background: var(--surface-2);
+  color: var(--text);
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.g-btn-delete {
+  background: transparent;
+  color: #ff6b6b;
+  padding: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 4px;
+  width: 100%;
+}
+
+/* ============ REGULARITY STATS (HOME) ============ */
+.r-hero {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a1810 100%);
+  border: 1px solid var(--accent);
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.r-hero-flame {
+  position: absolute;
+  top: -10px; right: -10px;
+  font-size: 100px;
+  opacity: 0.08;
+  pointer-events: none;
+}
+.r-hero-streak {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.r-hero-value {
+  font-size: 38px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: #fff;
+}
+.r-hero-value .unit { font-size: 17px; opacity: 0.7; margin-left: 4px; font-weight: 700; }
+.r-hero-msg {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
+.r-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.r-stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 11px 8px;
+  text-align: center;
+}
+.r-stat-label {
+  font-size: 10px;
+  color: var(--text-faint);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 3px;
+}
+.r-stat-value {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+.r-stat-value .small { font-size: 12px; color: var(--text-dim); margin-left: 2px; font-weight: 600; }
+
+.r-heatmap-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+}
+.r-heatmap-title {
+  font-size: 12px;
+  color: var(--text-dim);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.r-heatmap-title .legend {
+  font-size: 10px;
+  color: var(--text-faint);
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.r-heatmap-grid {
+  display: grid;
+  grid-template-columns: 16px repeat(7, 1fr);
+  gap: 5px;
+}
+.r-day-header {
+  font-size: 9px;
+  text-align: center;
+  color: var(--text-faint);
+  font-weight: 700;
+}
+.r-week-label {
+  font-size: 9px;
+  color: var(--text-faint);
+  align-self: center;
+  text-align: right;
+  padding-right: 2px;
+}
+.r-cell {
+  aspect-ratio: 1;
+  border-radius: 5px;
+  background: var(--surface-2);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.r-cell.session-A {
+  background: linear-gradient(135deg, #ff6b00 0%, #ff8c42 100%);
+}
+.r-cell.session-B {
+  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+}
+.r-cell.session-multi {
+  background: linear-gradient(135deg, #ff6b00 0%, #4ade80 100%);
+}
+.r-cell.today {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.r-cell.future { opacity: 0.3; }
+.r-cell-label {
+  font-size: 9px;
+  font-weight: 800;
+  color: #000;
+}
+
+/* ============ SYNC INDICATOR ============ */
+.sync-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 100px;
+  background: var(--surface-2);
+  color: var(--text-dim);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.sync-pill.synced { color: var(--green); background: #14321f; }
+.sync-pill.syncing { color: var(--accent); background: #3a2614; }
+.sync-pill.offline { color: #ff6b6b; background: #3a1a1a; }
+.sync-pill.error { color: #ff6b6b; background: #3a1a1a; }
+.sync-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.sync-pill.syncing .sync-dot {
+  animation: syncPulse 1s ease-in-out infinite;
+}
+@keyframes syncPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+
+/* ============ CHAT (COACH IA) ============ */
+.chat-wrap {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 130px - var(--safe-top) - var(--safe-bottom));
+  margin: -20px -16px -100px;
+  padding: 0;
+}
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+.chat-title { font-size: 15px; font-weight: 700; flex: 1; min-width: 0; }
+.chat-title-text { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chat-title-sub { font-size: 11px; color: var(--text-faint); font-weight: 500; margin-top: 1px; }
+.chat-icon-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 14px;
+  margin-left: 8px;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.msg {
+  max-width: 85%;
+  padding: 11px 14px;
+  border-radius: 16px;
+  font-size: 14.5px;
+  line-height: 1.45;
+  word-wrap: break-word;
+}
+.msg.user {
+  background: var(--accent);
+  color: #fff;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+.msg.assistant {
+  background: var(--surface);
+  color: var(--text);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+  border: 1px solid var(--border);
+}
+.msg.assistant strong { color: var(--accent); }
+.msg.assistant code {
+  background: var(--surface-2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+.msg-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 6px;
+  margin-top: 8px;
+  align-self: flex-start;
+  max-width: 100%;
+}
+.msg-img-card {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  aspect-ratio: 4/3;
+}
+.msg-img-card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.msg-img-card .caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  color: #fff;
+  font-size: 10px;
+  padding: 12px 6px 5px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.msg-typing {
+  align-self: flex-start;
+  padding: 14px 18px;
+  background: var(--surface);
+  border-radius: 16px;
+  border-bottom-left-radius: 4px;
+  border: 1px solid var(--border);
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.msg-typing span {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--text-dim);
+  animation: typingDot 1.3s infinite;
+}
+.msg-typing span:nth-child(2) { animation-delay: 0.2s; }
+.msg-typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingDot {
+  0%, 60%, 100% { opacity: 0.3; transform: scale(0.9); }
+  30% { opacity: 1; transform: scale(1); }
+}
+
+.chat-input-wrap {
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  padding: 10px 12px calc(10px + var(--safe-bottom));
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+.chat-input {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 11px 16px;
+  font-size: 15px;
+  color: var(--text);
+  resize: none;
+  max-height: 100px;
+  min-height: 42px;
+  font-family: inherit;
+  line-height: 1.35;
+  -webkit-appearance: none;
+}
+.chat-input:focus { outline: none; border-color: var(--accent); }
+.chat-send {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-weight: 800;
+}
+.chat-send:disabled {
+  background: var(--surface-2);
+  color: var(--text-faint);
+}
+
+.chat-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+}
+.chat-empty-icon { font-size: 56px; margin-bottom: 14px; }
+.chat-empty-title { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
+.chat-empty-sub { font-size: 13px; color: var(--text-dim); margin-bottom: 22px; max-width: 280px; line-height: 1.5; }
+.chat-suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 320px;
+}
+.chat-suggestion {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 13.5px;
+  text-align: left;
+  line-height: 1.35;
+  color: var(--text);
+}
+.chat-suggestion:active { transform: scale(0.98); }
+
+/* Conversations list modal */
+.conv-modal-content { padding: 22px 0 0; }
+.conv-modal-content h2 { padding: 0 20px; margin-bottom: 14px; }
+.conv-new-btn {
+  margin: 0 20px 14px;
+  background: var(--accent);
+  color: #fff;
+  width: calc(100% - 40px);
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.conv-list { padding: 0; }
+.conv-item {
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.conv-item.active { background: var(--surface-2); }
+.conv-item-left { flex: 1; min-width: 0; }
+.conv-item-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.conv-item-meta { font-size: 11px; color: var(--text-faint); }
+.conv-item-del {
+  color: #ff6b6b;
+  font-size: 18px;
+  padding: 4px 8px;
+}
+
+/* ============ CRÉATION SÉANCE ============ */
+.create-intro {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a1810 100%);
+  border: 1px solid var(--accent);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 18px;
+}
+.create-intro-title {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  color: #fff;
+}
+.create-intro-sub {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.45;
+}
+
+.create-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  margin-top: 14px;
+}
+.create-textarea {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 14px;
+  color: var(--text);
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+  line-height: 1.45;
+  -webkit-appearance: none;
+}
+.create-textarea:focus { outline: none; border-color: var(--accent); }
+
+.create-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.create-chip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.create-chip.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.create-generate-btn {
+  width: 100%;
+  background: var(--accent);
+  color: #fff;
+  padding: 16px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.create-generate-btn:disabled {
+  background: var(--surface-2);
+  color: var(--text-faint);
+}
+
+.create-result {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  margin-top: 22px;
+}
+.create-result-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 4px;
+  gap: 10px;
+}
+.create-result-title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  flex: 1;
+}
+.create-result-letter {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.create-result-sub {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+}
+.create-result-exo {
+  padding: 11px 0;
+  border-top: 1px solid var(--border);
+}
+.create-result-exo-name { font-size: 14px; font-weight: 700; }
+.create-result-exo-target { font-size: 12px; color: var(--accent); margin-top: 2px; }
+.create-result-exo-tip { font-size: 11.5px; color: var(--text-dim); margin-top: 4px; line-height: 1.4; }
+
+.create-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+.create-action-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+.create-action-add {
+  background: var(--green);
+  color: #000;
+}
+.create-action-edit {
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+/* Image viewer overlay */
+.img-viewer {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.img-viewer.show { display: flex; }
+.img-viewer img {
+  max-width: 100%;
+  max-height: 90vh;
+  border-radius: 10px;
+}
+.img-viewer-close {
+  position: absolute;
+  top: calc(20px + var(--safe-top));
+  right: 20px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============ ADJUST WEIGHTS PANEL ============ */
+.adjust-btn {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  padding: 7px 11px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 14px;
+}
+.adjust-btn:active { transform: scale(0.97); }
+
+.adjust-panel {
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.adjust-panel-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.adjust-panel-sub {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+  line-height: 1.4;
+}
+.adjust-choice-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.adjust-choice {
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.adjust-choice.easy { color: #4ade80; border-color: #4ade80; }
+.adjust-choice.hard { color: #ff6b6b; border-color: #ff6b6b; }
+.adjust-cancel {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 12px;
+  padding: 10px 0 0;
+  font-weight: 600;
+}
+
+.adjust-loading {
+  text-align: center;
+  padding: 20px 0;
+  color: var(--text-dim);
+  font-size: 13px;
+}
+.adjust-loading-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--surface-2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.adjust-suggestion {
+  padding: 11px 0;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+}
+.adjust-suggestion:first-child { border-top: none; }
+.adjust-suggestion-name {
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+.adjust-suggestion-change {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+}
+.adjust-old {
+  color: var(--text-faint);
+  text-decoration: line-through;
+}
+.adjust-arrow { color: var(--text-faint); }
+.adjust-new {
+  color: var(--accent);
+  font-weight: 700;
+}
+.adjust-reason {
+  font-size: 11.5px;
+  color: var(--text-dim);
+  margin-top: 4px;
+  font-style: italic;
+  line-height: 1.4;
+}
+.adjust-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+.adjust-actions button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.adjust-apply {
+  background: var(--green);
+  color: #000;
+}
+.adjust-ignore {
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: calc(90px + var(--safe-bottom));
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--green);
+  color: #000;
+  padding: 12px 20px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 700;
+  opacity: 0;
+  transition: all 0.3s;
+  z-index: 30;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>Coach<span class="accent">.</span></h1>
+    <div class="sub">Gabriel · On Air Maison-Alfort</div>
+  </div>
+  <div id="syncIndicator" class="sync-pill" onclick="manualSync()" style="cursor: pointer;">
+    <span class="sync-dot"></span>
+    <span id="syncText">…</span>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" data-tab="home">Séances</button>
+  <button class="tab" data-tab="weight">Poids</button>
+  <button class="tab" data-tab="chat">Coach IA</button>
+  <button class="tab" data-tab="create">Créer</button>
+  <button class="tab" data-tab="history">Historique</button>
+  <button class="tab" data-tab="guide">Guide</button>
+</div>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="warning">
+    <strong>⚠️ Avant de commencer</strong><br>
+    Prends RDV avec un kiné du sport pour ton genou et ton Achille. Ce programme est adapté mais ne remplace pas un diagnostic.
+  </div>
+  <div id="sessions-list"></div>
+  <div id="regularity-stats" style="margin-top: 20px;"></div>
+</div>
+
+<!-- WEIGHT -->
+<div class="page" id="page-weight">
+  <div id="weight-content"></div>
+</div>
+
+<!-- CHAT (COACH IA) -->
+<div class="page" id="page-chat" style="padding: 0;">
+  <div class="chat-wrap" id="chatWrap">
+    <div class="chat-header">
+      <div class="chat-title">
+        <span class="chat-title-text" id="chatTitle">Nouvelle conversation</span>
+        <span class="chat-title-sub" id="chatSub">Coach IA personnel</span>
+      </div>
+      <button class="chat-icon-btn" onclick="openConversationsList()">📂</button>
+      <button class="chat-icon-btn" onclick="newConversation()">+</button>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input-wrap">
+      <textarea class="chat-input" id="chatInput" placeholder="Pose ta question..." rows="1" onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendChat();}" oninput="autoResize(this); updateSendBtn()"></textarea>
+      <button class="chat-send" id="chatSend" onclick="sendChat()" disabled>↑</button>
+    </div>
+  </div>
+</div>
+
+<!-- CRÉER UNE SÉANCE -->
+<div class="page" id="page-create">
+  <div class="create-intro">
+    <div class="create-intro-title">🧪 Crée une nouvelle séance</div>
+    <div class="create-intro-sub">Décris ce que tu veux travailler, et l'IA conçoit une séance complète adaptée à tes contraintes (genou, Achille, machines).</div>
+  </div>
+
+  <div class="create-label">Type de séance</div>
+  <div class="create-chips" id="createTypeChips">
+    <button class="create-chip" data-val="full">Full body</button>
+    <button class="create-chip" data-val="upper">Haut du corps</button>
+    <button class="create-chip" data-val="lower">Bas du corps</button>
+    <button class="create-chip" data-val="push">Push</button>
+    <button class="create-chip" data-val="pull">Pull</button>
+    <button class="create-chip" data-val="custom">Personnalisé</button>
+  </div>
+
+  <div class="create-label">Durée approximative</div>
+  <div class="create-chips" id="createDurationChips">
+    <button class="create-chip active" data-val="30">30 min</button>
+    <button class="create-chip" data-val="45">45 min</button>
+    <button class="create-chip" data-val="60">60 min</button>
+  </div>
+
+  <div class="create-label">Précisions (objectif, focus, contraintes...)</div>
+  <textarea class="create-textarea" id="createBrief" placeholder="Ex: je veux insister sur le dos et les bras, finir par du gainage. Pas de presse aujourd'hui car ma salle est bondée le soir."></textarea>
+
+  <button class="create-generate-btn" id="createGenBtn" onclick="generateSession()">
+    <span>✨</span><span>Générer la séance</span>
+  </button>
+
+  <div id="createResult"></div>
+</div>
+
+<!-- SESSION -->
+<div class="page" id="page-session">
+  <div class="session-header">
+    <div>
+      <button class="back-btn" onclick="goHome()">← Retour</button>
+    </div>
+    <div style="text-align: right;">
+      <div class="title" id="session-title">Séance A
+        <small id="session-subtitle">Haut du corps</small>
+      </div>
+    </div>
+  </div>
+  <div id="adjust-zone"></div>
+  <div id="exo-list"></div>
+  <button class="finish-btn" onclick="finishSession()">Terminer la séance</button>
+</div>
+
+<!-- HISTORY -->
+<div class="page" id="page-history">
+  <div id="history-list"></div>
+</div>
+
+<!-- GUIDE -->
+<div class="page" id="page-guide">
+  <div class="guide-section">
+    <h3>🔥 Échauffement (5-7 min)</h3>
+    <p>Obligatoire, surtout avec tes douleurs genou/Achille.</p>
+    <ul>
+      <li>3-5 min vélo ou rameur très léger</li>
+      <li>10 rotations d'épaules en arrière</li>
+      <li>10 rotations de hanches dans chaque sens</li>
+      <li>Sur ton 1er exo : 1-2 séries à 50% du poids de travail</li>
+    </ul>
+  </div>
+  <div class="guide-section">
+    <h3>🧘 Étirements (après seulement)</h3>
+    <p>Pas avant la séance (réduit la force). 5 min suffisent.</p>
+    <ul>
+      <li>Pecs dans une porte — 30 sec</li>
+      <li>Ischios assis jambes tendues — 30 sec</li>
+      <li>Fessier (jambe croisée allongé) — 30 sec par côté</li>
+      <li>Mollet contre un mur (doux pour l'Achille) — 30 sec</li>
+    </ul>
+  </div>
+  <div class="guide-section">
+    <h3>📈 Progression</h3>
+    <p>À chaque séance, vise <strong>+1 rep ou +1 kg</strong> sur au moins un exercice. C'est la surcharge progressive.</p>
+    <p>Quand tu atteins le haut de la fourchette de reps sur toutes les séries, augmente le poids.</p>
+  </div>
+  <div class="guide-section">
+    <h3>⏱ Repos entre séries</h3>
+    <ul>
+      <li>Gros mouvements (presse, développés) : <strong>90 sec</strong></li>
+      <li>Reste : <strong>60 sec</strong></li>
+      <li>Bras / abdos : <strong>45 sec</strong></li>
+    </ul>
+  </div>
+  <div class="guide-section">
+    <h3>🚨 Règle douleur</h3>
+    <p>Si genou ou Achille > 3/10 sur un exo : <strong>STOP cet exo</strong>. Passe au suivant. Pas de héroïsme, le tendon est rancunier.</p>
+  </div>
+  <div class="guide-section">
+    <h3>💼 Posture bureau</h3>
+    <ul>
+      <li>Alarme toutes les 45 min → lève-toi 1 min</li>
+      <li>10 rotations d'épaules en arrière</li>
+      <li>Écran à hauteur des yeux</li>
+      <li>Face pulls dans le programme = ton meilleur allié</li>
+    </ul>
+  </div>
+  <div class="guide-section">
+    <h3>📅 Rythme conseillé</h3>
+    <p><strong>2 séances :</strong> Lundi A, Jeudi B</p>
+    <p><strong>3 séances :</strong> Lundi A, Mercredi B, Samedi A (ou B en alternance d'une semaine sur l'autre)</p>
+    <p>Au moins 48h entre 2 séances pour récupérer.</p>
+  </div>
+</div>
+
+<div class="toast" id="toast">Sauvegardé ✓</div>
+
+<!-- EXO DETAIL MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
+<div class="modal" id="modal">
+  <div class="modal-handle"></div>
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <div class="modal-content" id="modalContent"></div>
+</div>
+
+<!-- WEIGHT INPUT MODAL -->
+<div class="modal-overlay" id="wModalOverlay" onclick="closeWeightModal()"></div>
+<div class="modal" id="wModal">
+  <div class="modal-handle"></div>
+  <button class="modal-close" onclick="closeWeightModal()">✕</button>
+  <div class="w-input-modal">
+    <h2 id="wModalTitle">Nouvelle pesée</h2>
+    <input type="number" inputmode="decimal" step="0.1" class="w-input-big" id="wInput" placeholder="84.5">
+    <div style="text-align: center; font-size: 13px; color: var(--text-dim); margin-bottom: 18px;">kilogrammes</div>
+    <input type="date" class="w-input-date" id="wDate">
+    <button class="w-save-btn" onclick="saveWeight()">Enregistrer</button>
+    <button id="wDeleteBtn" style="width: 100%; background: transparent; border: none; color: #ff6b6b; padding: 14px; font-size: 14px; font-weight: 700; margin-top: 8px; display: none;" onclick="deleteWeight()">Supprimer cette pesée</button>
+  </div>
+</div>
+
+<!-- GOAL MODAL -->
+<div class="modal-overlay" id="gModalOverlay" onclick="closeGoalModal()"></div>
+<div class="modal" id="gModal">
+  <div class="modal-handle"></div>
+  <button class="modal-close" onclick="closeGoalModal()">✕</button>
+  <div class="g-modal">
+    <h2 id="gModalTitle">🎯 Fixer un objectif</h2>
+
+    <div class="g-section">
+      <div class="g-section-label">Ta taille</div>
+      <div class="g-height-row">
+        <input type="number" inputmode="numeric" class="g-height-input" id="gHeight" placeholder="170">
+        <div style="color: var(--text-dim); font-size: 13px;">cm</div>
+      </div>
+      <div class="g-bmi-info" id="gBmiInfo"></div>
+    </div>
+
+    <div class="g-section">
+      <div class="g-section-label">Suggestions basées sur l'IMC</div>
+      <div class="g-suggestions" id="gSuggestions"></div>
+    </div>
+
+    <div class="g-section">
+      <div class="g-section-label">Ou objectif personnalisé</div>
+      <div class="g-custom-row">
+        <input type="number" inputmode="decimal" step="0.1" class="g-custom-input" id="gCustom" placeholder="78.0">
+        <div class="g-custom-unit">kg</div>
+      </div>
+    </div>
+
+    <button class="w-save-btn" onclick="saveGoal()">Enregistrer l'objectif</button>
+    <button class="g-btn-delete" id="gDeleteBtn" onclick="deleteGoal()" style="display:none;">Supprimer l'objectif</button>
+  </div>
+</div>
+
+<!-- CONVERSATIONS LIST MODAL -->
+<div class="modal-overlay" id="convModalOverlay" onclick="closeConversationsList()"></div>
+<div class="modal" id="convModal">
+  <div class="modal-handle"></div>
+  <button class="modal-close" onclick="closeConversationsList()">✕</button>
+  <div class="conv-modal-content">
+    <h2>💬 Mes conversations</h2>
+    <button class="conv-new-btn" onclick="newConversation(); closeConversationsList();">+ Nouvelle conversation</button>
+    <div class="conv-list" id="convList"></div>
+  </div>
+</div>
+
+<!-- IMAGE VIEWER -->
+<div class="img-viewer" id="imgViewer" onclick="closeImgViewer()">
+  <button class="img-viewer-close">✕</button>
+  <img id="imgViewerSrc" src="" alt="">
+</div>
+
+<script>
+// ============== SUPABASE CLOUD SYNC ==============
+const SUPABASE_URL = 'https://lavaowkimjszjiuvdweu.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxhdmFvd2tpbWpzemppdXZkd2V1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxMTAzMjMsImV4cCI6MjA5NDY4NjMyM30.nfxh1lSbSK3k2RjMEJUC55gY_ONvCJUkM-KVlpyp_-4';
+const USER_ID = 'gabriel';
+
+let syncStatus = 'init'; // init, syncing, synced, offline, error
+let syncTimeout = null;
+let lastSyncTime = 0;
+
+function setSyncStatus(status, msg) {
+  syncStatus = status;
+  const pill = document.getElementById('syncIndicator');
+  const text = document.getElementById('syncText');
+  if (!pill || !text) return;
+  pill.className = 'sync-pill ' + status;
+  const labels = {
+    init: '…',
+    syncing: 'Sync…',
+    synced: '✓ Synchro',
+    offline: 'Hors ligne',
+    error: '⚠ Erreur'
+  };
+  text.textContent = msg || labels[status] || status;
+}
+
+// API REST Supabase
+async function supabaseRequest(method, path, body) {
+  const url = `${SUPABASE_URL}/rest/v1${path}`;
+  const opts = {
+    method,
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation'
+    }
+  };
+  if (body !== undefined) opts.body = JSON.stringify(body);
+  const res = await fetch(url, opts);
+  if (!res.ok) {
+    const txt = await res.text();
+    throw new Error(`HTTP ${res.status}: ${txt}`);
+  }
+  return res.json();
+}
+
+// Pull complet depuis le cloud → écrase le localStorage
+async function pullFromCloud() {
+  setSyncStatus('syncing');
+  try {
+    const rows = await supabaseRequest('GET', `/coach_data?id=eq.${USER_ID}&select=workouts,weights,updated_at`);
+    if (rows && rows.length > 0) {
+      const row = rows[0];
+      if (row.workouts) localStorage.setItem('coachData', JSON.stringify(row.workouts));
+      if (row.weights) localStorage.setItem('coachWeights', JSON.stringify(row.weights));
+      lastSyncTime = Date.now();
+      setSyncStatus('synced');
+      return true;
+    } else {
+      // Ligne pas encore créée — on l'initialise avec les données locales
+      await pushToCloud(true);
+      return true;
+    }
+  } catch (e) {
+    console.warn('Pull failed:', e);
+    setSyncStatus(navigator.onLine ? 'error' : 'offline');
+    return false;
+  }
+}
+
+// Push complet vers le cloud (avec debounce)
+async function pushToCloud(immediate) {
+  // Debounce de 1.5s pour éviter de spammer pendant la saisie
+  if (syncTimeout) clearTimeout(syncTimeout);
+  const doPush = async () => {
+    syncTimeout = null;
+    setSyncStatus('syncing');
+    try {
+      const workouts = JSON.parse(localStorage.getItem('coachData') || '{"history":[],"lastValues":{}}');
+      const weights = JSON.parse(localStorage.getItem('coachWeights') || '{"entries":[],"goal":null,"startWeight":null}');
+      await supabaseRequest('PATCH', `/coach_data?id=eq.${USER_ID}`, {
+        workouts, weights, updated_at: new Date().toISOString()
+      });
+      lastSyncTime = Date.now();
+      setSyncStatus('synced');
+    } catch (e) {
+      console.warn('Push failed:', e);
+      setSyncStatus(navigator.onLine ? 'error' : 'offline');
+    }
+  };
+  if (immediate) await doPush();
+  else syncTimeout = setTimeout(doPush, 1500);
+}
+
+// Sync manuel (au clic sur l'indicateur)
+async function manualSync() {
+  // Si en erreur ou offline → on retente un pull (qui écrase le local)
+  // Sinon on pousse les changements
+  if (syncStatus === 'error' || syncStatus === 'offline' || syncStatus === 'init') {
+    const ok = await pullFromCloud();
+    if (ok) {
+      showToast('Données récupérées du cloud');
+      // Refresh la page courante
+      const activeTab = document.querySelector('.tab.active');
+      if (activeTab) {
+        const tab = activeTab.dataset.tab;
+        if (tab === 'home') renderHome();
+        if (tab === 'weight') renderWeight();
+        if (tab === 'history') renderHistory();
+      }
+    }
+  } else {
+    await pushToCloud(true);
+    if (syncStatus === 'synced') showToast('Synchronisé ✓');
+  }
+}
+
+// Detect online/offline
+window.addEventListener('online', () => {
+  if (syncStatus === 'offline') pushToCloud(true);
+});
+window.addEventListener('offline', () => setSyncStatus('offline'));
+
+// ============== DATA ==============
+const SVG = {
+  chest: `<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="8" fill="#1f1f1f"/><path d="M12 28 L18 28 L18 24 L26 24 L26 20 L38 20 L38 24 L46 24 L46 28 L52 28 L52 36 L46 36 L46 40 L38 40 L38 44 L26 44 L26 40 L18 40 L18 36 L12 36 Z" fill="#ff6b00" opacity="0.8"/><circle cx="22" cy="32" r="2.5" fill="#fff"/><circle cx="42" cy="32" r="2.5" fill="#fff"/></svg>`,
+  pulldown: `<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="8" fill="#1f1f1f"/><line x1="20" y1="12" x2="20" y2="52" stroke="#666" stroke-width="2"/><line x1="44" y1="12" x2="44" y2="52" stroke="#666" stroke-width="2"/><rect x="16" y="14" width="32" height="3" rx="1" fill="#ff6b00"/><line x1="22" y1="17" x2="22" y2="28" stroke="#999" stroke-width="1.5"/><line x1="42" y1="17" x2="42" y2="28" stroke="#999" stroke-width="1.5"/><circle cx="32" cy="38" r="6" fill="#ff6b00"/><rect x="26" y="44" width="12" height="10" rx="2" fill="#ff6b00" opacity="0.6"/></svg>`,
+  shoulder: `<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="8" fill="#1f1f1f"/><circle cx="32" cy="22" r="5" fill="#ff6b00"/><rect x="20" y="28" width="24" height="8" rx="3" fill="#ff6b00" opacity="0.7"/><rect x="14" y="18" width="6" height="4" rx="1" fill="#999"/><rect x="44" y="18" width="6" height="4" rx="1" fill="#999"/><line x1="17" y1="22" x2="22" y2="30" stroke="#999" stroke-width="2"/><line x1="47" y1="22" x2="42" y2="30" stroke="#999" stroke-width="2"/><rect x="24" y="38" width="16" height="14" rx="2" fill="#ff6b00" opacity="0.5"/></svg>`,
+  row: `<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="8" fill="#1f1f1f"/><rect x="8" y="30" width="6" height="12" rx="1" fill="#999"/><line x1="14" y1="36" x2="38" y2="36" stroke="#ff6b00" stroke-width="3"/><circle cx="44" cy="32" r="5" fill="#ff6b00"/><rect x="38" y="38" width="14" height="14" rx="2" fill="#ff6b00" opacity="0.6"/><rect x="48" y="48" width="10" height="4" rx="1" fill="#666"/></svg>`,
+  hipthrust: `<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="8" fill="#1f1f1f"/><rect x="8" y="40" width="48" height="6" rx="2" fill="#666"/><circle cx="48" cy="26" r="4" fill="#ff6b00"/><rect x="36" y="30" width="16" height="8" rx="2" fill="#ff6b00" opacity="0.7"/><rect x="22" y="32" width="14" height="6" rx="1" fill="#ff6b00" opacity="0.5"/><rect x="14" y="30" width="6" height="10" rx="1" fill="#999"/><rect x="6" y="34" width="6" height="14" rx="1" fill="#999"/></svg>`,
+  plank: `<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="8" fill="#1f1f1f"/><circle cx="48" cy="28" r="4" fill="#ff6b00"/><rect x="14" y="32" width="36" height="6" rx="2" fill="#ff6b00" opacity="0.7"/><line x1="14" y1="38" x2="12" y2="48" stroke="#999" stroke-width="2"/><line x1="48" y1="38" x2="50" y2="48" stroke="#999" stroke-width="2"/><line x1="8" y1="48" x2="56" y2="48" stroke="#666" stroke-width="2"/></svg>`,
+  press: `<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="8" fill="#1f1f1f"/><rect x="10" y="30" width="18" height="20" rx="2" fill="#ff6b00" opacity="0.6"/><circle cx="19" cy="28" r="4" fill="#ff6b00"/><line x1="28" y1="36" x2="44" y2="20" stroke="#999" stroke-width="2"/><rect x="40" y="14" width="14" height="10" rx="2" fill="#ff6b00"/><circle cx="38" cy="38" r="3" fill="#666"/><circle cx="48" cy="42" r="3" fill="#666"/></svg>`,
+  legcurl: `<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="8" fill="#1f1f1f"/><rect x="8" y="38" width="36" height="6" rx="2" fill="#ff6b00" opacity="0.7"/><circle cx="44" cy="34" r="3" fill="#666"/><path d="M44 38 Q52 38 52 30" stroke="#ff6b00" stroke-width="3" fill="none"/><circle cx="52" cy="26" r="3" fill="#666"/><rect x="6" y="44" width="40" height="4" rx="1" fill="#666"/></svg>`,
+  legext: `<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="8" fill="#1f1f1f"/><rect x="10" y="24" width="20" height="22" rx="2" fill="#ff6b00" opacity="0.6"/><circle cx="20" cy="22" r="4" fill="#ff6b00"/><line x1="30" y1="38" x2="46" y2="32" stroke="#999" stroke-width="3"/><circle cx="48" cy="30" r="3" fill="#666"/><rect x="8" y="46" width="48" height="4" rx="1" fill="#666"/></svg>`,
+  pecdeck: `<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="8" fill="#1f1f1f"/><circle cx="32" cy="22" r="4" fill="#ff6b00"/><rect x="24" y="26" width="16" height="14" rx="2" fill="#ff6b00" opacity="0.6"/><path d="M24 32 Q16 32 12 24" stroke="#ff6b00" stroke-width="2.5" fill="none"/><path d="M40 32 Q48 32 52 24" stroke="#ff6b00" stroke-width="2.5" fill="none"/><circle cx="12" cy="22" r="3" fill="#999"/><circle cx="52" cy="22" r="3" fill="#999"/><rect x="26" y="42" width="12" height="10" rx="1" fill="#ff6b00" opacity="0.4"/></svg>`,
+  rowmach: `<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="8" fill="#1f1f1f"/><rect x="12" y="32" width="14" height="14" rx="2" fill="#ff6b00" opacity="0.6"/><circle cx="19" cy="28" r="4" fill="#ff6b00"/><line x1="26" y1="36" x2="44" y2="36" stroke="#ff6b00" stroke-width="3"/><rect x="44" y="30" width="10" height="14" rx="2" fill="#999"/><circle cx="49" cy="22" r="3" fill="#666"/><circle cx="49" cy="50" r="3" fill="#666"/></svg>`,
+  curl: `<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="8" fill="#1f1f1f"/><circle cx="20" cy="22" r="4" fill="#ff6b00"/><rect x="14" y="26" width="12" height="18" rx="2" fill="#ff6b00" opacity="0.6"/><path d="M26 34 Q34 28 34 20" stroke="#ff6b00" stroke-width="3" fill="none"/><circle cx="34" cy="16" r="3" fill="#666"/><circle cx="42" cy="40" r="6" fill="none" stroke="#999" stroke-width="1.5"/><circle cx="50" cy="44" r="4" fill="none" stroke="#999" stroke-width="1.5"/></svg>`,
+  triceps: `<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="8" fill="#1f1f1f"/><rect x="44" y="10" width="14" height="4" rx="1" fill="#666"/><line x1="51" y1="14" x2="51" y2="36" stroke="#666" stroke-width="2"/><circle cx="51" cy="38" r="3" fill="#ff6b00"/><circle cx="30" cy="28" r="4" fill="#ff6b00"/><rect x="24" y="32" width="12" height="16" rx="2" fill="#ff6b00" opacity="0.6"/><path d="M36 36 L48 38" stroke="#ff6b00" stroke-width="2.5"/></svg>`,
+  facepull: `<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="8" fill="#1f1f1f"/><circle cx="32" cy="20" r="4" fill="#ff6b00"/><rect x="26" y="24" width="12" height="16" rx="2" fill="#ff6b00" opacity="0.6"/><path d="M26 28 L14 22" stroke="#ff6b00" stroke-width="2.5"/><path d="M38 28 L50 22" stroke="#ff6b00" stroke-width="2.5"/><rect x="10" y="18" width="6" height="6" rx="1" fill="#999"/><rect x="48" y="18" width="6" height="6" rx="1" fill="#999"/><line x1="32" y1="40" x2="32" y2="52" stroke="#666" stroke-width="2"/></svg>`,
+  rdl: `<svg viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="8" fill="#1f1f1f"/><circle cx="32" cy="14" r="4" fill="#ff6b00"/><line x1="32" y1="18" x2="28" y2="32" stroke="#ff6b00" stroke-width="3"/><line x1="28" y1="32" x2="32" y2="50" stroke="#ff6b00" stroke-width="3"/><circle cx="20" cy="38" r="4" fill="#666"/><circle cx="44" cy="38" r="4" fill="#666"/><line x1="20" y1="38" x2="44" y2="38" stroke="#999" stroke-width="2"/></svg>`,
+};
+
+const ILLUSTRATIONS = {
+  chest: `<svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg"> <rect width="400" height="280" fill="#0f0f0f"/> <!-- Sol --> <line x1="0" y1="255" x2="400" y2="255" stroke="#333" stroke-width="1.5"/> <!-- Stack de poids à droite --> <rect x="320" y="120" width="55" height="130" fill="#1a1a1a" stroke="#444" stroke-width="1.5" rx="2"/> <g fill="#ff6b00"> <rect x="324" y="190" width="47" height="9" rx="1"/> <rect x="324" y="201" width="47" height="9" rx="1"/> <rect x="324" y="212" width="47" height="9" rx="1"/> <rect x="324" y="223" width="47" height="9" rx="1"/> <rect x="324" y="234" width="47" height="9" rx="1"/> </g> <g fill="#2a2a2a" stroke="#444"> <rect x="324" y="124" width="47" height="9" rx="1"/> <rect x="324" y="135" width="47" height="9" rx="1"/> <rect x="324" y="146" width="47" height="9" rx="1"/> <rect x="324" y="157" width="47" height="9" rx="1"/> <rect x="324" y="168" width="47" height="9" rx="1"/> <rect x="324" y="179" width="47" height="9" rx="1"/> </g> <!-- Goupille --> <rect x="312" y="185" width="14" height="6" fill="#ff6b00"/> <!-- Câble vers haut --> <line x1="347" y1="120" x2="347" y2="60" stroke="#888" stroke-width="2"/> <circle cx="347" cy="60" r="6" fill="#444" stroke="#888" stroke-width="1.5"/> <line x1="347" y1="60" x2="200" y2="60" stroke="#888" stroke-width="2"/> <!-- Structure verticale --> <rect x="195" y="55" width="10" height="200" fill="#2a2a2a" stroke="#444"/> <!-- Siège --> <rect x="155" y="200" width="90" height="55" fill="#2a2a2a" stroke="#555" stroke-width="1.5" rx="4"/> <rect x="150" y="100" width="50" height="105" fill="#2a2a2a" stroke="#555" stroke-width="1.5" rx="6"/> <!-- Personnage (vue profil) --> <!-- Tête --> <circle cx="180" cy="120" r="13" fill="#e8d5b7" stroke="#c4a47f" stroke-width="1"/> <!-- Torse --> <path d="M170 130 Q165 145 168 175 L185 175 Q193 145 188 130 Z" fill="#ff6b00"/> <!-- Bras qui poussent --> <path d="M170 145 Q150 145 115 155" stroke="#e8d5b7" stroke-width="10" fill="none" stroke-linecap="round"/> <!-- Jambes --> <rect x="173" y="175" width="40" height="12" fill="#1a1a1a" rx="2"/> <rect x="205" y="187" width="12" height="40" fill="#1a1a1a" rx="2"/> <!-- Poignées de la machine --> <circle cx="115" cy="155" r="9" fill="#444" stroke="#888" stroke-width="2"/> <rect x="105" y="148" width="20" height="14" fill="none" stroke="#666"/> <!-- Bras articulé --> <line x1="115" y1="155" x2="195" y2="100" stroke="#666" stroke-width="3"/> <circle cx="195" cy="100" r="6" fill="#888"/> <!-- Flèche mouvement --> <g fill="#ff6b00"> <path d="M90 155 L105 148 L105 162 Z"/> <text x="80" y="140" fill="#ff6b00" font-family="system-ui" font-size="10" font-weight="700">POUSSER</text> </g> <!-- Titre --> <text x="200" y="25" text-anchor="middle" fill="#ff6b00" font-family="system-ui" font-size="14" font-weight="800">DÉVELOPPÉ COUCHÉ MACHINE</text> <text x="200" y="42" text-anchor="middle" fill="#888" font-family="system-ui" font-size="10">Assis, dos plaqué, pousser horizontalement</text> </svg>`,
+  pulldown: `<svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg"> <rect width="400" height="280" fill="#0f0f0f"/> <line x1="0" y1="255" x2="400" y2="255" stroke="#333" stroke-width="1.5"/> <!-- Structure verticale --> <rect x="60" y="50" width="10" height="205" fill="#2a2a2a" stroke="#444"/> <rect x="280" y="50" width="10" height="205" fill="#2a2a2a" stroke="#444"/> <!-- Stack de poids --> <rect x="295" y="120" width="50" height="130" fill="#1a1a1a" stroke="#444" stroke-width="1.5"/> <g fill="#ff6b00"> <rect x="298" y="195" width="44" height="9" rx="1"/> <rect x="298" y="206" width="44" height="9" rx="1"/> <rect x="298" y="217" width="44" height="9" rx="1"/> <rect x="298" y="228" width="44" height="9" rx="1"/> </g> <g fill="#2a2a2a" stroke="#444"> <rect x="298" y="124" width="44" height="9" rx="1"/> <rect x="298" y="135" width="44" height="9" rx="1"/> <rect x="298" y="146" width="44" height="9" rx="1"/> <rect x="298" y="157" width="44" height="9" rx="1"/> <rect x="298" y="168" width="44" height="9" rx="1"/> <rect x="298" y="179" width="44" height="9" rx="1"/> </g> <!-- Traverse haute --> <rect x="60" y="50" width="230" height="10" fill="#333" stroke="#444"/> <!-- Poulie --> <circle cx="200" cy="78" r="9" fill="#444" stroke="#888" stroke-width="1.5"/> <line x1="200" y1="60" x2="200" y2="69" stroke="#888" stroke-width="2"/> <!-- Câble qui descend --> <line x1="320" y1="120" x2="320" y2="65" stroke="#888" stroke-width="2"/> <line x1="320" y1="65" x2="200" y2="65" stroke="#888" stroke-width="2"/> <line x1="200" y1="87" x2="200" y2="118" stroke="#888" stroke-width="2"/> <!-- Barre de tirage --> <rect x="135" y="115" width="130" height="8" fill="#666" rx="2"/> <rect x="135" y="115" width="20" height="8" fill="#ff6b00"/> <rect x="245" y="115" width="20" height="8" fill="#ff6b00"/> <!-- Siège bas --> <rect x="155" y="225" width="90" height="22" fill="#2a2a2a" stroke="#555" rx="3"/> <!-- Cale-cuisses --> <rect x="150" y="200" width="100" height="14" fill="#2a2a2a" stroke="#555" rx="4"/> <!-- Personnage --> <circle cx="200" cy="195" r="13" fill="#e8d5b7" stroke="#c4a47f"/> <!-- Torse --> <path d="M188 207 L188 225 Q188 230 200 230 Q212 230 212 225 L212 207 Z" fill="#ff6b00"/> <!-- Bras levés --> <path d="M191 207 Q175 175 155 130" stroke="#e8d5b7" stroke-width="9" fill="none" stroke-linecap="round"/> <path d="M209 207 Q225 175 245 130" stroke="#e8d5b7" stroke-width="9" fill="none" stroke-linecap="round"/> <!-- Mains sur barre --> <circle cx="155" cy="125" r="6" fill="#e8d5b7"/> <circle cx="245" cy="125" r="6" fill="#e8d5b7"/> <!-- Flèches mouvement --> <g fill="#ff6b00"> <path d="M120 145 L130 135 L130 155 Z"/> <text x="78" y="142" fill="#ff6b00" font-family="system-ui" font-size="9" font-weight="700">TIRER</text> <text x="78" y="153" fill="#ff6b00" font-family="system-ui" font-size="9" font-weight="700">VERS BAS</text> </g> <text x="200" y="25" text-anchor="middle" fill="#ff6b00" font-family="system-ui" font-size="14" font-weight="800">TIRAGE VERTICAL · LAT PULLDOWN</text> <text x="200" y="42" text-anchor="middle" fill="#888" font-family="system-ui" font-size="10">Tirer la barre vers le haut de la poitrine</text> </svg>`,
+  shoulder: `<svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg"> <rect width="400" height="280" fill="#0f0f0f"/> <line x1="0" y1="255" x2="400" y2="255" stroke="#333" stroke-width="1.5"/> <!-- Stack poids --> <rect x="310" y="100" width="55" height="155" fill="#1a1a1a" stroke="#444" stroke-width="1.5" rx="2"/> <g fill="#ff6b00"> <rect x="314" y="190" width="47" height="9" rx="1"/> <rect x="314" y="201" width="47" height="9" rx="1"/> <rect x="314" y="212" width="47" height="9" rx="1"/> <rect x="314" y="223" width="47" height="9" rx="1"/> <rect x="314" y="234" width="47" height="9" rx="1"/> </g> <g fill="#2a2a2a" stroke="#444"> <rect x="314" y="105" width="47" height="9" rx="1"/> <rect x="314" y="116" width="47" height="9" rx="1"/> <rect x="314" y="127" width="47" height="9" rx="1"/> <rect x="314" y="138" width="47" height="9" rx="1"/> <rect x="314" y="149" width="47" height="9" rx="1"/> <rect x="314" y="160" width="47" height="9" rx="1"/> <rect x="314" y="171" width="47" height="9" rx="1"/> <rect x="314" y="182" width="47" height="9" rx="1"/> </g> <!-- Dossier --> <rect x="170" y="100" width="55" height="125" fill="#2a2a2a" stroke="#555" stroke-width="1.5" rx="6"/> <!-- Siège --> <rect x="155" y="220" width="90" height="35" fill="#2a2a2a" stroke="#555" stroke-width="1.5" rx="4"/> <!-- Personnage --> <circle cx="200" cy="135" r="13" fill="#e8d5b7" stroke="#c4a47f"/> <!-- Torse --> <path d="M188 148 L186 215 L214 215 L212 148 Z" fill="#ff6b00"/> <!-- Bras levés au-dessus --> <path d="M192 148 L160 80" stroke="#e8d5b7" stroke-width="10" fill="none" stroke-linecap="round"/> <path d="M208 148 L240 80" stroke="#e8d5b7" stroke-width="10" fill="none" stroke-linecap="round"/> <!-- Poignées --> <rect x="145" y="70" width="30" height="10" fill="#666" rx="2"/> <rect x="225" y="70" width="30" height="10" fill="#666" rx="2"/> <circle cx="148" cy="75" r="4" fill="#ff6b00"/> <circle cx="252" cy="75" r="4" fill="#ff6b00"/> <!-- Bras articulés machine --> <line x1="160" y1="75" x2="170" y2="130" stroke="#666" stroke-width="3"/> <line x1="240" y1="75" x2="230" y2="130" stroke="#666" stroke-width="3"/> <!-- Flèches mouvement --> <g fill="#ff6b00"> <path d="M130 65 L120 80 L140 80 Z"/> <text x="100" y="95" fill="#ff6b00" font-family="system-ui" font-size="10" font-weight="700">POUSSER</text> <text x="100" y="106" fill="#ff6b00" font-family="system-ui" font-size="10" font-weight="700">VERS HAUT</text> </g> <text x="200" y="25" text-anchor="middle" fill="#ff6b00" font-family="system-ui" font-size="14" font-weight="800">DÉVELOPPÉ ÉPAULES MACHINE</text> <text x="200" y="42" text-anchor="middle" fill="#888" font-family="system-ui" font-size="10">Pousser verticalement au-dessus de la tête</text> </svg>`,
+  row: `<svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg"> <rect width="400" height="280" fill="#0f0f0f"/> <line x1="0" y1="255" x2="400" y2="255" stroke="#333" stroke-width="1.5"/> <!-- Stack poids --> <rect x="30" y="100" width="50" height="155" fill="#1a1a1a" stroke="#444" stroke-width="1.5"/> <g fill="#ff6b00"> <rect x="33" y="190" width="44" height="9" rx="1"/> <rect x="33" y="201" width="44" height="9" rx="1"/> <rect x="33" y="212" width="44" height="9" rx="1"/> <rect x="33" y="223" width="44" height="9" rx="1"/> <rect x="33" y="234" width="44" height="9" rx="1"/> </g> <g fill="#2a2a2a" stroke="#444"> <rect x="33" y="105" width="44" height="9" rx="1"/> <rect x="33" y="116" width="44" height="9" rx="1"/> <rect x="33" y="127" width="44" height="9" rx="1"/> <rect x="33" y="138" width="44" height="9" rx="1"/> <rect x="33" y="149" width="44" height="9" rx="1"/> <rect x="33" y="160" width="44" height="9" rx="1"/> <rect x="33" y="171" width="44" height="9" rx="1"/> <rect x="33" y="182" width="44" height="9" rx="1"/> </g> <!-- Coussin avant (pour appuyer la poitrine) --> <rect x="155" y="145" width="20" height="60" fill="#2a2a2a" stroke="#555" stroke-width="1.5" rx="3"/> <!-- Siège --> <rect x="175" y="200" width="100" height="40" fill="#2a2a2a" stroke="#555" stroke-width="1.5" rx="4"/> <!-- Câble --> <line x1="55" y1="170" x2="160" y2="170" stroke="#888" stroke-width="2"/> <!-- Poignée double --> <rect x="160" y="165" width="12" height="10" fill="#666"/> <line x1="172" y1="170" x2="195" y2="160" stroke="#888" stroke-width="2"/> <line x1="172" y1="170" x2="195" y2="180" stroke="#888" stroke-width="2"/> <!-- Personnage (vue profil) --> <!-- Tête --> <circle cx="230" cy="155" r="13" fill="#e8d5b7" stroke="#c4a47f"/> <!-- Torse incliné légèrement --> <path d="M222 167 L218 215 L250 215 L246 167 Z" fill="#ff6b00"/> <!-- Bras tirant --> <path d="M225 175 Q210 175 195 170" stroke="#e8d5b7" stroke-width="10" fill="none" stroke-linecap="round"/> <!-- Jambes --> <rect x="230" y="215" width="45" height="14" fill="#1a1a1a" rx="2"/> <rect x="265" y="225" width="14" height="25" fill="#1a1a1a" rx="2"/> <!-- Flèche tirer --> <g fill="#ff6b00"> <path d="M195 145 L185 155 L205 155 Z" transform="rotate(180 195 150)"/> <text x="135" y="138" fill="#ff6b00" font-family="system-ui" font-size="10" font-weight="700">TIRER VERS SOI</text> </g> <text x="200" y="25" text-anchor="middle" fill="#ff6b00" font-family="system-ui" font-size="14" font-weight="800">ROWING ASSIS / TIRAGE HORIZONTAL</text> <text x="200" y="42" text-anchor="middle" fill="#888" font-family="system-ui" font-size="10">Tirer vers les côtes, serrer les omoplates</text> </svg>`,
+  hipthrust: `<svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg"> <rect width="400" height="280" fill="#0f0f0f"/> <line x1="0" y1="255" x2="400" y2="255" stroke="#333" stroke-width="1.5"/> <!-- Plate-forme dos (à gauche) --> <rect x="60" y="170" width="80" height="60" fill="#2a2a2a" stroke="#555" stroke-width="1.5" rx="3"/> <!-- Coussin lombaire --> <rect x="120" y="155" width="40" height="20" fill="#444" stroke="#666" rx="3"/> <!-- Repose-pieds --> <rect x="290" y="190" width="80" height="50" fill="#2a2a2a" stroke="#555" stroke-width="1.5" rx="3"/> <!-- Personnage en position haute (hip thrust complet) --> <!-- Tête (à gauche) --> <circle cx="95" cy="155" r="12" fill="#e8d5b7" stroke="#c4a47f"/> <!-- Torse horizontal --> <rect x="95" y="155" width="80" height="25" fill="#ff6b00" rx="4"/> <!-- Hanches (point haut) --> <ellipse cx="195" cy="155" rx="22" ry="14" fill="#ff6b00"/> <!-- Cuisses descendant vers les pieds --> <path d="M195 158 Q230 175 270 195" stroke="#e8d5b7" stroke-width="22" fill="none" stroke-linecap="round"/> <!-- Pieds --> <rect x="285" y="180" width="25" height="15" fill="#1a1a1a" rx="3"/> <!-- Barre / coussin sur les hanches --> <rect x="170" y="125" width="55" height="20" fill="#444" stroke="#666" stroke-width="1.5" rx="3"/> <line x1="170" y1="135" x2="225" y2="135" stroke="#ff6b00" stroke-width="2"/> <!-- Disques sur les côtés --> <circle cx="165" cy="135" r="14" fill="#1a1a1a" stroke="#666" stroke-width="2"/> <circle cx="230" cy="135" r="14" fill="#1a1a1a" stroke="#666" stroke-width="2"/> <circle cx="165" cy="135" r="6" fill="#ff6b00"/> <circle cx="230" cy="135" r="6" fill="#ff6b00"/> <!-- Position basse (fantôme) en pointillés --> <ellipse cx="195" cy="200" rx="22" ry="14" fill="none" stroke="#666" stroke-width="1.5" stroke-dasharray="3,3"/> <!-- Flèche montée --> <g fill="#ff6b00"> <path d="M255 195 L265 165 L275 195 Z" opacity="0.9"/> <text x="240" y="220" fill="#ff6b00" font-family="system-ui" font-size="10" font-weight="700">POUSSÉE</text> <text x="240" y="232" fill="#ff6b00" font-family="system-ui" font-size="10" font-weight="700">FESSIERS</text> </g> <text x="200" y="25" text-anchor="middle" fill="#ff6b00" font-family="system-ui" font-size="14" font-weight="800">HIP THRUST MACHINE</text> <text x="200" y="42" text-anchor="middle" fill="#888" font-family="system-ui" font-size="10">Pousser les hanches vers le haut, fessiers serrés</text> </svg>`,
+  facepull: `<svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg"> <rect width="400" height="280" fill="#0f0f0f"/> <line x1="0" y1="255" x2="400" y2="255" stroke="#333" stroke-width="1.5"/> <!-- Poulie haute à droite --> <rect x="350" y="50" width="10" height="200" fill="#2a2a2a" stroke="#444"/> <circle cx="345" cy="75" r="10" fill="#444" stroke="#888" stroke-width="2"/> <!-- Stack --> <rect x="365" y="120" width="30" height="120" fill="#1a1a1a" stroke="#444"/> <g fill="#ff6b00"> <rect x="367" y="200" width="26" height="8" rx="1"/> <rect x="367" y="210" width="26" height="8" rx="1"/> <rect x="367" y="220" width="26" height="8" rx="1"/> <rect x="367" y="230" width="26" height="8" rx="1"/> </g> <g fill="#2a2a2a" stroke="#444"> <rect x="367" y="124" width="26" height="8" rx="1"/> <rect x="367" y="134" width="26" height="8" rx="1"/> <rect x="367" y="144" width="26" height="8" rx="1"/> <rect x="367" y="154" width="26" height="8" rx="1"/> <rect x="367" y="164" width="26" height="8" rx="1"/> <rect x="367" y="174" width="26" height="8" rx="1"/> </g> <!-- Câble --> <line x1="380" y1="120" x2="380" y2="80" stroke="#888" stroke-width="2"/> <line x1="380" y1="80" x2="345" y2="80" stroke="#888" stroke-width="2"/> <line x1="345" y1="85" x2="280" y2="130" stroke="#888" stroke-width="2"/> <!-- Corde séparée --> <line x1="280" y1="130" x2="225" y2="115" stroke="#888" stroke-width="2"/> <line x1="280" y1="130" x2="225" y2="155" stroke="#888" stroke-width="2"/> <!-- Personnage face --> <circle cx="180" cy="120" r="14" fill="#e8d5b7" stroke="#c4a47f"/> <!-- Torse --> <rect x="165" y="134" width="30" height="60" fill="#ff6b00" rx="4"/> <!-- Bras écartés tirant --> <path d="M170 140 Q200 110 225 115" stroke="#e8d5b7" stroke-width="10" fill="none" stroke-linecap="round"/> <path d="M190 140 Q210 145 225 155" stroke="#e8d5b7" stroke-width="10" fill="none" stroke-linecap="round"/> <!-- Jambes --> <rect x="166" y="190" width="12" height="55" fill="#1a1a1a" rx="3"/> <rect x="182" y="190" width="12" height="55" fill="#1a1a1a" rx="3"/> <!-- Flèches mouvement --> <g fill="#ff6b00"> <path d="M250 120 L240 115 L240 125 Z"/> <path d="M250 150 L240 145 L240 155 Z"/> <text x="100" y="190" fill="#ff6b00" font-family="system-ui" font-size="10" font-weight="700">TIRER VERS LE FRONT</text> <text x="120" y="202" fill="#ff6b00" font-family="system-ui" font-size="10" font-weight="700">COUDES HAUTS</text> </g> <text x="200" y="25" text-anchor="middle" fill="#ff6b00" font-family="system-ui" font-size="14" font-weight="800">FACE PULL (POULIE + CORDE)</text> <text x="200" y="42" text-anchor="middle" fill="#888" font-family="system-ui" font-size="10">Idéal pour la posture · épaules en arrière</text> </svg>`,
+  plank: `<svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg"> <rect width="400" height="280" fill="#0f0f0f"/> <!-- Sol --> <line x1="0" y1="220" x2="400" y2="220" stroke="#444" stroke-width="2"/> <rect x="0" y="220" width="400" height="60" fill="#1a1a1a"/> <!-- Personnage en planche, vue de profil --> <!-- Avant-bras au sol --> <rect x="80" y="200" width="50" height="14" fill="#e8d5b7" stroke="#c4a47f" stroke-width="1" rx="3"/> <!-- Bras vertical --> <rect x="115" y="155" width="14" height="60" fill="#e8d5b7" stroke="#c4a47f" stroke-width="1" rx="3"/> <!-- Épaule --> <circle cx="122" cy="155" r="13" fill="#ff6b00"/> <!-- Tête --> <circle cx="100" cy="148" r="13" fill="#e8d5b7" stroke="#c4a47f"/> <!-- Torse en ligne droite --> <path d="M115 155 L300 200 L300 215 L115 168 Z" fill="#ff6b00"/> <!-- Jambes droites --> <rect x="280" y="200" width="60" height="14" fill="#1a1a1a" stroke="#333" rx="2"/> <!-- Pieds --> <rect x="335" y="200" width="14" height="20" fill="#1a1a1a" rx="2"/> <!-- Ligne de référence (alignement) --> <line x1="90" y1="150" x2="345" y2="195" stroke="#ff6b00" stroke-width="1" stroke-dasharray="4,4" opacity="0.6"/> <!-- Annotations --> <text x="200" y="120" text-anchor="middle" fill="#888" font-family="system-ui" font-size="11">↕ Corps parfaitement aligné</text> <!-- Annotations bas --> <g fill="#ff6b00" font-family="system-ui" font-size="10" font-weight="700"> <text x="105" y="240">Avant-bras au sol</text> <text x="240" y="240">Fessiers contractés</text> </g> <text x="200" y="25" text-anchor="middle" fill="#ff6b00" font-family="system-ui" font-size="14" font-weight="800">GAINAGE PLANCHE</text> <text x="200" y="42" text-anchor="middle" fill="#888" font-family="system-ui" font-size="10">Maintenir la position, corps gainé, abdos serrés</text> </svg>`,
+  press: `<svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg"> <rect width="400" height="280" fill="#0f0f0f"/> <line x1="0" y1="255" x2="400" y2="255" stroke="#333" stroke-width="1.5"/> <!-- Châssis machine 45° --> <polygon points="60,250 120,250 280,90 320,90 320,110 130,260 60,260" fill="#1a1a1a" stroke="#444" stroke-width="1.5"/> <!-- Rails --> <line x1="120" y1="240" x2="290" y2="100" stroke="#666" stroke-width="2"/> <line x1="140" y1="250" x2="310" y2="110" stroke="#666" stroke-width="2"/> <!-- Plateforme --> <rect x="245" y="60" width="80" height="60" fill="#2a2a2a" stroke="#555" stroke-width="1.5" rx="3" transform="rotate(40 285 90)"/> <!-- Disques sur plateforme --> <circle cx="305" cy="55" r="14" fill="#ff6b00" stroke="#444" stroke-width="2"/> <circle cx="325" cy="75" r="14" fill="#ff6b00" stroke="#444" stroke-width="2"/> <circle cx="305" cy="55" r="6" fill="#1a1a1a"/> <circle cx="325" cy="75" r="6" fill="#1a1a1a"/> <!-- Siège incliné --> <rect x="70" y="155" width="80" height="40" fill="#2a2a2a" stroke="#555" stroke-width="1.5" rx="4"/> <rect x="80" y="120" width="55" height="50" fill="#2a2a2a" stroke="#555" stroke-width="1.5" rx="4"/> <!-- Personnage --> <!-- Tête --> <circle cx="115" cy="135" r="12" fill="#e8d5b7" stroke="#c4a47f"/> <!-- Torse incliné --> <path d="M105 145 L100 195 L135 195 L130 145 Z" fill="#ff6b00"/> <!-- Jambes pliées en haut vers la plateforme --> <path d="M135 175 Q200 145 240 110" stroke="#e8d5b7" stroke-width="22" fill="none" stroke-linecap="round"/> <!-- Flèches mouvement --> <g fill="#ff6b00"> <path d="M180 80 L195 65 L210 80 L200 80 L200 95 L190 95 L190 80 Z"/> <text x="155" y="115" fill="#ff6b00" font-family="system-ui" font-size="10" font-weight="700">POUSSER</text> </g> <!-- Warning genou --> <g> <rect x="35" y="105" width="80" height="35" fill="#2a1810" stroke="#ff6b00" stroke-width="1.5" rx="6"/> <text x="75" y="120" text-anchor="middle" fill="#ff6b00" font-family="system-ui" font-size="9" font-weight="700">⚠ GENOU</text> <text x="75" y="133" text-anchor="middle" fill="#ff6b00" font-family="system-ui" font-size="9" font-weight="700">PAS &gt; 90°</text> </g> <text x="200" y="25" text-anchor="middle" fill="#ff6b00" font-family="system-ui" font-size="14" font-weight="800">PRESSE À CUISSES 45°</text> <text x="200" y="42" text-anchor="middle" fill="#888" font-family="system-ui" font-size="10">Pousser via les talons, contrôler la descente</text> </svg>`,
+  legcurl: `<svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg"> <rect width="400" height="280" fill="#0f0f0f"/> <line x1="0" y1="255" x2="400" y2="255" stroke="#333" stroke-width="1.5"/> <!-- Banc horizontal --> <rect x="60" y="170" width="220" height="20" fill="#2a2a2a" stroke="#555" stroke-width="1.5" rx="3"/> <!-- Pieds du banc --> <rect x="70" y="190" width="14" height="50" fill="#444"/> <rect x="256" y="190" width="14" height="50" fill="#444"/> <!-- Cale-pieds (bas mobile, en position relevée) --> <rect x="285" y="105" width="14" height="60" fill="#2a2a2a" stroke="#555" rx="2"/> <rect x="265" y="100" width="50" height="14" fill="#444" stroke="#666" stroke-width="1.5" rx="3"/> <!-- Mécanisme rotatif --> <circle cx="290" cy="175" r="10" fill="#444" stroke="#888" stroke-width="1.5"/> <line x1="290" y1="175" x2="290" y2="112" stroke="#666" stroke-width="3"/> <!-- Stack poids --> <rect x="320" y="120" width="50" height="135" fill="#1a1a1a" stroke="#444" stroke-width="1.5"/> <g fill="#ff6b00"> <rect x="323" y="190" width="44" height="9" rx="1"/> <rect x="323" y="201" width="44" height="9" rx="1"/> <rect x="323" y="212" width="44" height="9" rx="1"/> <rect x="323" y="223" width="44" height="9" rx="1"/> <rect x="323" y="234" width="44" height="9" rx="1"/> </g> <g fill="#2a2a2a" stroke="#444"> <rect x="323" y="124" width="44" height="9" rx="1"/> <rect x="323" y="135" width="44" height="9" rx="1"/> <rect x="323" y="146" width="44" height="9" rx="1"/> <rect x="323" y="157" width="44" height="9" rx="1"/> <rect x="323" y="168" width="44" height="9" rx="1"/> <rect x="323" y="179" width="44" height="9" rx="1"/> </g> <!-- Personnage allongé face contre banc --> <!-- Tête --> <circle cx="80" cy="155" r="12" fill="#e8d5b7" stroke="#c4a47f"/> <!-- Torse allongé --> <rect x="92" y="155" width="100" height="18" fill="#ff6b00" rx="3"/> <!-- Cuisses sur banc --> <rect x="190" y="158" width="80" height="16" fill="#e8d5b7" rx="2"/> <!-- Mollets fléchis vers le haut --> <path d="M270 165 Q295 140 295 115" stroke="#e8d5b7" stroke-width="16" fill="none" stroke-linecap="round"/> <!-- Pieds --> <rect x="282" y="100" width="22" height="12" fill="#1a1a1a" rx="2"/> <!-- Flèche mouvement --> <g fill="#ff6b00"> <path d="M315 145 L330 130 L325 160 Z" opacity="0.9"/> <text x="285" y="90" fill="#ff6b00" font-family="system-ui" font-size="10" font-weight="700">FLÉCHIR</text> </g> <text x="200" y="25" text-anchor="middle" fill="#ff6b00" font-family="system-ui" font-size="14" font-weight="800">LEG CURL ALLONGÉ</text> <text x="200" y="42" text-anchor="middle" fill="#888" font-family="system-ui" font-size="10">Ramener les talons vers les fessiers</text> </svg>`,
+  rdl: `<svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg"> <rect width="400" height="280" fill="#0f0f0f"/> <line x1="0" y1="255" x2="400" y2="255" stroke="#333" stroke-width="1.5"/> <!-- Personnage en position basse RDL (charnière de hanche) --> <!-- Tête (regard vers l'avant) --> <circle cx="170" cy="100" r="13" fill="#e8d5b7" stroke="#c4a47f"/> <!-- Torse incliné --> <path d="M170 113 Q175 130 195 165 L220 170 L215 140 Q200 120 175 105 Z" fill="#ff6b00"/> <!-- Bras tendus tenant haltères --> <path d="M195 145 L210 215" stroke="#e8d5b7" stroke-width="10" fill="none" stroke-linecap="round"/> <path d="M215 145 L230 215" stroke="#e8d5b7" stroke-width="10" fill="none" stroke-linecap="round"/> <!-- Haltères --> <g> <rect x="200" y="210" width="20" height="8" fill="#444" rx="1"/> <circle cx="200" cy="214" r="12" fill="#1a1a1a" stroke="#666" stroke-width="2"/> <circle cx="220" cy="214" r="12" fill="#1a1a1a" stroke="#666" stroke-width="2"/> <circle cx="200" cy="214" r="6" fill="#ff6b00"/> <circle cx="220" cy="214" r="6" fill="#ff6b00"/> </g> <g> <rect x="220" y="210" width="20" height="8" fill="#444" rx="1"/> <circle cx="220" cy="214" r="12" fill="#1a1a1a" stroke="#666" stroke-width="2"/> <circle cx="240" cy="214" r="12" fill="#1a1a1a" stroke="#666" stroke-width="2"/> <circle cx="240" cy="214" r="6" fill="#ff6b00"/> </g> <!-- Hanches qui partent en arrière --> <ellipse cx="225" cy="160" rx="18" ry="12" fill="#ff6b00"/> <!-- Jambes presque tendues --> <path d="M220 168 L230 250" stroke="#1a1a1a" stroke-width="16" fill="none" stroke-linecap="round"/> <path d="M232 168 L245 250" stroke="#1a1a1a" stroke-width="16" fill="none" stroke-linecap="round"/> <!-- Flèches mouvement --> <g fill="#ff6b00"> <!-- Hanches arrière --> <path d="M275 155 L290 160 L275 165 L275 160 L260 160 L260 155 Z" opacity="0.9"/> <text x="270" y="145" fill="#ff6b00" font-family="system-ui" font-size="9" font-weight="700">HANCHES</text> <text x="278" y="180" fill="#ff6b00" font-family="system-ui" font-size="9" font-weight="700">EN ARRIÈRE</text> </g> <!-- Annotations dos plat --> <g> <line x1="155" y1="95" x2="220" y2="150" stroke="#4ade80" stroke-width="2" stroke-dasharray="3,3"/> <text x="100" y="80" fill="#4ade80" font-family="system-ui" font-size="10" font-weight="700">✓ DOS PLAT</text> </g> <text x="200" y="25" text-anchor="middle" fill="#ff6b00" font-family="system-ui" font-size="14" font-weight="800">SOULEVÉ DE TERRE ROUMAIN (RDL)</text> <text x="200" y="42" text-anchor="middle" fill="#888" font-family="system-ui" font-size="10">Charnière de hanche · genoux peu fléchis</text> </svg>`,
+  pecdeck: `<svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg"> <rect width="400" height="280" fill="#0f0f0f"/> <line x1="0" y1="255" x2="400" y2="255" stroke="#333" stroke-width="1.5"/> <!-- Stack poids --> <rect x="310" y="100" width="55" height="155" fill="#1a1a1a" stroke="#444" stroke-width="1.5"/> <g fill="#ff6b00"> <rect x="314" y="195" width="47" height="9" rx="1"/> <rect x="314" y="206" width="47" height="9" rx="1"/> <rect x="314" y="217" width="47" height="9" rx="1"/> <rect x="314" y="228" width="47" height="9" rx="1"/> <rect x="314" y="239" width="47" height="9" rx="1"/> </g> <g fill="#2a2a2a" stroke="#444"> <rect x="314" y="105" width="47" height="9" rx="1"/> <rect x="314" y="116" width="47" height="9" rx="1"/> <rect x="314" y="127" width="47" height="9" rx="1"/> <rect x="314" y="138" width="47" height="9" rx="1"/> <rect x="314" y="149" width="47" height="9" rx="1"/> <rect x="314" y="160" width="47" height="9" rx="1"/> <rect x="314" y="171" width="47" height="9" rx="1"/> <rect x="314" y="182" width="47" height="9" rx="1"/> </g> <!-- Dossier vertical --> <rect x="175" y="80" width="50" height="140" fill="#2a2a2a" stroke="#555" stroke-width="1.5" rx="6"/> <!-- Siège --> <rect x="155" y="215" width="90" height="30" fill="#2a2a2a" stroke="#555" stroke-width="1.5" rx="4"/> <!-- Personnage (vue de face) --> <circle cx="200" cy="105" r="13" fill="#e8d5b7" stroke="#c4a47f"/> <rect x="186" y="118" width="28" height="65" fill="#ff6b00" rx="3"/> <!-- Bras semi-fléchis ouverts --> <path d="M188 130 Q160 130 130 145" stroke="#e8d5b7" stroke-width="10" fill="none" stroke-linecap="round"/> <path d="M212 130 Q240 130 270 145" stroke="#e8d5b7" stroke-width="10" fill="none" stroke-linecap="round"/> <!-- Bras de la machine + coussinets --> <rect x="115" y="135" width="20" height="40" fill="#444" stroke="#666" rx="3"/> <rect x="265" y="135" width="20" height="40" fill="#444" stroke="#666" rx="3"/> <line x1="125" y1="155" x2="180" y2="100" stroke="#666" stroke-width="2"/> <line x1="275" y1="155" x2="220" y2="100" stroke="#666" stroke-width="2"/> <circle cx="200" cy="100" r="7" fill="#888"/> <!-- Flèches mouvement --> <g fill="#ff6b00"> <path d="M150 145 L160 138 L160 152 Z"/> <path d="M250 145 L240 138 L240 152 Z"/> <text x="155" y="225" text-anchor="middle" fill="#ff6b00" font-family="system-ui" font-size="10" font-weight="700">RAPPROCHER</text> </g> <text x="200" y="25" text-anchor="middle" fill="#ff6b00" font-family="system-ui" font-size="14" font-weight="800">PEC DECK · ÉCARTÉ MACHINE</text> <text x="200" y="42" text-anchor="middle" fill="#888" font-family="system-ui" font-size="10">Rapprocher les bras devant, serrer les pectoraux</text> </svg>`,
+  rowmach: `<svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg"> <rect width="400" height="280" fill="#0f0f0f"/> <line x1="0" y1="255" x2="400" y2="255" stroke="#333" stroke-width="1.5"/> <!-- Coussin poitrine vertical --> <rect x="180" y="115" width="20" height="100" fill="#2a2a2a" stroke="#555" stroke-width="1.5" rx="3"/> <!-- Siège --> <rect x="195" y="215" width="80" height="35" fill="#2a2a2a" stroke="#555" rx="4"/> <!-- Poignées + bras articulés --> <line x1="55" y1="155" x2="180" y2="155" stroke="#666" stroke-width="3"/> <rect x="40" y="148" width="18" height="14" fill="#444" stroke="#666" stroke-width="1.5" rx="2"/> <!-- Stack --> <rect x="300" y="100" width="55" height="155" fill="#1a1a1a" stroke="#444"/> <g fill="#ff6b00"> <rect x="304" y="195" width="47" height="9" rx="1"/> <rect x="304" y="206" width="47" height="9" rx="1"/> <rect x="304" y="217" width="47" height="9" rx="1"/> <rect x="304" y="228" width="47" height="9" rx="1"/> </g> <g fill="#2a2a2a" stroke="#444"> <rect x="304" y="105" width="47" height="9" rx="1"/> <rect x="304" y="116" width="47" height="9" rx="1"/> <rect x="304" y="127" width="47" height="9" rx="1"/> <rect x="304" y="138" width="47" height="9" rx="1"/> <rect x="304" y="149" width="47" height="9" rx="1"/> <rect x="304" y="160" width="47" height="9" rx="1"/> <rect x="304" y="171" width="47" height="9" rx="1"/> <rect x="304" y="182" width="47" height="9" rx="1"/> </g> <!-- Personnage (profil) face au coussin --> <circle cx="220" cy="140" r="13" fill="#e8d5b7" stroke="#c4a47f"/> <path d="M205 153 L205 215 L240 215 L240 153 Z" fill="#ff6b00"/> <!-- Poitrine collée au coussin --> <line x1="200" y1="155" x2="200" y2="210" stroke="#4ade80" stroke-width="2" stroke-dasharray="3,3"/> <text x="155" y="105" fill="#4ade80" font-family="system-ui" font-size="9" font-weight="700">✓ POITRINE COLLÉE</text> <!-- Bras tirant --> <path d="M210 158 Q175 158 60 155" stroke="#e8d5b7" stroke-width="10" fill="none" stroke-linecap="round"/> <!-- Flèche --> <g fill="#ff6b00"> <path d="M100 130 L80 140 L100 150 Z"/> <text x="105" y="125" fill="#ff6b00" font-family="system-ui" font-size="10" font-weight="700">TIRER VERS SOI</text> </g> <text x="200" y="25" text-anchor="middle" fill="#ff6b00" font-family="system-ui" font-size="14" font-weight="800">TIRAGE HORIZONTAL MACHINE</text> <text x="200" y="42" text-anchor="middle" fill="#888" font-family="system-ui" font-size="10">Poitrine collée au coussin, tirer les coudes en arrière</text> </svg>`,
+  curl: `<svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg"> <rect width="400" height="280" fill="#0f0f0f"/> <line x1="0" y1="255" x2="400" y2="255" stroke="#333" stroke-width="1.5"/> <!-- Pupitre incliné --> <polygon points="120,140 280,140 270,200 130,200" fill="#2a2a2a" stroke="#555" stroke-width="1.5"/> <!-- Siège --> <rect x="160" y="215" width="80" height="30" fill="#2a2a2a" stroke="#555" rx="4"/> <!-- Stack --> <rect x="305" y="100" width="50" height="155" fill="#1a1a1a" stroke="#444"/> <g fill="#ff6b00"> <rect x="308" y="195" width="44" height="9" rx="1"/> <rect x="308" y="206" width="44" height="9" rx="1"/> <rect x="308" y="217" width="44" height="9" rx="1"/> <rect x="308" y="228" width="44" height="9" rx="1"/> </g> <g fill="#2a2a2a" stroke="#444"> <rect x="308" y="105" width="44" height="9" rx="1"/> <rect x="308" y="116" width="44" height="9" rx="1"/> <rect x="308" y="127" width="44" height="9" rx="1"/> <rect x="308" y="138" width="44" height="9" rx="1"/> <rect x="308" y="149" width="44" height="9" rx="1"/> <rect x="308" y="160" width="44" height="9" rx="1"/> <rect x="308" y="171" width="44" height="9" rx="1"/> <rect x="308" y="182" width="44" height="9" rx="1"/> </g> <!-- Personnage --> <circle cx="200" cy="120" r="13" fill="#e8d5b7" stroke="#c4a47f"/> <rect x="186" y="133" width="28" height="55" fill="#ff6b00" rx="3"/> <!-- Bras posés sur pupitre, fléchis --> <path d="M190 150 Q170 175 175 145" stroke="#e8d5b7" stroke-width="10" fill="none" stroke-linecap="round"/> <path d="M210 150 Q230 175 225 145" stroke="#e8d5b7" stroke-width="10" fill="none" stroke-linecap="round"/> <!-- Poignée machine --> <rect x="160" y="135" width="80" height="8" fill="#666" rx="2"/> <line x1="200" y1="143" x2="200" y2="180" stroke="#666" stroke-width="2"/> <!-- Flèche --> <g fill="#ff6b00"> <path d="M115 155 L120 140 L130 155 L125 155 L125 175 L120 175 L120 155 Z"/> <text x="60" y="140" fill="#ff6b00" font-family="system-ui" font-size="10" font-weight="700">PLIER LES BRAS</text> </g> <text x="200" y="25" text-anchor="middle" fill="#ff6b00" font-family="system-ui" font-size="14" font-weight="800">CURL BICEPS MACHINE</text> <text x="200" y="42" text-anchor="middle" fill="#888" font-family="system-ui" font-size="10">Coudes fixes sur le coussin, plier les avant-bras</text> </svg>`,
+  triceps: `<svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg"> <rect width="400" height="280" fill="#0f0f0f"/> <line x1="0" y1="255" x2="400" y2="255" stroke="#333" stroke-width="1.5"/> <!-- Poteau poulie haute --> <rect x="310" y="40" width="10" height="215" fill="#2a2a2a" stroke="#444"/> <circle cx="305" cy="65" r="10" fill="#444" stroke="#888" stroke-width="2"/> <!-- Stack --> <rect x="325" y="120" width="40" height="135" fill="#1a1a1a" stroke="#444"/> <g fill="#ff6b00"> <rect x="328" y="195" width="34" height="9" rx="1"/> <rect x="328" y="206" width="34" height="9" rx="1"/> <rect x="328" y="217" width="34" height="9" rx="1"/> <rect x="328" y="228" width="34" height="9" rx="1"/> </g> <g fill="#2a2a2a" stroke="#444"> <rect x="328" y="124" width="34" height="9" rx="1"/> <rect x="328" y="135" width="34" height="9" rx="1"/> <rect x="328" y="146" width="34" height="9" rx="1"/> <rect x="328" y="157" width="34" height="9" rx="1"/> <rect x="328" y="168" width="34" height="9" rx="1"/> <rect x="328" y="179" width="34" height="9" rx="1"/> </g> <!-- Câble --> <line x1="345" y1="120" x2="345" y2="70" stroke="#888" stroke-width="2"/> <line x1="345" y1="70" x2="305" y2="70" stroke="#888" stroke-width="2"/> <line x1="305" y1="75" x2="240" y2="140" stroke="#888" stroke-width="2"/> <!-- Corde double --> <line x1="240" y1="140" x2="225" y2="180" stroke="#888" stroke-width="2"/> <line x1="240" y1="140" x2="255" y2="180" stroke="#888" stroke-width="2"/> <circle cx="225" cy="180" r="5" fill="#444"/> <circle cx="255" cy="180" r="5" fill="#444"/> <!-- Personnage debout face poulie --> <circle cx="180" cy="100" r="13" fill="#e8d5b7" stroke="#c4a47f"/> <rect x="166" y="113" width="28" height="80" fill="#ff6b00" rx="3"/> <!-- Bras coudes collés au corps, avant-bras descendant --> <path d="M175 130 L220 175" stroke="#e8d5b7" stroke-width="10" fill="none" stroke-linecap="round"/> <path d="M185 130 L250 175" stroke="#e8d5b7" stroke-width="10" fill="none" stroke-linecap="round"/> <!-- Coudes verrouillés au tronc --> <line x1="170" y1="130" x2="170" y2="145" stroke="#4ade80" stroke-width="2" stroke-dasharray="2,2"/> <text x="105" y="120" fill="#4ade80" font-family="system-ui" font-size="9" font-weight="700">✓ COUDES</text> <text x="105" y="132" fill="#4ade80" font-family="system-ui" font-size="9" font-weight="700">COLLÉS</text> <!-- Jambes --> <rect x="170" y="193" width="12" height="55" fill="#1a1a1a" rx="3"/> <rect x="186" y="193" width="12" height="55" fill="#1a1a1a" rx="3"/> <!-- Flèche poussée vers le bas --> <g fill="#ff6b00"> <path d="M270 195 L265 175 L275 175 Z"/> <text x="265" y="215" fill="#ff6b00" font-family="system-ui" font-size="10" font-weight="700">POUSSER</text> <text x="270" y="227" fill="#ff6b00" font-family="system-ui" font-size="10" font-weight="700">VERS BAS</text> </g> <text x="200" y="25" text-anchor="middle" fill="#ff6b00" font-family="system-ui" font-size="14" font-weight="800">TRICEPS POULIE CORDE</text> <text x="200" y="42" text-anchor="middle" fill="#888" font-family="system-ui" font-size="10">Coudes collés au corps, ouvrir la corde en bas</text> </svg>`,
+};
+
+// Détails d'exécution pour chaque exercice (avec vraies images)
+const DETAILS = {
+  chest: {
+    steps: [
+      "Règle la hauteur du siège : poignées au niveau du milieu de la poitrine.",
+      "Dos bien plaqué contre le dossier, pieds à plat au sol.",
+      "Saisis les poignées, coudes à environ 75° du corps (pas écartés à 90°).",
+      "Pousse en expirant, sans verrouiller complètement les coudes en fin de mouvement.",
+      "Reviens en contrôlant la descente sur 2-3 secondes, sans choquer la machine."
+    ],
+    avoid: [
+      "Décoller les omoplates du dossier pour pousser plus lourd",
+      "Verrouiller les coudes en extension complète (mauvais pour les articulations)",
+      "Laisser tomber les poids en phase négative"
+    ]
+  },
+  pulldown: {
+    steps: [
+      "Règle la cale-cuisses pour qu'elle bloque bien tes jambes (pas de décollage).",
+      "Saisis la barre en pronation, mains un peu plus larges que les épaules.",
+      "Légère cambrure du bas du dos, poitrine sortie, regard légèrement vers le haut.",
+      "Tire la barre vers le haut de la poitrine en menant avec les coudes (vers le bas, pas vers l'arrière).",
+      "Contracte le dos en bas 1 seconde, puis remonte lentement sans relâcher complètement."
+    ],
+    avoid: [
+      "Tirer derrière la nuque (mauvais pour les épaules)",
+      "Se balancer pour donner de l'élan",
+      "Tirer avec les bras au lieu du dos — pense à ramener les coudes vers les hanches"
+    ]
+  },
+  shoulder: {
+    steps: [
+      "Règle le siège : poignées au niveau des épaules en position basse.",
+      "Dos plaqué, abdos gainés (très important pour protéger le bas du dos).",
+      "Saisis les poignées, coudes légèrement en avant du corps (pas plein écarté).",
+      "Pousse vers le haut en expirant, sans verrouiller les coudes.",
+      "Redescends sous contrôle jusqu'à ce que les coudes soient à 90°."
+    ],
+    avoid: [
+      "Cambrer exagérément le bas du dos pour pousser plus lourd",
+      "Aller trop bas en phase négative (les épaules détestent)",
+      "Hausser les épaules pendant la poussée"
+    ]
+  },
+  row: {
+    steps: [
+      "Règle le siège pour que les poignées soient à hauteur de la poitrine.",
+      "Pieds bien plantés, poitrine collée au coussin avant.",
+      "Saisis les poignées bras tendus, dos droit (ne te penche pas en arrière).",
+      "Tire en serrant les omoplates l'une vers l'autre — mène avec les coudes.",
+      "Marque 1 seconde de contraction, puis reviens lentement en laissant les omoplates s'écarter."
+    ],
+    avoid: [
+      "Se reculer avec le buste pour aider à tirer",
+      "Tirer trop haut (vers le menton) — vise les côtes",
+      "Hausser les épaules au lieu de serrer les omoplates"
+    ]
+  },
+  hipthrust: {
+    steps: [
+      "Installe le coussin lombaire juste sous les omoplates (pas dans le bas du dos).",
+      "Pieds à plat, à largeur de hanches, talons sous les genoux quand tu es en haut.",
+      "Pousse avec les talons en serrant fort les fessiers.",
+      "En haut, hanches parfaitement alignées avec les épaules et les genoux (pas d'hyperextension lombaire).",
+      "Marque 1 seconde de contraction, descends lentement sans poser totalement entre les reps."
+    ],
+    avoid: [
+      "Pousser avec la pointe des pieds (sollicite les quadris au lieu des fessiers)",
+      "Cambrer le bas du dos en position haute",
+      "Aller trop vite — la contraction au sommet, c'est tout l'intérêt"
+    ]
+  },
+  plank: {
+    steps: [
+      "Coudes au sol sous les épaules, avant-bras à plat.",
+      "Corps en ligne droite : tête, dos, fessiers, jambes alignés.",
+      "Contracte les fessiers ET les abdos en même temps.",
+      "Rentre légèrement le menton (regard au sol entre les avant-bras).",
+      "Respire normalement, ne bloque pas ta respiration."
+    ],
+    avoid: [
+      "Laisser les fessiers tomber (creux lombaire = mal au dos)",
+      "Lever les fesses en l'air (mauvais positionnement)",
+      "Regarder devant — ça écrase la nuque"
+    ]
+  },
+  press: {
+    steps: [
+      "Pieds à largeur d'épaules, au milieu de la plateforme, légèrement vers le haut.",
+      "Dos et bassin bien plaqués au dossier (pas de creux lombaire).",
+      "Déverrouille les sécurités, descends en contrôlant jusqu'à ce que tes genoux soient à ~90° max.",
+      "Pousse à travers tes talons (pas la pointe des pieds).",
+      "Ne verrouille pas complètement les genoux en haut."
+    ],
+    avoid: [
+      "⚠️ Descendre genoux trop fléchis (dangereux pour tes tendinites)",
+      "Décoller le bas du dos du dossier — c'est la blessure lombaire assurée",
+      "Faire rebondir les genoux contre la poitrine"
+    ],
+    warning: "Avec ta tendinite, NE DESCENDS PAS au-delà de 90° au genou. Quitte à raccourcir l'amplitude pour protéger le tendon."
+  },
+  legcurl: {
+    steps: [
+      "Allonge-toi sur la machine, rotule juste à la fin du coussin (axe articulaire aligné).",
+      "Cale-pied posé au-dessus du talon d'Achille, pas sur le mollet.",
+      "Accroche-toi aux poignées, bassin bien à plat (pas de décollage).",
+      "Fléchis les genoux pour ramener les talons vers les fessiers.",
+      "Descends en 2-3 secondes sans laisser le poids redescendre brutalement."
+    ],
+    avoid: [
+      "Décoller les hanches pour tirer plus lourd",
+      "Verrouiller violemment en haut",
+      "Aller trop vite en phase négative"
+    ],
+    warning: "Surveille ton tendon d'Achille au début. Si ça tire, descends le poids ou remplace par une version assise."
+  },
+  legext: {
+    steps: [
+      "Règle l'axe articulaire au niveau de tes genoux.",
+      "Cale-pied posé sur le dessus des pieds (pas sur les tibias).",
+      "Tends les jambes en contractant les quadriceps.",
+      "Évite de verrouiller complètement et brutalement les genoux."
+    ],
+    avoid: ["⚠️ À ÉVITER pour toi vu ta tendinite rotulienne"],
+    warning: "Cet exo est très agressif pour les tendinites rotuliennes. Il a été retiré de ton programme."
+  },
+  pecdeck: {
+    steps: [
+      "Règle le siège : poignées au niveau de la poitrine, pas plus haut.",
+      "Dos bien plaqué, omoplates serrées contre le dossier.",
+      "Coudes légèrement fléchis (jamais tendus complètement) tout au long du mouvement.",
+      "Rapproche les bras devant toi en serrant les pectoraux.",
+      "Marque 1 seconde de contraction au centre, puis écarte lentement."
+    ],
+    avoid: [
+      "Tendre complètement les bras (stress articulaire sur les coudes)",
+      "Aller trop loin en écartement — stop quand tu sens un étirement, pas une douleur d'épaule",
+      "Lever les épaules pour aider"
+    ]
+  },
+  rowmach: {
+    steps: [
+      "Règle pour que les poignées soient à hauteur des côtes basses.",
+      "Poitrine collée fermement au coussin avant.",
+      "Saisis les poignées, bras tendus.",
+      "Tire les coudes vers l'arrière en serrant les omoplates.",
+      "Contracte 1 seconde, reviens lentement en laissant les omoplates s'ouvrir."
+    ],
+    avoid: [
+      "Décoller la poitrine du coussin",
+      "Hausser les épaules pendant la traction",
+      "Tirer en force avec les bras — c'est un exo de dos"
+    ]
+  },
+  curl: {
+    steps: [
+      "Règle la hauteur : tes aisselles doivent reposer naturellement sur le coussin.",
+      "Bras complètement posés, coudes fixes.",
+      "Saisis les poignées, paumes vers le haut.",
+      "Plie les coudes en contrôlant la montée.",
+      "Descends lentement (3 secondes) sans tendre brutalement les bras en bas."
+    ],
+    avoid: [
+      "Décoller les coudes du coussin pour tricher",
+      "Tendre les bras complètement en bas (stress sur les tendons)",
+      "Donner un coup d'épaule pour démarrer le mouvement"
+    ]
+  },
+  triceps: {
+    steps: [
+      "Debout face à la poulie haute, corde fixée à la poignée.",
+      "Saisis la corde, paumes face à face.",
+      "Coudes COLLÉS au corps, à la même position du début à la fin.",
+      "Pousse vers le bas en écartant légèrement la corde en fin de mouvement.",
+      "Marque 1 seconde en bas, remonte lentement sans laisser les coudes s'écarter."
+    ],
+    avoid: [
+      "Décoller les coudes du corps (l'exo devient un exo de dos)",
+      "Se pencher en avant pour pousser plus lourd",
+      "Aller trop vite — c'est un exo où la lenteur paie"
+    ]
+  },
+  facepull: {
+    steps: [
+      "Poulie haute, corde fixée, recule de 1-2 pas pour bien tendre le câble.",
+      "Saisis chaque extrémité de la corde, paumes face à face.",
+      "Bras tendus devant toi, hauteur du visage.",
+      "Tire la corde vers ton front en écartant les mains (les pouces partent vers tes oreilles).",
+      "Coudes hauts et larges en fin de mouvement, marque 1 seconde, reviens lentement."
+    ],
+    avoid: [
+      "Tirer trop bas (vers la poitrine) — c'est plus un rowing alors",
+      "Hausser les épaules — au contraire, abaisse-les",
+      "Charger trop lourd — c'est un exo de posture, pas de force"
+    ]
+  },
+  rdl: {
+    steps: [
+      "Debout, pieds à largeur de hanches, haltères devant les cuisses.",
+      "Genoux LÉGÈREMENT fléchis (et restent fixes tout le mouvement).",
+      "Descends en poussant les hanches en arrière (charnière de hanche).",
+      "Garde le dos plat, les haltères glissent le long des jambes.",
+      "Descends jusqu'à ressentir un étirement dans les ischios (généralement mi-tibia)."
+    ],
+    avoid: [
+      "Plier les genoux comme pour un squat (c'est une charnière de hanche, pas un accroupissement)",
+      "Arrondir le bas du dos — dos plat IMPÉRATIF",
+      "Descendre trop bas — stop quand tes ischios disent stop"
+    ],
+    warning: "Mouvement technique. Commence très léger (5-8 kg) et filme-toi de profil pour vérifier ta posture."
+  }
+};
+
+const SESSIONS = {
+  A: {
+    title: 'Haut du corps',
+    subtitle: 'Pecs · Dos · Épaules · Fessiers',
+    exos: [
+      { id: 'A1', name: 'Développé couché machine', target: '3 × 8-10 reps', tip: 'Contrôle la descente sur 2 sec. Pas de rebond.', icon: 'chest', sets: 3, repsMin: 8, repsMax: 10 },
+      { id: 'A2', name: 'Tirage vertical (lat pulldown)', target: '3 × 8-10 reps', tip: 'Tire vers le haut des pecs, coudes vers le bas.', icon: 'pulldown', sets: 3, repsMin: 8, repsMax: 10 },
+      { id: 'A3', name: 'Développé épaules machine', target: '3 × 10-12 reps', tip: 'Ne verrouille pas les coudes en haut.', icon: 'shoulder', sets: 3, repsMin: 10, repsMax: 12 },
+      { id: 'A4', name: 'Rowing assis machine', target: '3 × 10-12 reps', tip: 'Serre les omoplates en fin de mouvement.', icon: 'row', sets: 3, repsMin: 10, repsMax: 12 },
+      { id: 'A5', name: 'Hip thrust machine', target: '3 × 10-12 reps', tip: 'Pousse avec les talons, serre les fessiers en haut 1 sec.', icon: 'hipthrust', sets: 3, repsMin: 10, repsMax: 12 },
+      { id: 'A6', name: 'Face pull poulie', target: '2 × 15 reps (posture)', tip: 'Pour la posture. Tire vers le front, coudes hauts.', icon: 'facepull', sets: 2, repsMin: 15, repsMax: 15 },
+      { id: 'A7', name: 'Gainage planche', target: '3 × 30-45 sec', tip: 'Fesses contractées, pas de creux lombaire.', icon: 'plank', sets: 3, repsMin: 30, repsMax: 45, isTime: true },
+    ],
+  },
+  B: {
+    title: 'Bas du corps + bras',
+    subtitle: 'Jambes · Ischios · Pecs · Bras',
+    exos: [
+      { id: 'B1', name: 'Presse à cuisses', target: '3 × 10-12 reps', tip: '⚠️ Ne descends PAS au-delà de 90° au genou.', icon: 'press', sets: 3, repsMin: 10, repsMax: 12 },
+      { id: 'B2', name: 'Leg curl machine', target: '3 × 10-12 reps', tip: 'Allongé ou assis. Contrôle la descente.', icon: 'legcurl', sets: 3, repsMin: 10, repsMax: 12 },
+      { id: 'B3', name: 'RDL haltères (soulevé roumain)', target: '3 × 10 reps', tip: 'Dos plat, jambes quasi tendues. Descends sur les ischios, pas dans le bas du dos.', icon: 'rdl', sets: 3, repsMin: 10, repsMax: 10 },
+      { id: 'B4', name: 'Pec deck (écarté machine)', target: '3 × 10-12 reps', tip: 'Coudes légèrement fléchis, contraction 1 sec.', icon: 'pecdeck', sets: 3, repsMin: 10, repsMax: 12 },
+      { id: 'B5', name: 'Tirage horizontal machine', target: '3 × 10-12 reps', tip: 'Poitrine bien collée au coussin, tire les coudes vers l\'arrière.', icon: 'rowmach', sets: 3, repsMin: 10, repsMax: 12 },
+      { id: 'B6', name: 'Face pull poulie', target: '2 × 15 reps (posture)', tip: 'Pour la posture. Tire vers le front, coudes hauts.', icon: 'facepull', sets: 2, repsMin: 15, repsMax: 15 },
+      { id: 'B7', name: 'Curl biceps machine', target: '2 × 12 reps', tip: 'Pas de balancier. Coudes fixes.', icon: 'curl', sets: 2, repsMin: 12, repsMax: 12 },
+      { id: 'B8', name: 'Triceps poulie corde', target: '2 × 12 reps', tip: 'Coudes collés au corps, ouvre la corde en bas.', icon: 'triceps', sets: 2, repsMin: 12, repsMax: 12 },
+    ],
+  },
+};
+
+// ============== STATE ==============
+let currentSession = null;
+let currentData = {};
+
+function loadData() {
+  try {
+    return JSON.parse(localStorage.getItem('coachData') || '{"history": [], "lastValues": {}}');
+  } catch { return { history: [], lastValues: {} }; }
+}
+function saveData(d) {
+  localStorage.setItem('coachData', JSON.stringify(d));
+  pushToCloud();
+}
+
+// ============== NAV ==============
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    const tab = t.dataset.tab;
+    document.getElementById('page-' + tab).classList.add('active');
+    if (tab === 'history') renderHistory();
+    if (tab === 'weight') renderWeight();
+    if (tab === 'home') renderHome();
+    if (tab === 'chat') renderChat();
+    if (tab === 'create') renderCreate();
+  });
+});
+
+function goHome() {
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+  document.querySelector('.tab[data-tab="home"]').classList.add('active');
+  document.getElementById('page-home').classList.add('active');
+  renderHome();
+}
+
+// ============== HOME ==============
+function renderHome() {
+  const data = loadData();
+  const container = document.getElementById('sessions-list');
+
+  // Liste de TOUTES les séances : A, B + customSessions
+  const baseSessions = [
+    { key: 'A', title: 'Haut du corps', desc: 'Pecs, dos, épaules + fessiers', custom: false },
+    { key: 'B', title: 'Bas du corps + bras', desc: 'Jambes, ischios, bras', custom: false },
+  ];
+  const customSessions = (data.customSessions || []).map(s => ({
+    key: s.key,
+    title: s.title,
+    desc: s.subtitle || `${s.exos.length} exercices`,
+    custom: true
+  }));
+  const allSessions = [...baseSessions, ...customSessions];
+
+  let html = '';
+  allSessions.forEach(s => {
+    const last = data.history.filter(h => h.session === s.key).pop();
+    let lastTxt = 'Jamais faite';
+    if (last) {
+      const d = new Date(last.date);
+      const days = Math.floor((Date.now() - d.getTime()) / 86400000);
+      const dayTxt = days === 0 ? "aujourd'hui" : days === 1 ? "hier" : `il y a ${days} jours`;
+      lastTxt = `Dernière fois : ${dayTxt}`;
+    }
+    html += `
+      <div class="session-card" onclick="openSession('${s.key}')">
+        <div class="session-letter">${s.key}</div>
+        <div class="session-info">
+          <div class="title">${escapeHtml(s.title)}${s.custom ? ' <span style="color: var(--text-faint); font-size: 11px; font-weight: 500;">· perso</span>' : ''}</div>
+          <div class="desc">${escapeHtml(s.desc)}</div>
+          <div class="last">${lastTxt}</div>
+        </div>
+        ${s.custom ? `<button onclick="event.stopPropagation(); deleteCustomSession('${s.key}')" style="background: transparent; color: var(--text-faint); padding: 4px 8px; font-size: 16px;">🗑</button>` : ''}
+        <div class="arrow">›</div>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+  renderRegularity(data);
+}
+
+function deleteCustomSession(key) {
+  if (!confirm(`Supprimer la séance ${key} ?`)) return;
+  const data = loadData();
+  data.customSessions = (data.customSessions || []).filter(s => s.key !== key);
+  saveData(data);
+  renderHome();
+  showToast('Séance supprimée');
+}
+
+// ============== REGULARITY STATS ==============
+function renderRegularity(data) {
+  const container = document.getElementById('regularity-stats');
+  if (!container) return;
+  const history = data.history || [];
+
+  if (history.length === 0) {
+    container.innerHTML = `
+      <div class="r-hero">
+        <div class="r-hero-flame">🚀</div>
+        <div class="r-hero-streak">EN ATTENTE</div>
+        <div class="r-hero-value">0<span class="unit">séance</span></div>
+        <div class="r-hero-msg">Ta première séance lancera ton streak. Tu peux le faire 💪</div>
+      </div>
+    `;
+    return;
+  }
+
+  // Grouper les séances par jour (clé YYYY-MM-DD)
+  const sessionsByDay = {};
+  history.forEach(h => {
+    const dayKey = new Date(h.date).toISOString().slice(0, 10);
+    if (!sessionsByDay[dayKey]) sessionsByDay[dayKey] = [];
+    sessionsByDay[dayKey].push(h.session);
+  });
+
+  // === STREAK (semaines consécutives avec au moins 2 séances) ===
+  // On définit le streak en semaines : on enchaîne une semaine si on a fait ≥ 2 séances
+  // C'est plus motivant qu'un streak quotidien quand on s'entraîne 2-3x/sem
+  const now = new Date();
+  const todayKey = now.toISOString().slice(0, 10);
+
+  // Helper: début de la semaine (lundi) pour une date
+  function weekStart(date) {
+    const d = new Date(date);
+    const day = d.getDay();
+    const diff = day === 0 ? -6 : 1 - day; // lundi
+    d.setDate(d.getDate() + diff);
+    d.setHours(0,0,0,0);
+    return d;
+  }
+  function weekKey(date) {
+    return weekStart(date).toISOString().slice(0, 10);
+  }
+
+  // Compter séances par semaine
+  const sessionsByWeek = {};
+  history.forEach(h => {
+    const wk = weekKey(new Date(h.date));
+    sessionsByWeek[wk] = (sessionsByWeek[wk] || 0) + 1;
+  });
+
+  // Streak = nombre de semaines consécutives en arrière depuis la semaine actuelle
+  // OÙ on a fait au moins 2 séances. La semaine courante compte même incomplète (≥1 séance).
+  let streak = 0;
+  let cursor = weekStart(now);
+  let currentWeekCount = sessionsByWeek[cursor.toISOString().slice(0, 10)] || 0;
+  // Semaine courante : compte si au moins 1 séance (elle est encore en cours)
+  if (currentWeekCount >= 1) {
+    streak = 1;
+    // Reculer d'une semaine et vérifier les semaines précédentes complètes (≥ 2)
+    cursor.setDate(cursor.getDate() - 7);
+    while (true) {
+      const k = cursor.toISOString().slice(0, 10);
+      if ((sessionsByWeek[k] || 0) >= 2) {
+        streak++;
+        cursor.setDate(cursor.getDate() - 7);
+      } else break;
+    }
+  } else {
+    // Pas encore de séance cette semaine — vérifier la semaine passée
+    cursor.setDate(cursor.getDate() - 7);
+    while (true) {
+      const k = cursor.toISOString().slice(0, 10);
+      if ((sessionsByWeek[k] || 0) >= 2) {
+        streak++;
+        cursor.setDate(cursor.getDate() - 7);
+      } else break;
+    }
+  }
+
+  // === STATS ===
+  const totalSessions = history.length;
+
+  // Ce mois-ci
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const thisMonth = history.filter(h => new Date(h.date) >= monthStart).length;
+
+  // Cette semaine
+  const wkStart = weekStart(now);
+  const thisWeek = history.filter(h => new Date(h.date) >= wkStart);
+
+  // === MESSAGE MOTIVANT ===
+  let msg;
+  if (streak >= 8) msg = `🔥 ${streak} semaines de suite — t'es une machine.`;
+  else if (streak >= 4) msg = `🔥 ${streak} semaines enchaînées. La régularité fait le résultat.`;
+  else if (streak === 3) msg = `Bien joué ! 3 semaines de rang. Tu installes l'habitude.`;
+  else if (streak === 2) msg = `2 semaines d'affilée — tu prends le rythme 💪`;
+  else if (streak === 1 && thisWeek.length >= 2) msg = `Bonne semaine ! Encore une et le streak commence à parler.`;
+  else if (streak === 1) msg = `${thisWeek.length} séance cette semaine. Vise 2+ pour valider la semaine.`;
+  else if (thisWeek.length === 0) {
+    const lastSessionDate = new Date(history[history.length-1].date);
+    const daysSince = Math.floor((now - lastSessionDate) / 86400000);
+    msg = daysSince <= 3 ? `Dernière séance il y a ${daysSince}j. Relance-toi cette semaine !` : `Ça fait ${daysSince} jours. Le mieux c'est toujours de reprendre maintenant.`;
+  } else msg = `${thisWeek.length} séance cette semaine. En route.`;
+
+  // === HEATMAP 4 dernières semaines ===
+  const heatmapHtml = buildHeatmap(sessionsByDay, now);
+
+  container.innerHTML = `
+    <div class="r-hero">
+      <div class="r-hero-flame">${streak >= 4 ? '🔥' : streak >= 2 ? '⚡' : '🚀'}</div>
+      <div class="r-hero-streak">${streak > 0 ? 'STREAK' : 'CETTE SEMAINE'}</div>
+      <div class="r-hero-value">${streak > 0 ? streak : thisWeek.length}<span class="unit">${streak > 0 ? (streak > 1 ? 'semaines' : 'semaine') : (thisWeek.length > 1 ? 'séances' : 'séance')}</span></div>
+      <div class="r-hero-msg">${msg}</div>
+    </div>
+
+    <div class="r-stats-grid">
+      <div class="r-stat">
+        <div class="r-stat-label">Cette semaine</div>
+        <div class="r-stat-value">${thisWeek.length}<span class="small">/2</span></div>
+      </div>
+      <div class="r-stat">
+        <div class="r-stat-label">Ce mois</div>
+        <div class="r-stat-value">${thisMonth}</div>
+      </div>
+      <div class="r-stat">
+        <div class="r-stat-label">Total</div>
+        <div class="r-stat-value">${totalSessions}</div>
+      </div>
+    </div>
+
+    <div class="r-heatmap-card">
+      <div class="r-heatmap-title">
+        <span>4 dernières semaines</span>
+        <span class="legend">🟧 A · 🟩 B</span>
+      </div>
+      ${heatmapHtml}
+    </div>
+  `;
+}
+
+function buildHeatmap(sessionsByDay, now) {
+  // Construire 4 semaines complètes, de la semaine courante (en cours) jusqu'à 3 semaines en arrière
+  // Lignes : semaines (la plus récente en bas)
+  // Colonnes : jours (Lun → Dim)
+
+  function weekStartDate(d) {
+    const out = new Date(d);
+    const day = out.getDay();
+    const diff = day === 0 ? -6 : 1 - day;
+    out.setDate(out.getDate() + diff);
+    out.setHours(0,0,0,0);
+    return out;
+  }
+
+  const thisWeekStart = weekStartDate(now);
+  const weeks = [];
+  for (let w = 3; w >= 0; w--) {
+    const ws = new Date(thisWeekStart);
+    ws.setDate(ws.getDate() - 7 * w);
+    weeks.push(ws);
+  }
+
+  const todayKey = now.toISOString().slice(0, 10);
+  const dayHeaders = ['L','M','M','J','V','S','D'];
+
+  let html = '<div class="r-heatmap-grid">';
+  // Header row
+  html += '<div></div>';
+  dayHeaders.forEach(d => html += `<div class="r-day-header">${d}</div>`);
+
+  weeks.forEach(ws => {
+    // Label semaine : numéro de semaine ou format court
+    const wLabel = `${ws.getDate()}/${ws.getMonth() + 1}`;
+    html += `<div class="r-week-label">${wLabel}</div>`;
+    for (let d = 0; d < 7; d++) {
+      const day = new Date(ws);
+      day.setDate(day.getDate() + d);
+      const key = day.toISOString().slice(0, 10);
+      const sessions = sessionsByDay[key] || [];
+      let cls = 'r-cell';
+      let content = '';
+      if (sessions.length > 0) {
+        if (sessions.length > 1) {
+          cls += ' session-multi';
+          content = `<span class="r-cell-label">${sessions.length}</span>`;
+        } else {
+          cls += sessions[0] === 'A' ? ' session-A' : ' session-B';
+          content = `<span class="r-cell-label">${sessions[0]}</span>`;
+        }
+      }
+      if (key === todayKey) cls += ' today';
+      if (day > now) cls += ' future';
+      html += `<div class="${cls}">${content}</div>`;
+    }
+  });
+
+  html += '</div>';
+  return html;
+}
+
+// ============== SESSION ==============
+function openSession(key) {
+  currentSession = key;
+  const data = loadData();
+  // Chercher d'abord dans SESSIONS (A, B), sinon dans customSessions
+  let s = SESSIONS[key];
+  if (!s) {
+    const custom = (data.customSessions || []).find(cs => cs.key === key);
+    if (!custom) return;
+    s = custom;
+  }
+  document.getElementById('session-title').innerHTML = `Séance ${key}<small>${s.subtitle}</small>`;
+  // Reset zone d'ajustement et afficher le bouton
+  const adjustZone = document.getElementById('adjust-zone');
+  adjustZone.innerHTML = `<button class="adjust-btn" onclick="openAdjustPanel()">⚖️ Ajuster les poids avec l'IA</button>`;
+  const list = document.getElementById('exo-list');
+  list.innerHTML = '';
+  currentData = {};
+
+  s.exos.forEach(exo => {
+    currentData[exo.id] = { sets: [] };
+    const card = document.createElement('div');
+    card.className = 'exo-card';
+    const lastVals = data.lastValues[exo.id] || {};
+    let setsHTML = '';
+    for (let i = 1; i <= exo.sets; i++) {
+      const lastW = lastVals['w' + i] || '';
+      const lastR = lastVals['r' + i] || '';
+      setsHTML += `
+        <div class="set-row">
+          <div class="set-label">${i}</div>
+          <input class="set-input" type="number" inputmode="decimal" placeholder="${lastW || (exo.isTime ? '—' : 'kg')}" data-exo="${exo.id}" data-field="w${i}" data-set="${i}">
+          <input class="set-input" type="number" inputmode="numeric" placeholder="${lastR || (exo.isTime ? 'sec' : 'reps')}" data-exo="${exo.id}" data-field="r${i}" data-set="${i}">
+          <button class="set-check" data-exo="${exo.id}" data-set="${i}">○</button>
+        </div>`;
+      currentData[exo.id].sets.push({ w: '', r: '', done: false });
+    }
+    const lastHint = lastVals.w1 ? `<div style="font-size: 11px; color: var(--text-faint); margin-top: 6px;">Dernière fois : ${lastVals.w1}kg × ${lastVals.r1}${exo.isTime ? 's' : ''}</div>` : '';
+    card.innerHTML = `
+      <div class="exo-head">
+        <div class="exo-img" data-exo="${exo.id}">${SVG[exo.icon] || ''}</div>
+        <div class="exo-title-block">
+          <div class="exo-title">${exo.name}</div>
+          <div class="exo-target">${exo.target}</div>
+          <div class="exo-tip">${exo.tip}</div>
+          ${lastHint}
+        </div>
+      </div>
+      <div class="input-headers"><span>Set</span><span>${exo.isTime ? 'Charge' : 'Poids'}</span><span>${exo.isTime ? 'Secondes' : 'Reps'}</span><span>✓</span></div>
+      <div class="sets-grid">${setsHTML}</div>
+    `;
+    list.appendChild(card);
+  });
+
+  // Event listeners
+  list.querySelectorAll('.set-input').forEach(input => {
+    input.addEventListener('input', e => {
+      const exoId = e.target.dataset.exo;
+      const field = e.target.dataset.field;
+      const setIdx = parseInt(e.target.dataset.set) - 1;
+      const isW = field.startsWith('w');
+      currentData[exoId].sets[setIdx][isW ? 'w' : 'r'] = e.target.value;
+    });
+  });
+  list.querySelectorAll('.set-check').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const exoId = e.target.dataset.exo;
+      const setIdx = parseInt(e.target.dataset.set) - 1;
+      const done = !currentData[exoId].sets[setIdx].done;
+      currentData[exoId].sets[setIdx].done = done;
+      e.target.classList.toggle('done', done);
+      e.target.textContent = done ? '✓' : '○';
+      if (navigator.vibrate) navigator.vibrate(20);
+    });
+  });
+
+  list.querySelectorAll('.exo-img').forEach(img => {
+    img.addEventListener('click', e => {
+      e.stopPropagation();
+      const exoId = img.dataset.exo;
+      openExoModal(exoId);
+    });
+  });
+
+  document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+  document.getElementById('page-session').classList.add('active');
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+  window.scrollTo(0, 0);
+}
+
+function finishSession() {
+  const data = loadData();
+  const entry = {
+    date: new Date().toISOString(),
+    session: currentSession,
+    exos: {}
+  };
+  let hasData = false;
+  Object.keys(currentData).forEach(exoId => {
+    const sets = currentData[exoId].sets.filter(s => s.w || s.r);
+    if (sets.length > 0) {
+      entry.exos[exoId] = sets;
+      hasData = true;
+      // Update last values
+      data.lastValues[exoId] = data.lastValues[exoId] || {};
+      sets.forEach((s, i) => {
+        if (s.w) data.lastValues[exoId]['w' + (i+1)] = s.w;
+        if (s.r) data.lastValues[exoId]['r' + (i+1)] = s.r;
+      });
+    }
+  });
+  if (!hasData) {
+    if (!confirm("Aucune donnée saisie. Terminer quand même ?")) return;
+  }
+  data.history.push(entry);
+  saveData(data);
+  showToast('Séance enregistrée ✓');
+  setTimeout(goHome, 800);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+// ============== EXO MODAL ==============
+function openExoModal(exoId) {
+  // Trouver l'exercice dans la session courante (base ou custom)
+  let session = SESSIONS[currentSession];
+  if (!session) {
+    const data = loadData();
+    session = (data.customSessions || []).find(cs => cs.key === currentSession);
+  }
+  if (!session) return;
+  const exo = session.exos.find(e => e.id === exoId);
+  if (!exo) return;
+  const det = DETAILS[exo.icon];
+
+  let html = '';
+  // Utiliser le SVG inline correspondant à l'icône de l'exo
+  const svgIllu = ILLUSTRATIONS[exo.icon];
+  if (svgIllu) {
+    html += `<div class="modal-img-wrap">${svgIllu}</div>`;
+  }
+  html += `<h2>${exo.name}</h2>`;
+  html += `<div class="target-badge">${exo.target}</div>`;
+
+  if (det && det.warning) {
+    html += `<div class="modal-warn"><strong>⚠️ Pour toi :</strong> ${det.warning}</div>`;
+  }
+
+  if (det && det.steps && det.steps.length) {
+    html += `<div class="modal-section"><h4>🎯 Exécution étape par étape</h4><ol>`;
+    det.steps.forEach(s => { html += `<li>${s}</li>`; });
+    html += `</ol></div>`;
+  }
+
+  if (det && det.avoid && det.avoid.length) {
+    html += `<div class="modal-section"><h4>🚫 Erreurs à éviter</h4><ul>`;
+    det.avoid.forEach(a => { html += `<li>${a}</li>`; });
+    html += `</ul></div>`;
+  }
+
+  html += `<div class="modal-section"><h4>💡 Conseil clé</h4><p style="font-size: 14.5px; line-height: 1.5; color: var(--text);">${exo.tip}</p></div>`;
+
+  document.getElementById('modalContent').innerHTML = html;
+  document.getElementById('modal').classList.add('show');
+  document.getElementById('modalOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  if (navigator.vibrate) navigator.vibrate(10);
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('show');
+  document.getElementById('modalOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+// ============== HISTORY ==============
+function renderHistory() {
+  const data = loadData();
+  const list = document.getElementById('history-list');
+  if (data.history.length === 0) {
+    list.innerHTML = `<div class="empty-state"><div class="icon">📊</div><div>Aucune séance encore.<br>Lance ta première séance !</div></div>`;
+    return;
+  }
+  const sorted = [...data.history].reverse();
+  list.innerHTML = sorted.map(h => {
+    const d = new Date(h.date);
+    const dateStr = d.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
+    const timeStr = d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    const exoCount = Object.keys(h.exos).length;
+    const totalSets = Object.values(h.exos).reduce((a, s) => a + s.length, 0);
+    let detailsHtml = '';
+    Object.keys(h.exos).forEach(exoId => {
+      const sets = h.exos[exoId];
+      let session = SESSIONS[h.session];
+      if (!session) {
+        session = (data.customSessions || []).find(cs => cs.key === h.session);
+      }
+      if (!session) return;
+      const exo = session.exos.find(e => e.id === exoId);
+      if (!exo) return;
+      const setsTxt = sets.map(s => `${s.w || '?'}×${s.r || '?'}`).join(' · ');
+      detailsHtml += `<div style="font-size: 12.5px; padding: 6px 0; border-top: 1px solid var(--border);"><strong style="color: var(--text);">${exo.name}</strong><br><span style="color: var(--text-dim);">${setsTxt}</span></div>`;
+    });
+    return `
+      <div class="history-item">
+        <div class="h-head">
+          <div class="h-date">${dateStr} · ${timeStr}</div>
+          <div class="h-session">Séance ${h.session}</div>
+        </div>
+        <div class="h-stats">
+          <span>${exoCount} exercices</span>
+          <span>${totalSets} séries</span>
+        </div>
+        <div style="margin-top: 10px;">${detailsHtml}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ============== WEIGHT TRACKING ==============
+let editingWeightId = null;
+let chartRange = 30; // jours affichés par défaut
+
+function loadWeights() {
+  try {
+    return JSON.parse(localStorage.getItem('coachWeights') || '{"entries": [], "goal": null, "startWeight": null}');
+  } catch { return { entries: [], goal: null, startWeight: null }; }
+}
+function saveWeights(d) {
+  localStorage.setItem('coachWeights', JSON.stringify(d));
+  pushToCloud();
+}
+
+function todayISO() {
+  const d = new Date();
+  return d.toISOString().slice(0, 10);
+}
+
+function openWeightModal(entryId) {
+  editingWeightId = entryId || null;
+  const data = loadWeights();
+  const input = document.getElementById('wInput');
+  const dateInput = document.getElementById('wDate');
+  const title = document.getElementById('wModalTitle');
+  const delBtn = document.getElementById('wDeleteBtn');
+
+  if (entryId) {
+    const entry = data.entries.find(e => e.id === entryId);
+    if (entry) {
+      input.value = entry.weight;
+      dateInput.value = entry.date;
+      title.textContent = 'Modifier la pesée';
+      delBtn.style.display = 'block';
+    }
+  } else {
+    // Pré-remplir avec le dernier poids
+    const last = data.entries.length ? data.entries[data.entries.length - 1].weight : '';
+    input.value = '';
+    input.placeholder = last || '84.5';
+    dateInput.value = todayISO();
+    title.textContent = 'Nouvelle pesée';
+    delBtn.style.display = 'none';
+  }
+
+  document.getElementById('wModal').classList.add('show');
+  document.getElementById('wModalOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => input.focus(), 350);
+}
+
+function closeWeightModal() {
+  document.getElementById('wModal').classList.remove('show');
+  document.getElementById('wModalOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+  editingWeightId = null;
+}
+
+function saveWeight() {
+  const value = parseFloat(document.getElementById('wInput').value);
+  const date = document.getElementById('wDate').value;
+  if (!value || value < 30 || value > 250 || !date) {
+    showToast('Poids invalide');
+    return;
+  }
+  const data = loadWeights();
+  if (editingWeightId) {
+    const entry = data.entries.find(e => e.id === editingWeightId);
+    if (entry) { entry.weight = value; entry.date = date; }
+  } else {
+    // Si déjà une pesée à cette date, on remplace
+    const existing = data.entries.find(e => e.date === date);
+    if (existing) {
+      existing.weight = value;
+    } else {
+      data.entries.push({
+        id: 'w_' + Date.now(),
+        date,
+        weight: value
+      });
+    }
+    // Mémoriser le poids de départ si premier ajout
+    if (!data.startWeight) data.startWeight = value;
+  }
+  // Trier par date
+  data.entries.sort((a, b) => a.date.localeCompare(b.date));
+  saveWeights(data);
+  closeWeightModal();
+  showToast(editingWeightId ? 'Modifié ✓' : 'Pesée enregistrée ✓');
+  renderWeight();
+}
+
+function deleteWeight() {
+  if (!editingWeightId) return;
+  if (!confirm('Supprimer cette pesée ?')) return;
+  const data = loadWeights();
+  data.entries = data.entries.filter(e => e.id !== editingWeightId);
+  saveWeights(data);
+  closeWeightModal();
+  showToast('Supprimé');
+  renderWeight();
+}
+
+// ============== GOAL MODAL ==============
+function bmiCategory(bmi) {
+  if (bmi < 18.5) return { label: 'Insuffisance pondérale', color: '#60a5fa' };
+  if (bmi < 25)   return { label: 'Poids normal', color: '#4ade80' };
+  if (bmi < 30)   return { label: 'Surpoids', color: '#fbbf24' };
+  if (bmi < 35)   return { label: 'Obésité modérée', color: '#fb923c' };
+  return { label: 'Obésité sévère', color: '#ef4444' };
+}
+
+function openGoalModal() {
+  const data = loadWeights();
+  const current = data.entries.length ? data.entries[data.entries.length - 1].weight : 85;
+  const heightInput = document.getElementById('gHeight');
+  const customInput = document.getElementById('gCustom');
+  const titleEl = document.getElementById('gModalTitle');
+  const delBtn = document.getElementById('gDeleteBtn');
+
+  // Pré-remplir taille (par défaut 170 cm = la taille de Gabriel)
+  heightInput.value = data.height || 170;
+
+  // Pré-remplir objectif
+  customInput.value = data.goal || '';
+
+  // Titre & bouton delete
+  if (data.goal) {
+    titleEl.textContent = '🎯 Modifier l\'objectif';
+    delBtn.style.display = 'block';
+  } else {
+    titleEl.textContent = '🎯 Fixer un objectif';
+    delBtn.style.display = 'none';
+  }
+
+  // Rendre les suggestions et l'IMC
+  refreshGoalSuggestions();
+
+  // Recalculer quand la taille change
+  heightInput.oninput = refreshGoalSuggestions;
+
+  document.getElementById('gModal').classList.add('show');
+  document.getElementById('gModalOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeGoalModal() {
+  document.getElementById('gModal').classList.remove('show');
+  document.getElementById('gModalOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function refreshGoalSuggestions() {
+  const data = loadWeights();
+  const current = data.entries.length ? data.entries[data.entries.length - 1].weight : 85;
+  const height = parseFloat(document.getElementById('gHeight').value) || 170;
+  const h = height / 100;
+
+  // IMC actuel
+  const bmi = current / (h * h);
+  const cat = bmiCategory(bmi);
+
+  // Poids idéal selon différentes formules
+  // 1. IMC sain (haut de la fourchette normale = 24.9)
+  const weightBmi25 = 24.9 * h * h;
+  // 2. IMC sain (milieu = 22)
+  const weightBmi22 = 22 * h * h;
+  // 3. Lemmens (formule moderne)
+  const weightLemmens = 22 * h * h; // ≈ même que IMC 22
+  // 4. Objectif "modéré" = -10% du poids actuel (recommandation OMS pour réduire les risques)
+  const weight10pct = current * 0.9;
+  // 5. Objectif "réaliste" = -5% (premier palier qui apporte déjà des bénéfices santé)
+  const weight5pct = current * 0.95;
+
+  // Bloc info IMC
+  const bmiInfoEl = document.getElementById('gBmiInfo');
+  bmiInfoEl.innerHTML = `
+    <div>IMC actuel : <span class="bmi-now" style="color: ${cat.color}">${bmi.toFixed(1)}</span> · <span style="color: ${cat.color}">${cat.label}</span></div>
+    <div style="margin-top: 4px;">Plage normale (IMC 18.5–24.9) : <strong style="color: var(--text)">${(18.5 * h * h).toFixed(0)}–${(24.9 * h * h).toFixed(0)} kg</strong></div>
+  `;
+
+  // Suggestions (uniquement celles qui ont du sens : poids cible < poids actuel)
+  const suggestions = [];
+
+  if (weight5pct < current) {
+    suggestions.push({
+      title: 'Premier palier (-5%)',
+      desc: 'Améliore déjà nettement la santé métabolique. Réaliste en 2-3 mois.',
+      value: Math.round(weight5pct * 10) / 10
+    });
+  }
+
+  if (weight10pct < current) {
+    suggestions.push({
+      title: 'Objectif modéré (-10%)',
+      desc: 'Recommandation OMS. Effets santé majeurs. Atteignable en 4-6 mois.',
+      value: Math.round(weight10pct * 10) / 10
+    });
+  }
+
+  if (weightBmi25 < current && Math.abs(weightBmi25 - weight10pct) > 1) {
+    suggestions.push({
+      title: 'Sortir du surpoids (IMC 25)',
+      desc: 'Limite haute du poids santé selon l\'OMS.',
+      value: Math.round(weightBmi25 * 10) / 10
+    });
+  }
+
+  if (weightBmi22 < current && Math.abs(weightBmi22 - weightBmi25) > 1) {
+    suggestions.push({
+      title: 'Poids idéal (IMC 22)',
+      desc: 'IMC associé à la plus faible mortalité. Objectif ambitieux.',
+      value: Math.round(weightBmi22 * 10) / 10
+    });
+  }
+
+  const suggEl = document.getElementById('gSuggestions');
+  const currentGoal = parseFloat(document.getElementById('gCustom').value);
+
+  if (suggestions.length === 0) {
+    suggEl.innerHTML = `<div style="background: var(--surface-2); padding: 14px; border-radius: 10px; font-size: 13px; color: var(--text-dim); text-align: center;">Ton poids est déjà dans la plage saine ! 🎉</div>`;
+    return;
+  }
+
+  suggEl.innerHTML = suggestions.map(s => `
+    <div class="g-suggestion ${currentGoal === s.value ? 'selected' : ''}" onclick="selectSuggestion(${s.value})">
+      <div class="g-suggestion-left">
+        <div class="g-suggestion-title">${s.title}</div>
+        <div class="g-suggestion-desc">${s.desc}</div>
+      </div>
+      <div class="g-suggestion-value">${s.value} kg</div>
+    </div>
+  `).join('');
+}
+
+function selectSuggestion(value) {
+  document.getElementById('gCustom').value = value;
+  refreshGoalSuggestions(); // pour mettre à jour la sélection visuelle
+  if (navigator.vibrate) navigator.vibrate(10);
+}
+
+function saveGoal() {
+  const goal = parseFloat(document.getElementById('gCustom').value);
+  const height = parseFloat(document.getElementById('gHeight').value);
+  if (!goal || goal < 30 || goal > 250) {
+    showToast('Objectif invalide');
+    return;
+  }
+  const data = loadWeights();
+  data.goal = goal;
+  if (height && height >= 100 && height <= 250) data.height = height;
+  saveWeights(data);
+  closeGoalModal();
+  showToast('Objectif enregistré ✓');
+  renderWeight();
+}
+
+function deleteGoal() {
+  if (!confirm('Supprimer l\'objectif ?')) return;
+  const data = loadWeights();
+  delete data.goal;
+  saveWeights(data);
+  closeGoalModal();
+  showToast('Objectif supprimé');
+  renderWeight();
+}
+
+// Ancien setGoal remplacé par openGoalModal
+function setGoal() { openGoalModal(); }
+
+function setChartRange(days) {
+  chartRange = days;
+  renderWeight();
+}
+
+function renderWeight() {
+  const data = loadWeights();
+  const container = document.getElementById('weight-content');
+  const entries = data.entries;
+
+  if (entries.length === 0) {
+    container.innerHTML = `
+      <div class="w-empty">
+        <div class="icon">⚖️</div>
+        <div style="font-size: 16px; color: var(--text); margin-bottom: 6px;">Commence ton suivi</div>
+        <div style="font-size: 13px;">Pèse-toi chaque matin à jeun pour des données fiables.</div>
+      </div>
+      <button class="w-add-btn" onclick="openWeightModal()" style="margin-top: 24px;">+ Ajouter ma première pesée</button>
+    `;
+    return;
+  }
+
+  const current = entries[entries.length - 1].weight;
+  const start = data.startWeight || entries[0].weight;
+  const min = Math.min(...entries.map(e => e.weight));
+  const max = Math.max(...entries.map(e => e.weight));
+
+  // Variation 7 jours
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  const weekEntries = entries.filter(e => new Date(e.date) >= sevenDaysAgo);
+  const weekChange = weekEntries.length > 1 ? current - weekEntries[0].weight : 0;
+
+  // Variation totale
+  const totalChange = current - start;
+  const trendIcon = totalChange < 0 ? '↓' : totalChange > 0 ? '↑' : '→';
+  const trendColor = totalChange <= 0 ? 'var(--green)' : '#ff6b6b';
+
+  // Goal progression (0 = poids de départ, 100% = goal atteint)
+  let goalHtml = '';
+  if (data.goal) {
+    const totalToLose = start - data.goal;
+    const lostSoFar = start - current;
+    const progress = totalToLose > 0 ? Math.max(0, Math.min(100, (lostSoFar / totalToLose) * 100)) : 0;
+    const remaining = current - data.goal;
+    goalHtml = `
+      <div class="w-goal-card">
+        <div class="w-goal-head">
+          <span class="w-goal-title">🎯 Objectif</span>
+          <span class="w-goal-edit" onclick="setGoal()">Modifier</span>
+        </div>
+        <div class="w-goal-progress-bar">
+          <div class="w-goal-progress-fill" style="width: ${progress}%"></div>
+        </div>
+        <div class="w-goal-text">
+          <span class="w-goal-current">${progress.toFixed(0)}% du chemin parcouru</span>
+          <span class="w-goal-target">${remaining > 0 ? '-' + remaining.toFixed(1) + ' kg restants' : '🎉 Atteint !'}</span>
+        </div>
+      </div>
+    `;
+  } else {
+    goalHtml = `
+      <div class="w-goal-card" onclick="setGoal()" style="cursor: pointer; text-align: center;">
+        <div style="font-size: 14px; color: var(--text-dim); margin-bottom: 6px;">🎯 Fixe-toi un objectif</div>
+        <div style="font-size: 12px; color: var(--text-faint);">Visualise ta progression vers ton but</div>
+      </div>
+    `;
+  }
+
+  // Tendance hero (7 derniers jours pour le mood, mais affichage texte intelligent)
+  let trendTxt, trendIcoColor;
+  if (totalChange < -0.3) {
+    trendTxt = `${trendIcon} ${Math.abs(totalChange).toFixed(1)} kg perdus depuis le début`;
+    trendIcoColor = '#4ade80';
+  } else if (totalChange > 0.3) {
+    trendTxt = `${trendIcon} +${totalChange.toFixed(1)} kg depuis le début`;
+    trendIcoColor = '#fff';
+  } else {
+    trendTxt = `→ Stable depuis le début`;
+    trendIcoColor = '#fff';
+  }
+
+  container.innerHTML = `
+    <div class="w-hero">
+      <div class="w-hero-label">Poids actuel</div>
+      <div class="w-hero-value">${current.toFixed(1)}<span class="unit">kg</span></div>
+      <div class="w-hero-trend">${trendTxt}</div>
+      <div class="w-hero-sub">${entries.length} pesée${entries.length > 1 ? 's' : ''} enregistrée${entries.length > 1 ? 's' : ''}</div>
+    </div>
+
+    <button class="w-add-btn" onclick="openWeightModal()">+ Nouvelle pesée</button>
+
+    <div class="w-stats-row">
+      <div class="w-stat">
+        <div class="w-stat-label">Cette semaine</div>
+        <div class="w-stat-value ${weekChange < 0 ? 'green' : weekChange > 0 ? 'orange' : ''}">${weekChange === 0 ? '—' : (weekChange > 0 ? '+' : '') + weekChange.toFixed(1) + ' kg'}</div>
+      </div>
+      <div class="w-stat">
+        <div class="w-stat-label">Min atteint</div>
+        <div class="w-stat-value green">${min.toFixed(1)} kg</div>
+      </div>
+      <div class="w-stat">
+        <div class="w-stat-label">Départ</div>
+        <div class="w-stat-value">${start.toFixed(1)} kg</div>
+      </div>
+    </div>
+
+    ${goalHtml}
+
+    <div class="w-chart-card">
+      <div class="w-chart-head">
+        <div class="w-chart-title">Évolution</div>
+        <div class="w-chart-range">
+          <button class="w-range-btn ${chartRange === 30 ? 'active' : ''}" onclick="setChartRange(30)">30j</button>
+          <button class="w-range-btn ${chartRange === 90 ? 'active' : ''}" onclick="setChartRange(90)">3M</button>
+          <button class="w-range-btn ${chartRange === 9999 ? 'active' : ''}" onclick="setChartRange(9999)">Tout</button>
+        </div>
+      </div>
+      <div id="chart-wrap"></div>
+    </div>
+
+    <div class="w-entries">
+      <div class="w-entries-head">Historique</div>
+      <div id="entries-list"></div>
+    </div>
+  `;
+
+  // Render chart
+  renderChart(entries, data.goal);
+  renderEntriesList(entries);
+}
+
+function renderChart(allEntries, goal) {
+  const wrap = document.getElementById('chart-wrap');
+  if (!wrap) return;
+
+  // Filtrer selon la période
+  let entries = allEntries;
+  if (chartRange < 9999) {
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - chartRange);
+    entries = allEntries.filter(e => new Date(e.date) >= cutoff);
+    if (entries.length < 2) entries = allEntries.slice(-Math.max(2, entries.length));
+  }
+
+  if (entries.length < 2) {
+    wrap.innerHTML = `<div style="text-align: center; padding: 40px 20px; color: var(--text-faint); font-size: 13px;">Ajoute au moins 2 pesées pour voir la courbe</div>`;
+    return;
+  }
+
+  // Dimensions
+  const W = 360, H = 220;
+  const padL = 40, padR = 12, padT = 20, padB = 28;
+  const innerW = W - padL - padR;
+  const innerH = H - padT - padB;
+
+  // Échelle X par date
+  const dates = entries.map(e => new Date(e.date).getTime());
+  const xMin = dates[0];
+  const xMax = dates[dates.length - 1];
+  const xRange = xMax - xMin || 86400000;
+
+  // Échelle Y
+  const weights = entries.map(e => e.weight);
+  let yMin = Math.min(...weights);
+  let yMax = Math.max(...weights);
+  if (goal) { yMin = Math.min(yMin, goal); yMax = Math.max(yMax, goal); }
+  const yPad = (yMax - yMin) * 0.2 || 1;
+  yMin -= yPad; yMax += yPad;
+  const yRange = yMax - yMin || 1;
+
+  const xPos = t => padL + ((t - xMin) / xRange) * innerW;
+  const yPos = w => padT + ((yMax - w) / yRange) * innerH;
+
+  // Build path
+  const points = entries.map(e => ({ x: xPos(new Date(e.date).getTime()), y: yPos(e.weight), w: e.weight, d: e.date }));
+
+  // Smooth curve avec courbes de Bézier
+  let pathD = `M ${points[0].x} ${points[0].y}`;
+  for (let i = 1; i < points.length; i++) {
+    const p0 = points[i - 1];
+    const p1 = points[i];
+    const cx = (p0.x + p1.x) / 2;
+    pathD += ` C ${cx} ${p0.y}, ${cx} ${p1.y}, ${p1.x} ${p1.y}`;
+  }
+
+  // Area under curve
+  const areaD = pathD + ` L ${points[points.length - 1].x} ${padT + innerH} L ${points[0].x} ${padT + innerH} Z`;
+
+  // Ticks Y (3 valeurs)
+  const yTicks = [yMin + yRange * 0.85, yMin + yRange * 0.5, yMin + yRange * 0.15];
+
+  // Détection points min/max pour annotations
+  const minIdx = weights.indexOf(Math.min(...weights));
+  const maxIdx = weights.indexOf(Math.max(...weights));
+
+  // Date labels: première et dernière
+  const fmtDate = (iso) => {
+    const d = new Date(iso);
+    return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+  };
+
+  // Tendance : utiliser première et dernière valeur de la période affichée
+  const trend = entries[entries.length - 1].weight - entries[0].weight;
+  const trendColorChart = trend <= 0 ? '#4ade80' : '#ff6b6b';
+
+  const svg = `
+    <svg class="w-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ff6b00" stop-opacity="0.4"/>
+          <stop offset="1" stop-color="#ff6b00" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#ff8c42"/>
+          <stop offset="1" stop-color="#ff6b00"/>
+        </linearGradient>
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- Grille horizontale -->
+      ${yTicks.map(y => `
+        <line x1="${padL}" y1="${yPos(y)}" x2="${W - padR}" y2="${yPos(y)}" stroke="#2a2a2a" stroke-width="1" stroke-dasharray="2,3"/>
+        <text x="${padL - 6}" y="${yPos(y) + 4}" text-anchor="end" fill="#666" font-size="10" font-family="system-ui">${y.toFixed(0)}</text>
+      `).join('')}
+
+      <!-- Goal line -->
+      ${goal && goal >= yMin && goal <= yMax ? `
+        <line x1="${padL}" y1="${yPos(goal)}" x2="${W - padR}" y2="${yPos(goal)}" stroke="#4ade80" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.7"/>
+        <text x="${W - padR}" y="${yPos(goal) - 5}" text-anchor="end" fill="#4ade80" font-size="10" font-weight="700" font-family="system-ui">🎯 ${goal}kg</text>
+      ` : ''}
+
+      <!-- Area -->
+      <path d="${areaD}" fill="url(#areaGrad)"/>
+
+      <!-- Ligne courbe -->
+      <path d="${pathD}" fill="none" stroke="url(#lineGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+
+      <!-- Points -->
+      ${points.map((p, i) => {
+        const isMin = i === minIdx;
+        const isMax = i === maxIdx;
+        const isLast = i === points.length - 1;
+        const color = isMin ? '#4ade80' : (isMax ? '#ff6b6b' : '#ff6b00');
+        const radius = (isMin || isMax || isLast) ? 5 : 3;
+        return `<circle cx="${p.x}" cy="${p.y}" r="${radius}" fill="${color}" stroke="#161616" stroke-width="2"/>`;
+      }).join('')}
+
+      <!-- Label valeur du dernier point -->
+      ${(() => {
+        const p = points[points.length - 1];
+        const labelY = p.y - 12;
+        // Décaler à gauche si le label dépasse à droite
+        let labelX = p.x;
+        const labelW = 52;
+        if (labelX + labelW/2 > W - padR) labelX = W - padR - labelW/2;
+        if (labelX - labelW/2 < padL) labelX = padL + labelW/2;
+        return `
+          <rect x="${labelX - 26}" y="${labelY - 12}" width="52" height="18" rx="9" fill="#ff6b00"/>
+          <text x="${labelX}" y="${labelY + 1}" text-anchor="middle" fill="#fff" font-size="11" font-weight="800" font-family="system-ui">${p.w.toFixed(1)} kg</text>
+        `;
+      })()}
+
+      <!-- Dates X -->
+      <text x="${padL}" y="${H - 8}" fill="#666" font-size="10" font-family="system-ui">${fmtDate(entries[0].date)}</text>
+      <text x="${W - padR}" y="${H - 8}" text-anchor="end" fill="#666" font-size="10" font-family="system-ui">${fmtDate(entries[entries.length - 1].date)}</text>
+
+      <!-- Tendance période -->
+      ${entries.length > 1 ? `
+        <g transform="translate(${padL + 6}, ${padT + 4})">
+          <rect x="0" y="0" width="78" height="20" rx="10" fill="#1a1a1a" stroke="${trendColorChart}" stroke-width="1"/>
+          <text x="39" y="14" text-anchor="middle" fill="${trendColorChart}" font-size="11" font-weight="800" font-family="system-ui">${trend > 0 ? '+' : ''}${trend.toFixed(1)} kg</text>
+        </g>
+      ` : ''}
+    </svg>
+  `;
+  wrap.innerHTML = svg;
+}
+
+function renderEntriesList(entries) {
+  const list = document.getElementById('entries-list');
+  if (!list) return;
+  const sorted = [...entries].reverse();
+  let html = '';
+  sorted.forEach((e, i) => {
+    const prev = sorted[i + 1]; // pesée précédente chronologiquement
+    let diff = 0, diffHtml = '';
+    if (prev) {
+      diff = e.weight - prev.weight;
+      const cls = diff < -0.1 ? 'down' : diff > 0.1 ? 'up' : 'same';
+      const sign = diff > 0 ? '+' : '';
+      const arrow = diff < -0.1 ? '↓' : diff > 0.1 ? '↑' : '→';
+      diffHtml = `<span class="w-entry-diff ${cls}">${arrow} ${sign}${diff.toFixed(1)}</span>`;
+    }
+    const d = new Date(e.date);
+    const dateStr = d.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
+    html += `
+      <div class="w-entry" onclick="openWeightModal('${e.id}')">
+        <div class="w-entry-date">${dateStr}</div>
+        <div class="w-entry-right">
+          ${diffHtml}
+          <span class="w-entry-value">${e.weight.toFixed(1)} kg</span>
+        </div>
+      </div>
+    `;
+  });
+  list.innerHTML = html;
+}
+
+// ============== AI CHAT (COACH IA) ==============
+const CLAUDE_PROXY_URL = `${SUPABASE_URL}/functions/v1/claude-proxy`;
+
+let currentConversation = { id: null, title: 'Nouvelle conversation', messages: [] };
+let chatLoading = false;
+
+const CHAT_TOOLS = [
+  {
+    name: 'search_images',
+    description: 'Cherche des images sur Google Images (machines de musculation, exercices, anatomie). À utiliser quand l\'utilisateur demande à voir une machine, un exercice, une posture, ou pour illustrer une explication.',
+    input_schema: {
+      type: 'object',
+      properties: {
+        query: { type: 'string', description: 'Requête de recherche en français ou anglais (ex: "lat pulldown machine gym")' },
+        num: { type: 'integer', description: 'Nombre d\'images (1-4)', default: 3 }
+      },
+      required: ['query']
+    }
+  }
+];
+
+function buildSystemPrompt() {
+  const data = loadData();
+  const weights = loadWeights();
+  const lastWeight = weights.entries.length ? weights.entries[weights.entries.length-1].weight : null;
+  const goal = weights.goal;
+  const totalSessions = data.history.length;
+  const lastA = data.history.filter(h => h.session === 'A').pop();
+  const lastB = data.history.filter(h => h.session === 'B').pop();
+  const customSessions = (data.customSessions || []).map(s => `Séance ${s.key} (${s.title})`).join(', ');
+
+  return `Tu es le coach personnel de Gabriel (27 ans, 1m70, basé à Paris, salle On Air Maison-Alfort).
+
+PROFIL :
+- Objectif : perte de gras + prise de muscle
+- Poids actuel : ${lastWeight || '~84'} kg${goal ? `, objectif ${goal} kg` : ''}
+- Fréquence : 2-3 séances/semaine
+- Expérience : quelques mois espacés (donc débutant intermédiaire)
+- Bureau sédentaire, sommeil 6-7h
+- Préfère les machines guidées au libre
+
+CONTRAINTES MÉDICALES IMPORTANTES :
+- Tendinite rotulienne au genou gauche (douleur régulière, même au repos)
+- Tendinopathie d'Achille gauche
+- Mésothérapie peu efficace sur le long terme
+- À éviter : squats lourds, fentes profondes, sauts, course, mollets debout chargés, leg extension agressif, presse à cuisses descendue > 90° au genou
+- À privilégier : presse à cuisses amplitude contrôlée, hip thrust, leg curl, RDL
+
+CONTRAINTES ALIMENTAIRES :
+- Gabriel est juif et mange strictement casher
+- Pas de porc, fruits de mer, crustacés, mollusques
+- Viande uniquement casher (bœuf, agneau, volaille avec abattage rituel)
+- Poissons à écailles et nageoires uniquement (saumon, thon, etc. OK ; raie, anguille, etc. NON)
+- JAMAIS de mélange viande + lait (pas de cheeseburger, pas de poulet à la crème, etc.) — y compris attendre 3-6h entre repas viandé et laitage
+- Adapte toutes tes suggestions nutritionnelles en conséquence
+- Pour les protéines, propose des combinaisons casher : skyr/fromage blanc/œufs au petit-déj, viande/poisson midi ou soir (mais pas les deux types dans le même repas), poisson le soir si midi viande
+- Si tu suggères une whey/protéine en poudre, mentionne qu'il faut vérifier le label casher
+
+PROGRAMME ACTUEL :
+- Séance A (haut du corps) : développé couché machine, lat pulldown, développé épaules machine, rowing assis, hip thrust, face pull, gainage
+- Séance B (bas + bras) : presse à cuisses, leg curl, RDL haltères, pec deck, tirage horizontal, face pull, curl biceps, triceps poulie
+${customSessions ? `- Séances personnalisées créées : ${customSessions}` : ''}
+- Total séances enregistrées : ${totalSessions}
+${lastA ? `- Dernière séance A : ${new Date(lastA.date).toLocaleDateString('fr-FR')}` : ''}
+${lastB ? `- Dernière séance B : ${new Date(lastB.date).toLocaleDateString('fr-FR')}` : ''}
+
+STYLE :
+- Tutoie-le, ton direct et professionnel
+- RÈGLE D'OR : sois CONCIS. Une question simple = une réponse de 1-3 phrases. Pas d'intro ("Excellente question !"), pas d'outro ("N'hésite pas si..."), pas de blabla motivationnel.
+- Pas de listes à puces sauf si la réponse en a vraiment besoin (≥ 3 éléments distincts)
+- Pas d'emoji décoratifs sauf 1 ponctuel si vraiment pertinent
+- Honnête : si quelque chose n'est pas optimal, dis-le en 1 phrase
+- Pour les exercices de remplacement : nomme l'exo + 1 phrase de justif. Max.
+- Pour les questions techniques : va droit au but, pas d'explications théoriques sauf demandées
+- Tu as accès à un outil search_images : utilise-le seulement quand Gabriel demande EXPLICITEMENT à voir une machine, sinon décris en mots
+- Rappelle le kiné UNIQUEMENT si on parle directement du genou/Achille, pas à chaque message
+- Si la question est ambiguë, demande 1 précision courte plutôt que de partir dans une longue réponse
+
+Réponds en français.`;
+}
+
+async function callClaude(messages, tools) {
+  const res = await fetch(CLAUDE_PROXY_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+    },
+    body: JSON.stringify({
+      system: buildSystemPrompt(),
+      messages,
+      tools: tools || CHAT_TOOLS,
+      max_tokens: 2048,
+    })
+  });
+  if (!res.ok) {
+    const txt = await res.text();
+    throw new Error(`Proxy ${res.status}: ${txt}`);
+  }
+  return res.json();
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+}
+
+function updateSendBtn() {
+  const input = document.getElementById('chatInput');
+  const btn = document.getElementById('chatSend');
+  btn.disabled = !input.value.trim() || chatLoading;
+}
+
+function renderChat() {
+  // Charger la dernière conversation ou créer une nouvelle
+  if (!currentConversation.id && currentConversation.messages.length === 0) {
+    loadLastConversation();
+  } else {
+    renderChatMessages();
+  }
+}
+
+async function loadLastConversation() {
+  try {
+    const rows = await supabaseRequest('GET', `/conversations?user_id=eq.${USER_ID}&order=updated_at.desc&limit=1`);
+    if (rows && rows.length > 0) {
+      currentConversation = {
+        id: rows[0].id,
+        title: rows[0].title,
+        messages: rows[0].messages || []
+      };
+    }
+  } catch (e) {
+    console.warn('Load conversation failed:', e);
+  }
+  renderChatMessages();
+}
+
+function renderChatMessages() {
+  const container = document.getElementById('chatMessages');
+  const titleEl = document.getElementById('chatTitle');
+  const subEl = document.getElementById('chatSub');
+
+  titleEl.textContent = currentConversation.title;
+  subEl.textContent = currentConversation.id ? `${currentConversation.messages.length} messages` : 'Coach IA personnel';
+
+  if (currentConversation.messages.length === 0) {
+    container.innerHTML = `
+      <div class="chat-empty">
+        <div class="chat-empty-icon">🧠</div>
+        <div class="chat-empty-title">Pose-moi tes questions</div>
+        <div class="chat-empty-sub">Je connais ton programme, tes contraintes (genou/Achille), tes données de poids et tes séances passées.</div>
+        <div class="chat-suggestions">
+          <button class="chat-suggestion" onclick="quickAsk('Montre-moi à quoi ressemble vraiment la machine de hip thrust')">💡 Montre-moi à quoi ressemble vraiment la machine de hip thrust</button>
+          <button class="chat-suggestion" onclick="quickAsk('Donne-moi un exo de remplacement à la presse à cuisses si elle est prise')">🔄 Un exo de remplacement à la presse à cuisses ?</button>
+          <button class="chat-suggestion" onclick="quickAsk('Comment ajuster mon entraînement si mon genou tire aujourd\\'hui ?')">⚠️ Comment ajuster si mon genou tire ?</button>
+          <button class="chat-suggestion" onclick="quickAsk('Suggère-moi un petit-déj de 30g de protéines simple')">🍳 Petit-déj 30g de protéines ?</button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  let html = '';
+  for (const msg of currentConversation.messages) {
+    if (msg.role === 'user') {
+      const content = typeof msg.content === 'string' ? msg.content : msg.content.filter(c => c.type === 'text').map(c => c.text).join('');
+      if (content) html += `<div class="msg user">${escapeHtml(content)}</div>`;
+    } else if (msg.role === 'assistant') {
+      const blocks = typeof msg.content === 'string' ? [{type: 'text', text: msg.content}] : msg.content;
+      for (const block of blocks) {
+        if (block.type === 'text' && block.text.trim()) {
+          html += `<div class="msg assistant">${formatMarkdown(block.text)}</div>`;
+        } else if (block.type === 'tool_use' && block.name === 'search_images') {
+          // Le résultat suit dans le message suivant
+        }
+      }
+    } else if (Array.isArray(msg.content)) {
+      // Message de tool_result
+      for (const block of msg.content) {
+        if (block.type === 'tool_result' && block.content) {
+          try {
+            const data = typeof block.content === 'string' ? JSON.parse(block.content) : block.content;
+            if (data.images && data.images.length) {
+              html += '<div class="msg-images">';
+              for (const img of data.images.slice(0, 4)) {
+                const src = img.thumbnail || img.original;
+                if (!src) continue;
+                html += `<div class="msg-img-card" onclick="openImgViewer('${escapeAttr(img.original || src)}')"><img src="${escapeAttr(src)}" alt="${escapeAttr(img.title || '')}" loading="lazy" onerror="this.parentElement.style.display='none'"><div class="caption">${escapeHtml(img.title || '')}</div></div>`;
+              }
+              html += '</div>';
+            }
+          } catch(e){}
+        }
+      }
+    }
+  }
+
+  if (chatLoading) {
+    html += '<div class="msg-typing"><span></span><span></span><span></span></div>';
+  }
+
+  container.innerHTML = html;
+  container.scrollTop = container.scrollHeight;
+}
+
+function formatMarkdown(text) {
+  return escapeHtml(text)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\n/g, '<br>');
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+}
+function escapeAttr(s) {
+  return String(s).replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+}
+
+function quickAsk(text) {
+  document.getElementById('chatInput').value = text;
+  updateSendBtn();
+  sendChat();
+}
+
+async function sendChat() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text || chatLoading) return;
+
+  // Si pas de conv courante, on en crée une
+  if (!currentConversation.id) {
+    currentConversation = { id: null, title: text.slice(0, 50), messages: [] };
+  }
+
+  currentConversation.messages.push({ role: 'user', content: text });
+  input.value = '';
+  autoResize(input);
+  updateSendBtn();
+  chatLoading = true;
+  renderChatMessages();
+
+  try {
+    // L'edge function gère la boucle d'agent (tools) automatiquement
+    // On envoie l'historique et on récupère la réponse finale
+    // Pour gérer les tools dans l'UI, on va chercher TOUS les messages du tour
+    const result = await callClaudeAgentic(currentConversation.messages);
+
+    // result contient { messages: [...] } avec tous les messages ajoutés (assistant + tool_results + final assistant)
+    currentConversation.messages = result.allMessages;
+
+    chatLoading = false;
+    renderChatMessages();
+    await saveConversation();
+  } catch (e) {
+    chatLoading = false;
+    currentConversation.messages.push({ role: 'assistant', content: `⚠️ Erreur : ${e.message}` });
+    renderChatMessages();
+  }
+}
+
+// L'edge function gère la boucle d'agent côté serveur (jusqu'à 5 tours, exécute search_images).
+// Elle retourne UNIQUEMENT la réponse finale d'assistant.
+// Pour afficher les images dans le chat, on doit refaire la conversation côté client en parallèle :
+// on appelle d'abord, on intercale les tool_results dans nos messages, puis on garde la dernière réponse.
+//
+// Stratégie simplifiée : on demande à l'edge function de NE PAS gérer les tools (en passant tools: []),
+// on fait la boucle nous-mêmes, ET on exécute search_images aussi via l'edge function (mais avec un payload spécial).
+//
+// Plus simple encore : on garde l'edge function qui fait tout, mais on récupère AUSSI les tools en
+// parallèle pour pouvoir les afficher. On fait juste une 2e logique : si la réponse finale ne contient
+// pas d'images, on regarde si elle mentionne avoir cherché et on refait l'appel en mode "trace".
+//
+// Approche pragmatique : on fait la boucle d'agent CÔTÉ CLIENT, et on passe par l'edge function
+// uniquement pour 2 raisons :
+//   - 1) appel Claude (sans tools côté serveur)
+//   - 2) exécution du tool search_images (endpoint dédié)
+async function callClaudeAgentic(messages) {
+  let currentMessages = [...messages];
+  let safety = 0;
+
+  while (safety++ < 5) {
+    // Appel Claude SANS exécution serveur des tools (on les exécute nous-mêmes)
+    const res = await fetch(CLAUDE_PROXY_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+      },
+      body: JSON.stringify({
+        system: buildSystemPrompt(),
+        messages: currentMessages,
+        tools: CHAT_TOOLS,
+        max_tokens: 2048,
+        skip_agentic_loop: true,
+      })
+    });
+    if (!res.ok) throw new Error(`Proxy ${res.status}: ${await res.text()}`);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    currentMessages.push({ role: 'assistant', content: data.content });
+
+    if (data.stop_reason !== 'tool_use') {
+      return { allMessages: currentMessages };
+    }
+
+    // Exécuter les tools demandés
+    const toolResults = [];
+    for (const block of data.content) {
+      if (block.type === 'tool_use' && block.name === 'search_images') {
+        try {
+          const toolRes = await fetch(CLAUDE_PROXY_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SUPABASE_KEY}` },
+            body: JSON.stringify({ tool_call: { name: 'search_images', input: block.input } })
+          });
+          const toolData = await toolRes.json();
+          toolResults.push({
+            type: 'tool_result',
+            tool_use_id: block.id,
+            content: JSON.stringify(toolData)
+          });
+        } catch (e) {
+          toolResults.push({
+            type: 'tool_result',
+            tool_use_id: block.id,
+            content: JSON.stringify({ error: String(e) })
+          });
+        }
+      }
+    }
+    currentMessages.push({ role: 'user', content: toolResults });
+  }
+  return { allMessages: currentMessages };
+}
+
+async function saveConversation() {
+  try {
+    if (!currentConversation.id) {
+      // Création
+      const created = await supabaseRequest('POST', '/conversations', {
+        user_id: USER_ID,
+        title: currentConversation.title,
+        messages: currentConversation.messages,
+      });
+      if (created && created[0]) currentConversation.id = created[0].id;
+    } else {
+      // Update
+      await supabaseRequest('PATCH', `/conversations?id=eq.${currentConversation.id}`, {
+        messages: currentConversation.messages,
+        updated_at: new Date().toISOString(),
+      });
+    }
+  } catch (e) {
+    console.warn('Save conversation failed:', e);
+  }
+}
+
+function newConversation() {
+  currentConversation = { id: null, title: 'Nouvelle conversation', messages: [] };
+  renderChatMessages();
+}
+
+async function openConversationsList() {
+  try {
+    const rows = await supabaseRequest('GET', `/conversations?user_id=eq.${USER_ID}&order=updated_at.desc&limit=50`);
+    const list = document.getElementById('convList');
+    if (!rows || rows.length === 0) {
+      list.innerHTML = '<div style="padding: 30px 20px; text-align: center; color: var(--text-faint);">Aucune conversation pour l\'instant</div>';
+    } else {
+      list.innerHTML = rows.map(c => {
+        const d = new Date(c.updated_at);
+        const dateStr = d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+        const msgCount = (c.messages || []).filter(m => m.role === 'user').length;
+        const active = c.id === currentConversation.id ? 'active' : '';
+        return `<div class="conv-item ${active}">
+          <div class="conv-item-left" onclick="openConversation('${c.id}'); closeConversationsList();">
+            <div class="conv-item-title">${escapeHtml(c.title)}</div>
+            <div class="conv-item-meta">${dateStr} · ${msgCount} échange${msgCount > 1 ? 's' : ''}</div>
+          </div>
+          <button class="conv-item-del" onclick="event.stopPropagation(); deleteConversation('${c.id}')">🗑</button>
+        </div>`;
+      }).join('');
+    }
+  } catch (e) {
+    document.getElementById('convList').innerHTML = `<div style="padding: 20px; color: #ff6b6b;">Erreur: ${e.message}</div>`;
+  }
+  document.getElementById('convModal').classList.add('show');
+  document.getElementById('convModalOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeConversationsList() {
+  document.getElementById('convModal').classList.remove('show');
+  document.getElementById('convModalOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+async function openConversation(id) {
+  try {
+    const rows = await supabaseRequest('GET', `/conversations?id=eq.${id}`);
+    if (rows && rows[0]) {
+      currentConversation = {
+        id: rows[0].id,
+        title: rows[0].title,
+        messages: rows[0].messages || []
+      };
+      renderChatMessages();
+    }
+  } catch (e) {
+    showToast('Erreur de chargement');
+  }
+}
+
+async function deleteConversation(id) {
+  if (!confirm('Supprimer cette conversation ?')) return;
+  try {
+    await supabaseRequest('DELETE', `/conversations?id=eq.${id}`);
+    if (currentConversation.id === id) newConversation();
+    openConversationsList(); // refresh
+    showToast('Supprimé');
+  } catch (e) {
+    showToast('Erreur');
+  }
+}
+
+// ============== IMAGE VIEWER ==============
+function openImgViewer(src) {
+  document.getElementById('imgViewerSrc').src = src;
+  document.getElementById('imgViewer').classList.add('show');
+}
+function closeImgViewer() {
+  document.getElementById('imgViewer').classList.remove('show');
+}
+
+// ============== CRÉATION DE SÉANCE ==============
+let createState = { type: 'full', duration: '30', brief: '', result: null };
+
+function renderCreate() {
+  // Setup chips listeners (idempotent)
+  document.querySelectorAll('#createTypeChips .create-chip').forEach(c => {
+    c.classList.toggle('active', c.dataset.val === createState.type);
+    c.onclick = () => {
+      createState.type = c.dataset.val;
+      document.querySelectorAll('#createTypeChips .create-chip').forEach(x => x.classList.toggle('active', x === c));
+    };
+  });
+  document.querySelectorAll('#createDurationChips .create-chip').forEach(c => {
+    c.classList.toggle('active', c.dataset.val === createState.duration);
+    c.onclick = () => {
+      createState.duration = c.dataset.val;
+      document.querySelectorAll('#createDurationChips .create-chip').forEach(x => x.classList.toggle('active', x === c));
+    };
+  });
+}
+
+async function generateSession() {
+  const brief = document.getElementById('createBrief').value.trim();
+  createState.brief = brief;
+  const btn = document.getElementById('createGenBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span>⏳</span><span>Génération en cours...</span>';
+
+  const typeMap = {
+    full: 'Full body',
+    upper: 'Haut du corps',
+    lower: 'Bas du corps',
+    push: 'Push (pecs/épaules/triceps)',
+    pull: 'Pull (dos/biceps)',
+    custom: 'Personnalisé selon le brief'
+  };
+
+  const userMsg = `Crée-moi une séance de musculation avec les contraintes suivantes :
+
+- Type : ${typeMap[createState.type]}
+- Durée : ${createState.duration} minutes
+- Précisions : ${brief || 'aucune'}
+
+Rappel : j'ai une tendinite rotulienne au genou gauche et une tendinopathie d'Achille gauche. Pas de squats lourds, sauts, leg extension agressif. Privilégier machines guidées.
+
+Réponds STRICTEMENT en JSON (rien d'autre, pas de markdown, pas de texte autour), avec cette structure exacte :
+{
+  "title": "Nom court de la séance (ex: Push lourd)",
+  "subtitle": "Sous-titre descriptif (ex: Pecs · Épaules · Triceps)",
+  "exos": [
+    {
+      "name": "Nom exact de l'exercice",
+      "target": "3 × 8-10 reps",
+      "tip": "Conseil d'exécution clé en 1 phrase",
+      "sets": 3,
+      "repsMin": 8,
+      "repsMax": 10
+    }
+  ]
+}
+
+Adapte le nombre d'exercices à la durée (30 min ≈ 5-6 exos, 45 min ≈ 6-7, 60 min ≈ 7-8). Mets des reps réalistes pour un débutant intermédiaire en perte de gras + prise de muscle.`;
+
+  try {
+    const data = await callClaude([{ role: 'user', content: userMsg }], []); // pas de tools pour cette tâche
+    if (data.error) throw new Error(data.error);
+
+    const text = data.content.filter(c => c.type === 'text').map(c => c.text).join('');
+    // Extraire le JSON
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('Pas de JSON détecté dans la réponse');
+    const session = JSON.parse(jsonMatch[0]);
+
+    createState.result = session;
+    renderCreateResult();
+  } catch (e) {
+    document.getElementById('createResult').innerHTML = `<div style="background: #3a1a1a; border: 1px solid #ff6b6b; border-radius: 12px; padding: 14px; margin-top: 22px; color: #ff6b6b; font-size: 13px;">⚠️ Erreur : ${e.message}</div>`;
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span>✨</span><span>Générer la séance</span>';
+  }
+}
+
+function renderCreateResult() {
+  const res = createState.result;
+  if (!res) return;
+  const container = document.getElementById('createResult');
+  const letter = nextSessionLetter();
+
+  let exosHtml = '';
+  res.exos.forEach((exo) => {
+    exosHtml += `
+      <div class="create-result-exo">
+        <div class="create-result-exo-name">${escapeHtml(exo.name)}</div>
+        <div class="create-result-exo-target">${escapeHtml(exo.target)}</div>
+        ${exo.tip ? `<div class="create-result-exo-tip">${escapeHtml(exo.tip)}</div>` : ''}
+      </div>
+    `;
+  });
+
+  container.innerHTML = `
+    <div class="create-result">
+      <div class="create-result-head">
+        <div>
+          <div class="create-result-title">${escapeHtml(res.title)}</div>
+          <div class="create-result-sub">${escapeHtml(res.subtitle || '')}</div>
+        </div>
+        <div class="create-result-letter">${letter}</div>
+      </div>
+      ${exosHtml}
+      <div class="create-actions">
+        <button class="create-action-btn create-action-edit" onclick="document.getElementById('createBrief').focus()">↺ Régénérer</button>
+        <button class="create-action-btn create-action-add" onclick="addSessionToProgram()">+ Ajouter au programme</button>
+      </div>
+    </div>
+  `;
+}
+
+function nextSessionLetter() {
+  const data = loadData();
+  const custom = data.customSessions || [];
+  const used = new Set(['A', 'B', ...custom.map(s => s.key)]);
+  for (let code = 67; code < 91; code++) { // C → Z
+    const l = String.fromCharCode(code);
+    if (!used.has(l)) return l;
+  }
+  return '?';
+}
+
+function addSessionToProgram() {
+  const res = createState.result;
+  if (!res) return;
+  const letter = nextSessionLetter();
+  const data = loadData();
+  if (!data.customSessions) data.customSessions = [];
+
+  // Construire la séance au format SESSIONS
+  const newSession = {
+    key: letter,
+    title: res.title,
+    subtitle: res.subtitle || '',
+    exos: res.exos.map((exo, i) => ({
+      id: `${letter}${i+1}`,
+      name: exo.name,
+      target: exo.target,
+      tip: exo.tip || '',
+      icon: guessIcon(exo.name),
+      sets: exo.sets || 3,
+      repsMin: exo.repsMin || 10,
+      repsMax: exo.repsMax || 12,
+    }))
+  };
+  data.customSessions.push(newSession);
+  saveData(data);
+  showToast(`Séance ${letter} ajoutée ✓`);
+
+  // Reset le résultat
+  createState.result = null;
+  document.getElementById('createResult').innerHTML = '';
+  document.getElementById('createBrief').value = '';
+
+  // Retour à l'accueil
+  setTimeout(() => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+    document.querySelector('.tab[data-tab="home"]').classList.add('active');
+    document.getElementById('page-home').classList.add('active');
+    renderHome();
+  }, 600);
+}
+
+// Devine l'icône SVG la plus proche selon le nom de l'exo
+function guessIcon(name) {
+  const n = name.toLowerCase();
+  if (n.includes('couché') || n.includes('chest press') || n.includes('développé couché')) return 'chest';
+  if (n.includes('lat') || n.includes('pulldown') || n.includes('tirage vertical') || n.includes('traction')) return 'pulldown';
+  if (n.includes('épaule') || n.includes('shoulder') || n.includes('développé militaire') || n.includes('overhead')) return 'shoulder';
+  if (n.includes('rowing') && n.includes('horizontal')) return 'rowmach';
+  if (n.includes('rowing') || n.includes('row')) return 'row';
+  if (n.includes('hip thrust') || n.includes('fessier')) return 'hipthrust';
+  if (n.includes('face pull')) return 'facepull';
+  if (n.includes('plank') || n.includes('gainage') || n.includes('planche')) return 'plank';
+  if (n.includes('presse') || n.includes('leg press')) return 'press';
+  if (n.includes('leg curl') || n.includes('ischio')) return 'legcurl';
+  if (n.includes('rdl') || n.includes('roumain') || n.includes('soulevé')) return 'rdl';
+  if (n.includes('pec deck') || n.includes('écarté')) return 'pecdeck';
+  if (n.includes('curl biceps') || n.includes('curl')) return 'curl';
+  if (n.includes('triceps') || n.includes('pushdown')) return 'triceps';
+  return 'chest'; // default
+}
+
+// ============== ADJUST WEIGHTS ==============
+let adjustState = { suggestions: null };
+
+function openAdjustPanel() {
+  const zone = document.getElementById('adjust-zone');
+  zone.innerHTML = `
+    <div class="adjust-panel">
+      <div class="adjust-panel-title">⚖️ Ajustement des poids</div>
+      <div class="adjust-panel-sub">Sur la dernière séance, c'était comment globalement ?</div>
+      <div class="adjust-choice-row">
+        <button class="adjust-choice easy" onclick="requestAdjust('easy')">Trop facile<br><span style="font-size: 10px; opacity: 0.7;">↑ augmenter</span></button>
+        <button class="adjust-choice hard" onclick="requestAdjust('hard')">Trop dur<br><span style="font-size: 10px; opacity: 0.7;">↓ diminuer</span></button>
+      </div>
+      <button class="adjust-cancel" onclick="closeAdjustPanel()">Annuler</button>
+    </div>
+  `;
+}
+
+function closeAdjustPanel() {
+  document.getElementById('adjust-zone').innerHTML = `<button class="adjust-btn" onclick="openAdjustPanel()">⚖️ Ajuster les poids avec l'IA</button>`;
+}
+
+async function requestAdjust(feeling) {
+  const zone = document.getElementById('adjust-zone');
+  zone.innerHTML = `
+    <div class="adjust-panel">
+      <div class="adjust-panel-title">⚖️ Analyse en cours...</div>
+      <div class="adjust-loading"><span class="adjust-loading-spinner"></span>L'IA examine ton historique</div>
+    </div>
+  `;
+
+  // Récupérer la séance courante
+  const data = loadData();
+  let session = SESSIONS[currentSession];
+  if (!session) session = (data.customSessions || []).find(cs => cs.key === currentSession);
+  if (!session) return;
+
+  // Construire le contexte : pour chaque exo, donner les 3 dernières performances
+  const exoContext = session.exos.map(exo => {
+    const recentSessions = data.history
+      .filter(h => h.session === currentSession && h.exos[exo.id])
+      .slice(-3)
+      .map(h => {
+        const sets = h.exos[exo.id];
+        return sets.map(s => `${s.w || '?'}kg × ${s.r || '?'}`).join(' / ');
+      });
+    const lastVals = data.lastValues[exo.id] || {};
+    const lastSet = lastVals.w1 ? `${lastVals.w1}kg × ${lastVals.r1}` : 'jamais fait';
+    return {
+      id: exo.id,
+      name: exo.name,
+      target: exo.target,
+      currentLast: lastSet,
+      history: recentSessions,
+      sets: exo.sets,
+      repsMin: exo.repsMin,
+      repsMax: exo.repsMax,
+      isTime: exo.isTime || false
+    };
+  });
+
+  const feelingTxt = feeling === 'easy' ? "trop facile (peut augmenter)" : "trop dur (besoin de diminuer ou stagner)";
+
+  const userMsg = `Ajuste les poids/reps pour la prochaine séance "${session.title}" (${currentSession}).
+
+Feeling sur la dernière séance : ${feelingTxt}
+
+Pour chaque exercice, je te donne le dernier poids utilisé et l'historique récent (du plus ancien au plus récent) :
+
+${exoContext.map(e => `- ${e.name} (cible : ${e.target}, ${e.sets} séries)
+  Dernier : ${e.currentLast}
+  Historique : ${e.history.length ? e.history.join(' → ') : 'aucun'}`).join('\n\n')}
+
+Règles :
+- Si "trop facile" : propose +1.25 à +2.5kg sur les exos lourds, +1 rep sur les exos légers. Sauf si la progression est déjà rapide (alors stagne pour consolider).
+- Si "trop dur" : propose -2.5 à -5kg, ou même poids avec -1 rep. Sécurité d'abord.
+- Pour le gainage (temps) : ajuste en secondes (+5/-5).
+- Si l'exo n'a JAMAIS été fait (currentLast = "jamais fait"), suggère un poids de départ raisonnable pour un débutant de ~84kg avec ses contraintes (genou/Achille).
+- Ne propose un changement QUE si pertinent. Si l'exo doit rester pareil, ne le mets pas dans la réponse.
+
+Réponds STRICTEMENT en JSON, sans markdown, sans texte autour :
+{
+  "adjustments": [
+    {
+      "id": "A1",
+      "name": "Nom de l'exo",
+      "oldWeight": "20",
+      "oldReps": "10",
+      "newWeight": "22.5",
+      "newReps": "10",
+      "reason": "1 phrase courte de justification"
+    }
+  ]
+}`;
+
+  try {
+    const res = await fetch(CLAUDE_PROXY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SUPABASE_KEY}` },
+      body: JSON.stringify({
+        system: 'Tu es un coach sportif expert. Tu réponds en JSON pur uniquement.',
+        messages: [{ role: 'user', content: userMsg }],
+        tools: [],
+        max_tokens: 1500,
+        skip_agentic_loop: true,
+      })
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const claudeData = await res.json();
+    if (claudeData.error) throw new Error(claudeData.error);
+
+    const text = claudeData.content.filter(c => c.type === 'text').map(c => c.text).join('');
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('Pas de JSON détecté');
+    const parsed = JSON.parse(jsonMatch[0]);
+
+    adjustState.suggestions = parsed.adjustments || [];
+    renderAdjustSuggestions();
+  } catch (e) {
+    zone.innerHTML = `
+      <div class="adjust-panel">
+        <div class="adjust-panel-title" style="color: #ff6b6b;">⚠️ Erreur</div>
+        <div class="adjust-panel-sub">${escapeHtml(e.message)}</div>
+        <button class="adjust-cancel" onclick="closeAdjustPanel()">Fermer</button>
+      </div>
+    `;
+  }
+}
+
+function renderAdjustSuggestions() {
+  const suggestions = adjustState.suggestions;
+  const zone = document.getElementById('adjust-zone');
+
+  if (!suggestions || suggestions.length === 0) {
+    zone.innerHTML = `
+      <div class="adjust-panel">
+        <div class="adjust-panel-title">✓ Tout est OK</div>
+        <div class="adjust-panel-sub">L'IA recommande de garder les mêmes charges pour cette séance.</div>
+        <button class="adjust-cancel" onclick="closeAdjustPanel()">OK</button>
+      </div>
+    `;
+    return;
+  }
+
+  let html = `<div class="adjust-panel">
+    <div class="adjust-panel-title">💡 Propositions d'ajustement</div>`;
+
+  suggestions.forEach(adj => {
+    html += `
+      <div class="adjust-suggestion">
+        <div class="adjust-suggestion-name">${escapeHtml(adj.name)}</div>
+        <div class="adjust-suggestion-change">
+          <span class="adjust-old">${escapeHtml(adj.oldWeight || '?')}kg × ${escapeHtml(adj.oldReps || '?')}</span>
+          <span class="adjust-arrow">→</span>
+          <span class="adjust-new">${escapeHtml(adj.newWeight || '?')}kg × ${escapeHtml(adj.newReps || '?')}</span>
+        </div>
+        ${adj.reason ? `<div class="adjust-reason">${escapeHtml(adj.reason)}</div>` : ''}
+      </div>
+    `;
+  });
+
+  html += `
+    <div class="adjust-actions">
+      <button class="adjust-ignore" onclick="closeAdjustPanel()">Ignorer</button>
+      <button class="adjust-apply" onclick="applyAdjustments()">Appliquer</button>
+    </div>
+  </div>`;
+
+  zone.innerHTML = html;
+}
+
+function applyAdjustments() {
+  const suggestions = adjustState.suggestions;
+  if (!suggestions) return;
+
+  suggestions.forEach(adj => {
+    if (!adj.id || !adj.newWeight) return;
+    // Mettre à jour les placeholders dans l'UI (set 1, set 2, set 3...)
+    // On modifie les attributs placeholder des inputs pour l'exo
+    document.querySelectorAll(`.set-input[data-exo="${adj.id}"]`).forEach(input => {
+      const field = input.dataset.field;
+      if (field && field.startsWith('w')) {
+        input.placeholder = adj.newWeight;
+      } else if (field && field.startsWith('r')) {
+        input.placeholder = adj.newReps;
+      }
+    });
+  });
+
+  showToast(`${suggestions.length} ajustement${suggestions.length > 1 ? 's' : ''} appliqué${suggestions.length > 1 ? 's' : ''} ✓`);
+  closeAdjustPanel();
+  adjustState.suggestions = null;
+}
+
+// ============== INIT ==============
+async function init() {
+  setSyncStatus('syncing', 'Chargement…');
+  // Premier render avec données locales (instantané)
+  renderHome();
+  // Puis on tente de récupérer les données cloud
+  const ok = await pullFromCloud();
+  if (ok) {
+    // Re-render avec les données fraîches du cloud
+    renderHome();
+  }
+}
+init();
+</script>
+</body>
+</html>
