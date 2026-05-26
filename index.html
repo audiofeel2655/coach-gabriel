@@ -1759,6 +1759,210 @@ button { border: none; background: none; cursor: pointer; }
 .autosuggest-accept { background: var(--green); color: #000; }
 .autosuggest-skip { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); }
 
+/* ============ EXO COMMENT FIELD ============ */
+.exo-comment-toggle {
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-top: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--surface-2);
+  border: 1px dashed var(--border);
+}
+.exo-comment-toggle:hover { color: var(--text-dim); }
+.exo-comment-toggle.has-content {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border-style: solid;
+  border-color: var(--accent);
+}
+.exo-comment-box {
+  margin-top: 8px;
+  display: none;
+}
+.exo-comment-box.visible { display: block; }
+.exo-comment-textarea {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 12.5px;
+  color: var(--text);
+  resize: none;
+  min-height: 50px;
+  font-family: inherit;
+  line-height: 1.4;
+  -webkit-appearance: none;
+}
+.exo-comment-textarea:focus { outline: none; border-color: var(--accent); }
+.exo-comment-textarea::placeholder { color: var(--text-faint); font-size: 12px; }
+
+/* ============ NOTES PAGE ============ */
+.notes-intro {
+  background: linear-gradient(135deg, #1a1a1a 0%, #1a2a18 100%);
+  border: 1px solid var(--green);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 18px;
+}
+.notes-intro-title {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  color: #fff;
+}
+.notes-intro-sub {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.45;
+}
+
+.note-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 10px;
+}
+.note-card.archived { opacity: 0.55; }
+.note-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.note-category {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 100px;
+  background: var(--surface-2);
+  color: var(--text-dim);
+}
+.note-category.injury { background: rgba(255,107,107,0.15); color: #ff6b6b; }
+.note-category.preference { background: rgba(255,107,0,0.15); color: var(--accent); }
+.note-category.equipment { background: rgba(74,222,128,0.15); color: var(--green); }
+.note-category.other { background: var(--surface-2); color: var(--text-dim); }
+
+.note-text {
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text);
+  word-wrap: break-word;
+}
+.note-date {
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-top: 8px;
+}
+.note-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+.note-action-btn {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+.note-action-btn.archive { color: var(--text-dim); }
+.note-action-btn.unarchive { color: var(--green); border-color: rgba(74,222,128,0.3); }
+.note-action-btn.edit-note { color: var(--text); }
+.note-action-btn.delete-note { color: #ff6b6b; }
+
+.notes-add-btn {
+  width: 100%;
+  background: var(--accent);
+  color: #fff;
+  padding: 13px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.notes-section-title {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 18px 0 8px;
+  padding-left: 4px;
+}
+.notes-section-title:first-of-type { margin-top: 0; }
+
+.notes-empty {
+  text-align: center;
+  padding: 30px 20px;
+  color: var(--text-faint);
+  font-size: 13px;
+}
+
+/* Note edit modal */
+.note-modal { padding: 24px 20px 0; }
+.note-modal h2 { text-align: center; margin-bottom: 16px; }
+.note-cat-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.note-cat-btn {
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-dim);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.note-cat-btn .emoji { font-size: 18px; }
+.note-cat-btn.selected.injury { background: rgba(255,107,107,0.15); border-color: #ff6b6b; color: #ff6b6b; }
+.note-cat-btn.selected.preference { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+.note-cat-btn.selected.equipment { background: rgba(74,222,128,0.15); border-color: var(--green); color: var(--green); }
+.note-cat-btn.selected.other { background: var(--surface-2); border-color: var(--text); color: var(--text); }
+
+.note-textarea {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 14px;
+  color: var(--text);
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+  line-height: 1.45;
+  margin-bottom: 16px;
+  -webkit-appearance: none;
+}
+.note-textarea:focus { outline: none; border-color: var(--accent); }
+
 /* TOAST */
 .toast {
   position: fixed;
@@ -1797,6 +2001,7 @@ button { border: none; background: none; cursor: pointer; }
   <button class="tab" data-tab="weight">Poids</button>
   <button class="tab" data-tab="chat">Coach IA</button>
   <button class="tab" data-tab="create">Créer</button>
+  <button class="tab" data-tab="notes">Notes</button>
   <button class="tab" data-tab="history">Historique</button>
   <button class="tab" data-tab="guide">Guide</button>
 </div>
@@ -1867,6 +2072,16 @@ button { border: none; background: none; cursor: pointer; }
   </button>
 
   <div id="createResult"></div>
+</div>
+
+<!-- NOTES (infos permanentes pour l'IA) -->
+<div class="page" id="page-notes">
+  <div class="notes-intro">
+    <div class="notes-intro-title">📝 Notes pour le coach IA</div>
+    <div class="notes-intro-sub">Indique ici des infos durables à prendre en compte : blessures, préférences, contraintes. L'IA les utilisera dans toutes ses analyses.</div>
+  </div>
+  <button class="notes-add-btn" onclick="openNoteEditor()">+ Ajouter une note</button>
+  <div id="notesContent"></div>
 </div>
 
 <!-- SESSION -->
@@ -2042,6 +2257,27 @@ button { border: none; background: none; cursor: pointer; }
     </div>
     <button class="w-save-btn" onclick="saveEditExo()">Enregistrer</button>
     <button id="editExoDeleteBtn" style="width: 100%; background: transparent; border: none; color: #ff6b6b; padding: 14px; font-size: 14px; font-weight: 700; margin-top: 8px; display: none;" onclick="deleteEditExo()">Supprimer cet exercice</button>
+  </div>
+</div>
+
+<!-- NOTE EDIT MODAL -->
+<div class="modal-overlay" id="noteModalOverlay" onclick="closeNoteEditor()"></div>
+<div class="modal" id="noteModal">
+  <div class="modal-handle"></div>
+  <button class="modal-close" onclick="closeNoteEditor()">✕</button>
+  <div class="note-modal">
+    <h2 id="noteModalTitle">Nouvelle note</h2>
+    <div class="edit-field-label">Catégorie</div>
+    <div class="note-cat-row" id="noteCatRow">
+      <button class="note-cat-btn injury" data-cat="injury"><span class="emoji">🤕</span><span>Blessure</span></button>
+      <button class="note-cat-btn preference" data-cat="preference"><span class="emoji">⭐</span><span>Préférence</span></button>
+      <button class="note-cat-btn equipment" data-cat="equipment"><span class="emoji">🏋️</span><span>Équipement</span></button>
+      <button class="note-cat-btn other" data-cat="other"><span class="emoji">📌</span><span>Autre</span></button>
+    </div>
+    <div class="edit-field-label">Description</div>
+    <textarea class="note-textarea" id="noteText" placeholder="Ex: Douleur à l'épaule droite depuis lundi. Éviter les développés au-dessus de la tête pendant 2 semaines."></textarea>
+    <button class="w-save-btn" onclick="saveNote()">Enregistrer</button>
+    <button id="noteDeleteBtn" style="width: 100%; background: transparent; border: none; color: #ff6b6b; padding: 14px; font-size: 14px; font-weight: 700; margin-top: 8px; display: none;" onclick="deleteNoteAction()">Supprimer cette note</button>
   </div>
 </div>
 
@@ -2493,6 +2729,7 @@ document.querySelectorAll('.tab').forEach(t => {
     if (tab === 'home') renderHome();
     if (tab === 'chat') renderChat();
     if (tab === 'create') renderCreate();
+    if (tab === 'notes') renderNotes();
   });
 });
 
@@ -2951,6 +3188,7 @@ function openSession(key) {
       ? `<div class="exo-order-badge">${currentData[exo.id].order}</div>`
       : `<div class="exo-order-badge placeholder" id="order-${exo.id}">·</div>`;
     const feeling = currentData[exo.id].feeling;
+    const comment = currentData[exo.id].comment || '';
     card.innerHTML = `
       ${orderBadge}
       <div class="exo-head">
@@ -2983,6 +3221,14 @@ function openSession(key) {
           <button class="feeling-btn hard ${feeling === 'hard' ? 'selected' : ''}" data-exo="${exo.id}" data-feeling="hard">
             <span class="emoji">😅</span><span>Dur</span>
           </button>
+        </div>
+        <div style="margin-top: 10px;">
+          <button class="exo-comment-toggle ${comment ? 'has-content' : ''}" data-exo="${exo.id}" id="cmt-toggle-${exo.id}">
+            💬 ${comment ? 'Commentaire ajouté' : 'Ajouter un commentaire'}
+          </button>
+          <div class="exo-comment-box ${comment ? 'visible' : ''}" id="cmt-box-${exo.id}">
+            <textarea class="exo-comment-textarea" data-exo="${exo.id}" placeholder="Ex: changement de machine, douleur passagère, fatigue avant la séance...">${escapeHtml(comment)}</textarea>
+          </div>
         </div>
       </div>
     `;
@@ -3048,6 +3294,37 @@ function openSession(key) {
     });
   });
 
+  // Toggle commentaire par exo
+  list.querySelectorAll('.exo-comment-toggle').forEach(toggle => {
+    toggle.addEventListener('click', e => {
+      const exoId = e.currentTarget.dataset.exo;
+      const box = document.getElementById('cmt-box-' + exoId);
+      if (box) {
+        box.classList.toggle('visible');
+        if (box.classList.contains('visible')) {
+          const ta = box.querySelector('textarea');
+          if (ta) setTimeout(() => ta.focus(), 100);
+        }
+      }
+    });
+  });
+
+  // Sauvegarde du commentaire par exo
+  list.querySelectorAll('.exo-comment-textarea').forEach(ta => {
+    ta.addEventListener('input', e => {
+      const exoId = e.target.dataset.exo;
+      if (!currentData[exoId]) currentData[exoId] = { sets: [], order: null, feeling: null };
+      currentData[exoId].comment = e.target.value;
+      // Mettre à jour le toggle (haspour visualiser que un commentaire existe)
+      const toggle = document.getElementById('cmt-toggle-' + exoId);
+      if (toggle) {
+        toggle.classList.toggle('has-content', !!e.target.value.trim());
+        toggle.innerHTML = e.target.value.trim() ? '💬 Commentaire ajouté' : '💬 Ajouter un commentaire';
+      }
+      saveDraft(currentSession, currentData);
+    });
+  });
+
   list.querySelectorAll('.exo-img').forEach(img => {
     img.addEventListener('click', e => {
       e.stopPropagation();
@@ -3075,12 +3352,13 @@ function openSession(key) {
 function unpackExoEntry(exoEntry) {
   if (Array.isArray(exoEntry)) {
     // Ancien format : juste un tableau de sets
-    return { sets: exoEntry, order: null, feeling: null };
+    return { sets: exoEntry, order: null, feeling: null, comment: null };
   }
   return {
     sets: exoEntry.sets || [],
     order: exoEntry.order || null,
-    feeling: exoEntry.feeling || null
+    feeling: exoEntry.feeling || null,
+    comment: exoEntry.comment || null
   };
 }
 
@@ -3121,7 +3399,7 @@ async function tryAutoSuggest(session) {
     </div>
   `;
 
-  // Construire le contexte historique enrichi (ordre + feeling)
+  // Construire le contexte historique enrichi (ordre + feeling + commentaires)
   const exoContext = session.exos.map(exo => {
     const recent = previous.slice(-3).map(h => {
       if (!h.exos[exo.id]) return null;
@@ -3130,16 +3408,31 @@ async function tryAutoSuggest(session) {
       const tags = [];
       if (u.feeling) tags.push(u.feeling);
       if (u.order) tags.push(`pos.${u.order}`);
-      return `${setsTxt}${tags.length ? ` [${tags.join(', ')}]` : ''}`;
+      let result = `${setsTxt}${tags.length ? ` [${tags.join(', ')}]` : ''}`;
+      if (u.comment) result += ` (note: "${u.comment}")`;
+      return result;
     }).filter(Boolean);
     return { id: exo.id, name: exo.name, sets: exo.sets, history: recent };
   });
 
+  // Notes permanentes actives
+  const data2 = loadData();
+  const activeNotes = (data2.notes || []).filter(n => !n.archived);
+  let notesContext = '';
+  if (activeNotes.length > 0) {
+    notesContext = '\nNotes permanentes de Gabriel à prendre en compte :\n' + activeNotes.map(n => {
+      const cat = (CAT_LABELS[n.category] || CAT_LABELS.other).label;
+      return `- [${cat}] ${n.text}`;
+    }).join('\n');
+  }
+
   const userMsg = `Analyse mes 3 dernières séances "${session.title}" (${currentSession}) et propose des poids/reps pour AUJOURD'HUI. Tiens compte :
 - Du FEELING (easy = pousser +, normal = +1 rep ou +1.25kg, hard = stagner ou -1 rep, et hard 2x de suite = baisser)
 - De la POSITION dans la séance (un exo fait en 4e position vs 1ère peut être plus fatigué, donc plus de tolérance)
+- Des COMMENTAIRES (notes laissées sur chaque exo : ils peuvent expliquer un changement radical, ne pas les ignorer)
+- Des NOTES PERMANENTES (blessures, contraintes durables)
 - De la progression sur les séances
-
+${notesContext}
 Historique des exos :
 ${exoContext.map(e => `- ${e.name} (${e.sets} séries) :
   ${e.history.length ? e.history.join(' → ') : 'jamais fait, propose un poids de départ raisonnable'}`).join('\n')}
@@ -3148,6 +3441,7 @@ Règles :
 - Si la progression est claire (easy x2 ou easy + normal), augmente.
 - Si "hard" sur la dernière, stagne.
 - Si "hard" sur les 2 dernières, baisse.
+- Si un commentaire explique une perf anormale (ex: "machine prise, j'ai changé d'exo", "mal dormi", "blessure"), ne pas en tirer de conclusion sur la progression.
 - Ne propose un changement QUE si c'est pertinent (sinon n'inclus pas l'exo).
 - Pour les exos jamais faits, propose un point de départ (homme ~84kg débutant intermédiaire).
 
@@ -3519,11 +3813,12 @@ function finishSession() {
     const exoData = currentData[exoId];
     const sets = (exoData.sets || []).filter(s => s.w || s.r);
     if (sets.length > 0) {
-      // Format enrichi : sets + order + feeling
+      // Format enrichi : sets + order + feeling + comment
       entry.exos[exoId] = {
         sets,
         order: exoData.order || null,
-        feeling: exoData.feeling || null
+        feeling: exoData.feeling || null,
+        comment: (exoData.comment || '').trim() || null
       };
       hasData = true;
       // Update last values (uniquement si pas une reprise d'ancienne séance, pour éviter d'écraser avec d'anciennes données)
@@ -3709,7 +4004,8 @@ function resumeSessionFromHistory(entryId) {
         done: !!(s.w || s.r) // marquer comme fait si valeurs présentes
       })),
       order: unpacked.order,
-      feeling: unpacked.feeling
+      feeling: unpacked.feeling,
+      comment: unpacked.comment || ''
     };
   });
 
@@ -4335,7 +4631,20 @@ function buildSystemPrompt() {
   const lastB = data.history.filter(h => h.session === 'B').pop();
   const customSessions = (data.customSessions || []).map(s => `Séance ${s.key} (${s.title})`).join(', ');
 
-  // Construire un résumé des 3 dernières séances avec ordre + feeling
+  // Notes actives (non archivées)
+  const activeNotes = (data.notes || []).filter(n => !n.archived);
+  let notesBlock = '';
+  if (activeNotes.length > 0) {
+    notesBlock = '\nNOTES PERMANENTES À PRENDRE EN COMPTE (renseignées par Gabriel) :\n';
+    activeNotes.forEach(n => {
+      const cat = (CAT_LABELS[n.category] || CAT_LABELS.other).label;
+      const d = new Date(n.createdAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+      notesBlock += `- [${cat}, depuis le ${d}] ${n.text}\n`;
+    });
+    notesBlock += '⚠️ Ces notes représentent l\'état actuel de Gabriel. Adapte tes conseils en conséquence.\n';
+  }
+
+  // Construire un résumé des 3 dernières séances avec ordre + feeling + commentaires
   const recentHistory = [...data.history].slice(-3).reverse();
   let historyBlock = '';
   if (recentHistory.length > 0) {
@@ -4360,7 +4669,11 @@ function buildSystemPrompt() {
         const tags = [];
         if (u.order) tags.push(`pos.${u.order}`);
         if (u.feeling) tags.push(`feeling: ${u.feeling}`);
-        historyBlock += `  • ${name} → ${setsTxt}${tags.length ? ` [${tags.join(', ')}]` : ''}\n`;
+        historyBlock += `  • ${name} → ${setsTxt}${tags.length ? ` [${tags.join(', ')}]` : ''}`;
+        if (u.comment) {
+          historyBlock += `\n    💬 commentaire de Gabriel : "${u.comment}"`;
+        }
+        historyBlock += '\n';
       });
     });
   }
@@ -4399,11 +4712,12 @@ ${customSessions ? `- Séances personnalisées créées : ${customSessions}` : '
 - Total séances enregistrées : ${totalSessions}
 ${lastA ? `- Dernière séance A : ${new Date(lastA.date).toLocaleDateString('fr-FR')}` : ''}
 ${lastB ? `- Dernière séance B : ${new Date(lastB.date).toLocaleDateString('fr-FR')}` : ''}
-${historyBlock}
+${notesBlock}${historyBlock}
 INTERPRÉTATION DES DONNÉES :
 - pos.X = ordre réel d'exécution dans la séance (1 = en premier, 4 = en quatrième). Un exo fait en fin de séance peut sous-performer à cause de la fatigue accumulée. Un exo "lourd" repoussé en fin de séance perd typiquement 5-15% de force.
 - feeling = ressenti de Gabriel après l'exo. easy = trop léger / normal = juste bien / hard = à la limite. Plusieurs "hard" consécutifs = signe de surcharge.
-- Si tu donnes des conseils, croise toujours feeling + ordre + progression (ex : "hard en position 1 = vrai signal de surcharge ; hard en position 5 = peut juste être de la fatigue").
+- 💬 commentaire = note libre de Gabriel sur l'exo (raison d'un changement, ressenti particulier, etc.). À PRENDRE EN COMPTE absolument quand tu analyses : si un commentaire explique une chute de perf (changement de machine, fatigue particulière, douleur passagère), ne tire pas de conclusions hâtives sur la progression.
+- Si tu donnes des conseils, croise toujours feeling + ordre + commentaire + progression (ex : "hard en position 1 = vrai signal de surcharge ; hard en position 5 = peut juste être de la fatigue ; hard avec commentaire 'mal dormi' = à pondérer").
 
 STYLE :
 - Tutoie-le, ton direct et professionnel
@@ -5004,7 +5318,7 @@ async function requestAdjust(feeling) {
   if (!session) session = (data.customSessions || []).find(cs => cs.key === currentSession);
   if (!session) return;
 
-  // Construire le contexte : pour chaque exo, donner les 3 dernières performances avec ordre+feeling
+  // Construire le contexte : pour chaque exo, donner les 3 dernières performances avec ordre+feeling+comment
   const exoContext = session.exos.map(exo => {
     const recentSessions = data.history
       .filter(h => h.session === currentSession && h.exos[exo.id])
@@ -5013,8 +5327,9 @@ async function requestAdjust(feeling) {
         const unpacked = unpackExoEntry(h.exos[exo.id]);
         const setsTxt = unpacked.sets.map(s => `${s.w || '?'}kg × ${s.r || '?'}`).join(' / ');
         const feelingTxt = unpacked.feeling ? ` [feeling: ${unpacked.feeling}]` : '';
-        const orderTxt = unpacked.order ? ` [exécuté en position ${unpacked.order}]` : '';
-        return `${setsTxt}${feelingTxt}${orderTxt}`;
+        const orderTxt = unpacked.order ? ` [pos.${unpacked.order}]` : '';
+        const commentTxt = unpacked.comment ? ` (note: "${unpacked.comment}")` : '';
+        return `${setsTxt}${feelingTxt}${orderTxt}${commentTxt}`;
       });
     const lastVals = data.lastValues[exo.id] || {};
     const lastSet = lastVals.w1 ? `${lastVals.w1}kg × ${lastVals.r1}` : 'jamais fait';
@@ -5162,6 +5477,179 @@ function applyAdjustments() {
   showToast(`${suggestions.length} ajustement${suggestions.length > 1 ? 's' : ''} appliqué${suggestions.length > 1 ? 's' : ''} ✓`);
   closeAdjustPanel();
   adjustState.suggestions = null;
+}
+
+// ============== NOTES (infos permanentes pour l'IA) ==============
+let editingNoteId = null;
+let editingNoteCat = 'other';
+
+const CAT_LABELS = {
+  injury: { label: 'Blessure', emoji: '🤕' },
+  preference: { label: 'Préférence', emoji: '⭐' },
+  equipment: { label: 'Équipement', emoji: '🏋️' },
+  other: { label: 'Autre', emoji: '📌' }
+};
+
+function loadNotes() {
+  const d = loadData();
+  return d.notes || [];
+}
+
+function saveNotes(notes) {
+  const d = loadData();
+  d.notes = notes;
+  saveData(d);
+}
+
+function renderNotes() {
+  const notes = loadNotes();
+  const container = document.getElementById('notesContent');
+  if (notes.length === 0) {
+    container.innerHTML = `<div class="notes-empty">Aucune note pour l'instant.<br>Ajoutes-en une pour aider l'IA à mieux te conseiller.</div>`;
+    return;
+  }
+  const active = notes.filter(n => !n.archived);
+  const archived = notes.filter(n => n.archived);
+
+  let html = '';
+  if (active.length > 0) {
+    html += `<div class="notes-section-title">Actives (${active.length})</div>`;
+    html += active.map(n => renderNoteCard(n)).join('');
+  }
+  if (archived.length > 0) {
+    html += `<div class="notes-section-title">Archivées (${archived.length})</div>`;
+    html += archived.map(n => renderNoteCard(n)).join('');
+  }
+  container.innerHTML = html;
+}
+
+function renderNoteCard(n) {
+  const cat = CAT_LABELS[n.category] || CAT_LABELS.other;
+  const date = new Date(n.createdAt);
+  const dateStr = date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
+  const archivedAt = n.archivedAt ? new Date(n.archivedAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) : null;
+  return `
+    <div class="note-card ${n.archived ? 'archived' : ''}">
+      <div class="note-head">
+        <span class="note-category ${n.category}">${cat.emoji} ${cat.label}</span>
+      </div>
+      <div class="note-text">${escapeHtml(n.text)}</div>
+      <div class="note-date">Créée le ${dateStr}${archivedAt ? ` · archivée le ${archivedAt}` : ''}</div>
+      <div class="note-actions">
+        <button class="note-action-btn edit-note" onclick="openNoteEditor('${n.id}')">✏️ Modifier</button>
+        ${n.archived
+          ? `<button class="note-action-btn unarchive" onclick="toggleArchiveNote('${n.id}')">↻ Réactiver</button>`
+          : `<button class="note-action-btn archive" onclick="toggleArchiveNote('${n.id}')">📦 Archiver</button>`
+        }
+        <button class="note-action-btn delete-note" onclick="deleteNoteById('${n.id}')">🗑</button>
+      </div>
+    </div>
+  `;
+}
+
+function openNoteEditor(noteId) {
+  editingNoteId = noteId || null;
+  const titleEl = document.getElementById('noteModalTitle');
+  const textArea = document.getElementById('noteText');
+  const delBtn = document.getElementById('noteDeleteBtn');
+
+  if (noteId) {
+    const note = loadNotes().find(n => n.id === noteId);
+    if (note) {
+      titleEl.textContent = 'Modifier la note';
+      textArea.value = note.text || '';
+      editingNoteCat = note.category || 'other';
+      delBtn.style.display = 'block';
+    }
+  } else {
+    titleEl.textContent = 'Nouvelle note';
+    textArea.value = '';
+    editingNoteCat = 'other';
+    delBtn.style.display = 'none';
+  }
+
+  // Update visual selection
+  document.querySelectorAll('#noteCatRow .note-cat-btn').forEach(btn => {
+    btn.classList.toggle('selected', btn.dataset.cat === editingNoteCat);
+  });
+
+  document.getElementById('noteModal').classList.add('show');
+  document.getElementById('noteModalOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => textArea.focus(), 300);
+}
+
+// Listeners catégories (à appeler une fois)
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('#noteCatRow .note-cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      editingNoteCat = btn.dataset.cat;
+      document.querySelectorAll('#noteCatRow .note-cat-btn').forEach(b => {
+        b.classList.toggle('selected', b === btn);
+      });
+    });
+  });
+});
+
+function closeNoteEditor() {
+  document.getElementById('noteModal').classList.remove('show');
+  document.getElementById('noteModalOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+  editingNoteId = null;
+}
+
+function saveNote() {
+  const text = document.getElementById('noteText').value.trim();
+  if (!text) { showToast('Note vide'); return; }
+  const notes = loadNotes();
+  if (editingNoteId) {
+    const note = notes.find(n => n.id === editingNoteId);
+    if (note) {
+      note.text = text;
+      note.category = editingNoteCat;
+      note.updatedAt = new Date().toISOString();
+    }
+  } else {
+    notes.unshift({
+      id: 'n_' + Date.now() + '_' + Math.random().toString(36).slice(2,6),
+      text,
+      category: editingNoteCat,
+      createdAt: new Date().toISOString(),
+      archived: false
+    });
+  }
+  saveNotes(notes);
+  closeNoteEditor();
+  showToast(editingNoteId ? 'Note modifiée ✓' : 'Note ajoutée ✓');
+  renderNotes();
+}
+
+function toggleArchiveNote(noteId) {
+  const notes = loadNotes();
+  const note = notes.find(n => n.id === noteId);
+  if (!note) return;
+  note.archived = !note.archived;
+  if (note.archived) note.archivedAt = new Date().toISOString();
+  else delete note.archivedAt;
+  saveNotes(notes);
+  showToast(note.archived ? 'Archivée' : 'Réactivée');
+  renderNotes();
+}
+
+function deleteNoteById(noteId) {
+  if (!confirm('Supprimer définitivement cette note ?')) return;
+  saveNotes(loadNotes().filter(n => n.id !== noteId));
+  showToast('Supprimée');
+  renderNotes();
+}
+
+function deleteNoteAction() {
+  if (!editingNoteId) return;
+  if (!confirm('Supprimer définitivement cette note ?')) return;
+  saveNotes(loadNotes().filter(n => n.id !== editingNoteId));
+  closeNoteEditor();
+  showToast('Supprimée');
+  renderNotes();
 }
 
 // ============== INIT ==============
