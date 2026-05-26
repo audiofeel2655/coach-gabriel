@@ -2538,16 +2538,20 @@ function renderHome() {
     // Détecter brouillon en cours
     const draft = loadDraft(s.key);
     let draftBadge = '';
+    let hasDraft = false;
     if (draft && draft.data) {
-      const hasData = Object.values(draft.data).some(exo => exo.sets && exo.sets.some(set => set.w || set.r || set.done));
-      if (hasData) {
+      hasDraft = Object.values(draft.data).some(exo => exo.sets && exo.sets.some(set => set.w || set.r || set.done));
+      if (hasDraft) {
         const ago = Math.floor((Date.now() - draft.savedAt) / 60000);
         const agoTxt = ago < 1 ? "à l'instant" : ago < 60 ? `il y a ${ago} min` : `il y a ${Math.floor(ago/60)} h`;
-        draftBadge = `<div style="font-size: 11px; color: var(--green); font-weight: 700; margin-top: 3px;">● En cours (${agoTxt})</div>`;
+        draftBadge = `<div style="font-size: 11px; color: var(--green); font-weight: 700; margin-top: 3px; display: inline-flex; align-items: center; gap: 8px;">
+          <span>● En cours (${agoTxt})</span>
+          <button onclick="event.stopPropagation(); cancelDraft('${s.key}')" style="background: rgba(255,107,107,0.15); border: 1px solid #ff6b6b; color: #ff6b6b; padding: 2px 8px; border-radius: 100px; font-size: 10px; font-weight: 700;">✕ Annuler</button>
+        </div>`;
       }
     }
     html += `
-      <div class="session-card" onclick="openSession('${s.key}')">
+      <div class="session-card" onclick="openSessionSmart('${s.key}', ${hasDraft})">
         <div class="session-letter">${s.key}</div>
         <div class="session-info">
           <div class="title">${escapeHtml(s.title)}${s.custom ? ' <span style="color: var(--text-faint); font-size: 11px; font-weight: 500;">· perso</span>' : ''}</div>
@@ -2562,6 +2566,53 @@ function renderHome() {
   });
   container.innerHTML = html;
   renderRegularity(data);
+}
+
+// Au clic sur une carte de séance : demander si on reprend ou si on repart de zéro (seulement si brouillon existe)
+function openSessionSmart(key, hasDraft) {
+  if (!hasDraft) {
+    openSession(key);
+    return;
+  }
+  // Demander avec un mini dialogue à 3 options
+  showSessionStartDialog(key);
+}
+
+function showSessionStartDialog(key) {
+  // Construire un mini-modal inline
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;';
+  overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+
+  const modal = document.createElement('div');
+  modal.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:22px;max-width:340px;width:100%;';
+  modal.innerHTML = `
+    <div style="font-size:17px;font-weight:800;margin-bottom:6px;">Séance ${key} en cours</div>
+    <div style="font-size:13px;color:var(--text-dim);margin-bottom:18px;line-height:1.45;">Tu as un brouillon non terminé. Que veux-tu faire ?</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <button id="btnResume" style="background:var(--accent);color:#fff;padding:12px;border-radius:10px;font-size:14px;font-weight:700;">Reprendre où j'en étais</button>
+      <button id="btnFresh" style="background:var(--surface-2);color:var(--text);border:1px solid var(--border);padding:12px;border-radius:10px;font-size:14px;font-weight:700;">Recommencer de zéro</button>
+      <button id="btnCancel" style="background:transparent;color:var(--text-faint);padding:8px;font-size:12px;font-weight:600;">Annuler</button>
+    </div>
+  `;
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+
+  modal.querySelector('#btnResume').onclick = () => { overlay.remove(); openSession(key); };
+  modal.querySelector('#btnFresh').onclick = () => {
+    clearDraft(key);
+    overlay.remove();
+    openSession(key);
+  };
+  modal.querySelector('#btnCancel').onclick = () => overlay.remove();
+}
+
+// Effacer un brouillon depuis la home
+function cancelDraft(key) {
+  if (!confirm(`Annuler la séance ${key} en cours ?\nTous les scores saisis seront perdus.`)) return;
+  clearDraft(key);
+  showToast('Brouillon supprimé');
+  renderHome();
 }
 
 function deleteCustomSession(key) {
@@ -2865,6 +2916,7 @@ function openSession(key) {
     <div class="session-actions-bar">
       <button class="session-action-btn primary" onclick="openAdjustPanel()">⚖️ Ajuster les poids (IA)</button>
       <button class="session-action-btn add" onclick="addNewExoToSession()">+ Ajouter un exo</button>
+      <button class="session-action-btn" style="color: #ff6b6b; border-color: rgba(255,107,107,0.3);" onclick="abandonSession()">✕ Abandonner</button>
     </div>
   `;
 
@@ -3413,6 +3465,31 @@ Réponds STRICTEMENT en JSON, sans markdown, sans texte autour :
 
 // Si on est en train de reprendre une séance existante, son id est stocké ici
 let resumingEntryId = null;
+
+function abandonSession() {
+  // Si on est en mode édition d'une séance passée, on quitte sans toucher à l'historique
+  if (resumingEntryId) {
+    if (!confirm('Quitter le mode édition sans sauvegarder ?\nLes modifications non enregistrées seront perdues.')) return;
+    clearDraft(currentSession);
+    currentData = {};
+    resumingEntryId = null;
+    showToast('Édition annulée');
+    setTimeout(goHome, 400);
+    return;
+  }
+
+  // Vérifier s'il y a des données saisies
+  const hasData = Object.values(currentData).some(exo =>
+    (exo.sets || []).some(s => s.w || s.r || s.done)
+  );
+  if (hasData) {
+    if (!confirm('Abandonner la séance en cours ?\nTous les scores saisis seront perdus.')) return;
+  }
+  clearDraft(currentSession);
+  currentData = {};
+  showToast('Séance abandonnée');
+  setTimeout(goHome, 400);
+}
 
 function finishSession() {
   const data = loadData();
