@@ -1568,6 +1568,197 @@ button { border: none; background: none; cursor: pointer; }
   border: 1px solid var(--border);
 }
 
+/* ============ EXO EDITING / IMAGE SEARCH ============ */
+.exo-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+.exo-action-btn {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-dim);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.exo-action-btn:active { transform: scale(0.95); }
+.exo-action-btn.search { color: var(--accent); border-color: var(--accent-dim); }
+.exo-action-btn.edit { color: var(--text); }
+.exo-action-btn.swap { color: #4ade80; border-color: rgba(74, 222, 128, 0.25); }
+.exo-action-btn.delete { color: #ff6b6b; }
+
+.session-actions-bar {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.session-action-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 7px 11px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.session-action-btn.primary { color: var(--accent); border-color: var(--accent); }
+.session-action-btn.add { color: var(--green); border-color: rgba(74, 222, 128, 0.3); }
+
+.exo-images-zone {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 6px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+.exo-images-loading {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-dim);
+  padding: 12px;
+}
+
+/* Edit exo modal */
+.edit-exo-modal { padding: 24px 20px 0; }
+.edit-exo-modal h2 { text-align: center; margin-bottom: 16px; }
+.edit-field { margin-bottom: 12px; }
+.edit-field-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+.edit-input, .edit-textarea {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px;
+  font-size: 14px;
+  color: var(--text);
+  -webkit-appearance: none;
+  font-family: inherit;
+}
+.edit-input:focus, .edit-textarea:focus { outline: none; border-color: var(--accent); }
+.edit-textarea { min-height: 60px; resize: vertical; line-height: 1.4; }
+.edit-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.edit-row .edit-field { margin-bottom: 0; }
+
+/* ============ EXO ORDER + FEELING ============ */
+.exo-card { position: relative; }
+.exo-order-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  z-index: 1;
+}
+.exo-order-badge.placeholder {
+  background: var(--surface-2);
+  color: var(--text-faint);
+  border: 1px dashed var(--border);
+}
+
+.feeling-zone {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  display: none;
+}
+.feeling-zone.visible { display: block; }
+.feeling-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.feeling-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.feeling-btn {
+  padding: 9px 6px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  color: var(--text-dim);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.feeling-btn .emoji { font-size: 16px; }
+.feeling-btn.easy.selected { background: rgba(74,222,128,0.15); border-color: var(--green); color: var(--green); }
+.feeling-btn.normal.selected { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+.feeling-btn.hard.selected { background: rgba(255,107,107,0.15); border-color: #ff6b6b; color: #ff6b6b; }
+
+/* Auto-suggest panel at session start */
+.autosuggest-panel {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a1810 100%);
+  border: 1px solid var(--accent);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+.autosuggest-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.autosuggest-loading {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.autosuggest-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+.autosuggest-actions button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.autosuggest-accept { background: var(--green); color: #000; }
+.autosuggest-skip { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); }
+
 /* TOAST */
 .toast {
   position: fixed;
@@ -1692,7 +1883,7 @@ button { border: none; background: none; cursor: pointer; }
   </div>
   <div id="adjust-zone"></div>
   <div id="exo-list"></div>
-  <button class="finish-btn" onclick="finishSession()">Terminer la séance</button>
+  <button id="finishBtn" class="finish-btn" onclick="finishSession()">Terminer la séance</button>
 </div>
 
 <!-- HISTORY -->
@@ -1813,6 +2004,44 @@ button { border: none; background: none; cursor: pointer; }
 
     <button class="w-save-btn" onclick="saveGoal()">Enregistrer l'objectif</button>
     <button class="g-btn-delete" id="gDeleteBtn" onclick="deleteGoal()" style="display:none;">Supprimer l'objectif</button>
+  </div>
+</div>
+
+<!-- EDIT EXO MODAL -->
+<div class="modal-overlay" id="editExoModalOverlay" onclick="closeEditExo()"></div>
+<div class="modal" id="editExoModal">
+  <div class="modal-handle"></div>
+  <button class="modal-close" onclick="closeEditExo()">✕</button>
+  <div class="edit-exo-modal">
+    <h2 id="editExoTitle">Modifier l'exercice</h2>
+    <div class="edit-field">
+      <div class="edit-field-label">Nom de l'exercice</div>
+      <input type="text" class="edit-input" id="editExoName" placeholder="Ex: Développé couché machine">
+    </div>
+    <div class="edit-field">
+      <div class="edit-field-label">Cible (libellé affiché)</div>
+      <input type="text" class="edit-input" id="editExoTarget" placeholder="Ex: 3 × 8-10 reps">
+    </div>
+    <div class="edit-row">
+      <div class="edit-field">
+        <div class="edit-field-label">Séries</div>
+        <input type="number" inputmode="numeric" class="edit-input" id="editExoSets" min="1" max="10">
+      </div>
+      <div class="edit-field">
+        <div class="edit-field-label">Reps min</div>
+        <input type="number" inputmode="numeric" class="edit-input" id="editExoRepsMin" min="1" max="50">
+      </div>
+      <div class="edit-field">
+        <div class="edit-field-label">Reps max</div>
+        <input type="number" inputmode="numeric" class="edit-input" id="editExoRepsMax" min="1" max="50">
+      </div>
+    </div>
+    <div class="edit-field">
+      <div class="edit-field-label">Conseil d'exécution</div>
+      <textarea class="edit-textarea" id="editExoTip" placeholder="Ex: Contrôle la descente sur 2 sec."></textarea>
+    </div>
+    <button class="w-save-btn" onclick="saveEditExo()">Enregistrer</button>
+    <button id="editExoDeleteBtn" style="width: 100%; background: transparent; border: none; color: #ff6b6b; padding: 14px; font-size: 14px; font-weight: 700; margin-top: 8px; display: none;" onclick="deleteEditExo()">Supprimer cet exercice</button>
   </div>
 </div>
 
@@ -2268,6 +2497,9 @@ document.querySelectorAll('.tab').forEach(t => {
 });
 
 function goHome() {
+  // Si on était en mode édition et qu'on quitte sans valider, on reset le flag
+  // mais on ne nettoie PAS le brouillon (sécurité : on garde les données si l'utilisateur veut revenir)
+  resumingEntryId = null;
   document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
   document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
   document.querySelector('.tab[data-tab="home"]').classList.add('active');
@@ -2303,6 +2535,17 @@ function renderHome() {
       const dayTxt = days === 0 ? "aujourd'hui" : days === 1 ? "hier" : `il y a ${days} jours`;
       lastTxt = `Dernière fois : ${dayTxt}`;
     }
+    // Détecter brouillon en cours
+    const draft = loadDraft(s.key);
+    let draftBadge = '';
+    if (draft && draft.data) {
+      const hasData = Object.values(draft.data).some(exo => exo.sets && exo.sets.some(set => set.w || set.r || set.done));
+      if (hasData) {
+        const ago = Math.floor((Date.now() - draft.savedAt) / 60000);
+        const agoTxt = ago < 1 ? "à l'instant" : ago < 60 ? `il y a ${ago} min` : `il y a ${Math.floor(ago/60)} h`;
+        draftBadge = `<div style="font-size: 11px; color: var(--green); font-weight: 700; margin-top: 3px;">● En cours (${agoTxt})</div>`;
+      }
+    }
     html += `
       <div class="session-card" onclick="openSession('${s.key}')">
         <div class="session-letter">${s.key}</div>
@@ -2310,6 +2553,7 @@ function renderHome() {
           <div class="title">${escapeHtml(s.title)}${s.custom ? ' <span style="color: var(--text-faint); font-size: 11px; font-weight: 500;">· perso</span>' : ''}</div>
           <div class="desc">${escapeHtml(s.desc)}</div>
           <div class="last">${lastTxt}</div>
+          ${draftBadge}
         </div>
         ${s.custom ? `<button onclick="event.stopPropagation(); deleteCustomSession('${s.key}')" style="background: transparent; color: var(--text-faint); padding: 4px 8px; font-size: 16px;">🗑</button>` : ''}
         <div class="arrow">›</div>
@@ -2532,86 +2776,230 @@ function buildHeatmap(sessionsByDay, now) {
 }
 
 // ============== SESSION ==============
+// Récupère la séance effective (base + customisations utilisateur), ou une custom session
+function getEffectiveSession(key) {
+  const data = loadData();
+  const baseSession = SESSIONS[key];
+  const customSession = (data.customSessions || []).find(cs => cs.key === key);
+
+  if (baseSession) {
+    // Cloner et appliquer les customisations utilisateur stockées dans data.sessionOverrides
+    const overrides = (data.sessionOverrides || {})[key];
+    if (!overrides) return JSON.parse(JSON.stringify(baseSession));
+    // Override : on remplace complètement la liste exos si présente
+    return {
+      title: baseSession.title,
+      subtitle: overrides.subtitle || baseSession.subtitle,
+      exos: overrides.exos || JSON.parse(JSON.stringify(baseSession.exos))
+    };
+  }
+  if (customSession) return JSON.parse(JSON.stringify(customSession));
+  return null;
+}
+
+// Sauvegarde une séance modifiée (override pour A/B, modif directe pour custom)
+function saveEffectiveSession(key, sessionData) {
+  const data = loadData();
+  if (SESSIONS[key]) {
+    // Séance de base : on stocke un override
+    data.sessionOverrides = data.sessionOverrides || {};
+    data.sessionOverrides[key] = {
+      subtitle: sessionData.subtitle,
+      exos: sessionData.exos
+    };
+  } else {
+    // Custom session : on remplace dans customSessions
+    data.customSessions = data.customSessions || [];
+    const idx = data.customSessions.findIndex(cs => cs.key === key);
+    if (idx >= 0) {
+      data.customSessions[idx] = { ...data.customSessions[idx], ...sessionData, key };
+    }
+  }
+  saveData(data);
+}
+
+// Brouillon (scores en cours) persistant en localStorage par session_key
+function loadDraft(key) {
+  try {
+    const all = JSON.parse(localStorage.getItem('sessionDrafts') || '{}');
+    return all[key] || null;
+  } catch { return null; }
+}
+function saveDraft(key, currentDataObj) {
+  try {
+    const all = JSON.parse(localStorage.getItem('sessionDrafts') || '{}');
+    all[key] = { data: currentDataObj, savedAt: Date.now() };
+    localStorage.setItem('sessionDrafts', JSON.stringify(all));
+  } catch {}
+}
+function clearDraft(key) {
+  try {
+    const all = JSON.parse(localStorage.getItem('sessionDrafts') || '{}');
+    delete all[key];
+    localStorage.setItem('sessionDrafts', JSON.stringify(all));
+  } catch {}
+}
+
 function openSession(key) {
   currentSession = key;
   const data = loadData();
-  // Chercher d'abord dans SESSIONS (A, B), sinon dans customSessions
-  let s = SESSIONS[key];
-  if (!s) {
-    const custom = (data.customSessions || []).find(cs => cs.key === key);
-    if (!custom) return;
-    s = custom;
+  const s = getEffectiveSession(key);
+  if (!s) return;
+
+  document.getElementById('session-title').innerHTML = `Séance ${key}${resumingEntryId ? ' <span style="color: var(--accent); font-size: 11px; font-weight: 700;">· ÉDITION</span>' : ''}<small>${s.subtitle || ''}</small>`;
+
+  // Adapter le bouton finish
+  const finishBtn = document.getElementById('finishBtn');
+  if (finishBtn) {
+    finishBtn.textContent = resumingEntryId ? 'Enregistrer les modifications' : 'Terminer la séance';
   }
-  document.getElementById('session-title').innerHTML = `Séance ${key}<small>${s.subtitle}</small>`;
-  // Reset zone d'ajustement et afficher le bouton
+
+  // Charger brouillon existant ou initialiser
+  const draft = loadDraft(key);
+  currentData = draft ? draft.data : {};
+
+  // Barre d'actions session : ajuster IA + ajouter exo + autosuggest zone
   const adjustZone = document.getElementById('adjust-zone');
-  adjustZone.innerHTML = `<button class="adjust-btn" onclick="openAdjustPanel()">⚖️ Ajuster les poids avec l'IA</button>`;
+  adjustZone.innerHTML = `
+    <div id="autosuggest-zone"></div>
+    <div class="session-actions-bar">
+      <button class="session-action-btn primary" onclick="openAdjustPanel()">⚖️ Ajuster les poids (IA)</button>
+      <button class="session-action-btn add" onclick="addNewExoToSession()">+ Ajouter un exo</button>
+    </div>
+  `;
+
   const list = document.getElementById('exo-list');
   list.innerHTML = '';
-  currentData = {};
 
-  s.exos.forEach(exo => {
-    currentData[exo.id] = { sets: [] };
+  s.exos.forEach((exo, exoIdx) => {
+    if (!currentData[exo.id]) currentData[exo.id] = { sets: [], order: null, feeling: null };
+    // Garantir le bon nombre de sets dans currentData
+    while (currentData[exo.id].sets.length < exo.sets) {
+      currentData[exo.id].sets.push({ w: '', r: '', done: false });
+    }
+
     const card = document.createElement('div');
     card.className = 'exo-card';
     const lastVals = data.lastValues[exo.id] || {};
     let setsHTML = '';
     for (let i = 1; i <= exo.sets; i++) {
+      const setData = currentData[exo.id].sets[i-1] || { w: '', r: '', done: false };
       const lastW = lastVals['w' + i] || '';
       const lastR = lastVals['r' + i] || '';
       setsHTML += `
         <div class="set-row">
           <div class="set-label">${i}</div>
-          <input class="set-input" type="number" inputmode="decimal" placeholder="${lastW || (exo.isTime ? '—' : 'kg')}" data-exo="${exo.id}" data-field="w${i}" data-set="${i}">
-          <input class="set-input" type="number" inputmode="numeric" placeholder="${lastR || (exo.isTime ? 'sec' : 'reps')}" data-exo="${exo.id}" data-field="r${i}" data-set="${i}">
-          <button class="set-check" data-exo="${exo.id}" data-set="${i}">○</button>
+          <input class="set-input" type="number" inputmode="decimal" placeholder="${lastW || (exo.isTime ? '—' : 'kg')}" value="${setData.w || ''}" data-exo="${exo.id}" data-field="w${i}" data-set="${i}">
+          <input class="set-input" type="number" inputmode="numeric" placeholder="${lastR || (exo.isTime ? 'sec' : 'reps')}" value="${setData.r || ''}" data-exo="${exo.id}" data-field="r${i}" data-set="${i}">
+          <button class="set-check ${setData.done ? 'done' : ''}" data-exo="${exo.id}" data-set="${i}">${setData.done ? '✓' : '○'}</button>
         </div>`;
-      currentData[exo.id].sets.push({ w: '', r: '', done: false });
     }
     const lastHint = lastVals.w1 ? `<div style="font-size: 11px; color: var(--text-faint); margin-top: 6px;">Dernière fois : ${lastVals.w1}kg × ${lastVals.r1}${exo.isTime ? 's' : ''}</div>` : '';
+    const orderBadge = currentData[exo.id].order
+      ? `<div class="exo-order-badge">${currentData[exo.id].order}</div>`
+      : `<div class="exo-order-badge placeholder" id="order-${exo.id}">·</div>`;
+    const feeling = currentData[exo.id].feeling;
     card.innerHTML = `
+      ${orderBadge}
       <div class="exo-head">
-        <div class="exo-img" data-exo="${exo.id}">${SVG[exo.icon] || ''}</div>
+        <div class="exo-img" data-exo="${exo.id}">${SVG[exo.icon] || SVG.chest || ''}</div>
         <div class="exo-title-block">
-          <div class="exo-title">${exo.name}</div>
-          <div class="exo-target">${exo.target}</div>
-          <div class="exo-tip">${exo.tip}</div>
+          <div class="exo-title">${escapeHtml(exo.name)}</div>
+          <div class="exo-target">${escapeHtml(exo.target || '')}</div>
+          <div class="exo-tip">${escapeHtml(exo.tip || '')}</div>
           ${lastHint}
+          <div class="exo-actions">
+            <button class="exo-action-btn search" onclick="searchExoImage('${exo.id}', this)">🔍 Image</button>
+            <button class="exo-action-btn edit" onclick="editExo('${exo.id}')">✏️</button>
+            <button class="exo-action-btn swap" onclick="suggestReplacement('${exo.id}')">🔄</button>
+            <button class="exo-action-btn delete" onclick="removeExoFromSession('${exo.id}')">🗑</button>
+          </div>
+          <div class="exo-images-zone" id="imgs-${exo.id}" style="display:none;"></div>
         </div>
       </div>
       <div class="input-headers"><span>Set</span><span>${exo.isTime ? 'Charge' : 'Poids'}</span><span>${exo.isTime ? 'Secondes' : 'Reps'}</span><span>✓</span></div>
       <div class="sets-grid">${setsHTML}</div>
+      <div class="feeling-zone" id="feeling-${exo.id}">
+        <div class="feeling-label">C'était comment ?</div>
+        <div class="feeling-buttons">
+          <button class="feeling-btn easy ${feeling === 'easy' ? 'selected' : ''}" data-exo="${exo.id}" data-feeling="easy">
+            <span class="emoji">😎</span><span>Facile</span>
+          </button>
+          <button class="feeling-btn normal ${feeling === 'normal' ? 'selected' : ''}" data-exo="${exo.id}" data-feeling="normal">
+            <span class="emoji">👌</span><span>Normal</span>
+          </button>
+          <button class="feeling-btn hard ${feeling === 'hard' ? 'selected' : ''}" data-exo="${exo.id}" data-feeling="hard">
+            <span class="emoji">😅</span><span>Dur</span>
+          </button>
+        </div>
+      </div>
     `;
     list.appendChild(card);
+    // Afficher la zone feeling si déjà sélectionnée OU si tous sets cochés
+    if (feeling || isAllSetsDone(exo.id)) {
+      card.querySelector('.feeling-zone').classList.add('visible');
+    }
   });
 
-  // Event listeners
+  // Event listeners inputs
   list.querySelectorAll('.set-input').forEach(input => {
     input.addEventListener('input', e => {
       const exoId = e.target.dataset.exo;
       const field = e.target.dataset.field;
       const setIdx = parseInt(e.target.dataset.set) - 1;
       const isW = field.startsWith('w');
+      if (!currentData[exoId]) currentData[exoId] = { sets: [], order: null, feeling: null };
+      while (currentData[exoId].sets.length <= setIdx) currentData[exoId].sets.push({ w:'', r:'', done:false });
       currentData[exoId].sets[setIdx][isW ? 'w' : 'r'] = e.target.value;
+      // Tracker l'ordre : si c'est la 1ère donnée pour cet exo, on lui attribue le prochain numéro
+      assignOrderIfNeeded(exoId);
+      saveDraft(currentSession, currentData);
     });
   });
+
   list.querySelectorAll('.set-check').forEach(btn => {
     btn.addEventListener('click', e => {
-      const exoId = e.target.dataset.exo;
-      const setIdx = parseInt(e.target.dataset.set) - 1;
+      const exoId = e.currentTarget.dataset.exo;
+      const setIdx = parseInt(e.currentTarget.dataset.set) - 1;
+      if (!currentData[exoId]) currentData[exoId] = { sets: [], order: null, feeling: null };
+      while (currentData[exoId].sets.length <= setIdx) currentData[exoId].sets.push({ w:'', r:'', done:false });
       const done = !currentData[exoId].sets[setIdx].done;
       currentData[exoId].sets[setIdx].done = done;
-      e.target.classList.toggle('done', done);
-      e.target.textContent = done ? '✓' : '○';
+      e.currentTarget.classList.toggle('done', done);
+      e.currentTarget.textContent = done ? '✓' : '○';
+      // Tracker l'ordre si on coche
+      if (done) assignOrderIfNeeded(exoId);
+      // Afficher zone feeling si tous sets cochés
+      if (isAllSetsDone(exoId)) {
+        const fz = document.getElementById('feeling-' + exoId);
+        if (fz) fz.classList.add('visible');
+      }
+      saveDraft(currentSession, currentData);
       if (navigator.vibrate) navigator.vibrate(20);
+    });
+  });
+
+  // Feeling buttons
+  list.querySelectorAll('.feeling-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const exoId = e.currentTarget.dataset.exo;
+      const feeling = e.currentTarget.dataset.feeling;
+      if (!currentData[exoId]) currentData[exoId] = { sets: [], order: null, feeling: null };
+      // Toggle si déjà sélectionné
+      currentData[exoId].feeling = currentData[exoId].feeling === feeling ? null : feeling;
+      // Mettre à jour visuellement (toutes les 3 boutons de cet exo)
+      document.querySelectorAll(`.feeling-btn[data-exo="${exoId}"]`).forEach(b => {
+        b.classList.toggle('selected', b.dataset.feeling === currentData[exoId].feeling);
+      });
+      saveDraft(currentSession, currentData);
+      if (navigator.vibrate) navigator.vibrate(15);
     });
   });
 
   list.querySelectorAll('.exo-img').forEach(img => {
     img.addEventListener('click', e => {
       e.stopPropagation();
-      const exoId = img.dataset.exo;
-      openExoModal(exoId);
+      openExoModal(img.dataset.exo);
     });
   });
 
@@ -2619,35 +3007,467 @@ function openSession(key) {
   document.getElementById('page-session').classList.add('active');
   document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
   window.scrollTo(0, 0);
+
+  // Tenter une proposition automatique de poids basée sur l'historique
+  // Ne pas le faire en mode édition, ni si on a déjà un brouillon entamé
+  if (!resumingEntryId) {
+    const hasActiveData = Object.values(currentData).some(exo =>
+      (exo.sets || []).some(s => s.w || s.r || s.done)
+    );
+    if (!hasActiveData) tryAutoSuggest(s);
+  }
 }
+
+// === Helpers ordre + feeling ===
+// Helper rétro-compat : retourne {sets, order, feeling} à partir de n'importe quelle forme stockée
+function unpackExoEntry(exoEntry) {
+  if (Array.isArray(exoEntry)) {
+    // Ancien format : juste un tableau de sets
+    return { sets: exoEntry, order: null, feeling: null };
+  }
+  return {
+    sets: exoEntry.sets || [],
+    order: exoEntry.order || null,
+    feeling: exoEntry.feeling || null
+  };
+}
+
+function isAllSetsDone(exoId) {
+  const exo = currentData[exoId];
+  if (!exo || !exo.sets || exo.sets.length === 0) return false;
+  return exo.sets.every(s => s.done);
+}
+
+function assignOrderIfNeeded(exoId) {
+  if (!currentData[exoId]) return;
+  if (currentData[exoId].order) return; // déjà attribué
+  // Calculer le prochain numéro d'ordre
+  const maxOrder = Math.max(0, ...Object.values(currentData).map(e => e.order || 0));
+  currentData[exoId].order = maxOrder + 1;
+  // Mettre à jour visuellement le badge
+  const badge = document.getElementById('order-' + exoId);
+  if (badge) {
+    badge.textContent = currentData[exoId].order;
+    badge.classList.remove('placeholder');
+  }
+}
+
+// === Auto-suggestion de poids à l'ouverture ===
+async function tryAutoSuggest(session) {
+  const data = loadData();
+  // Vérifier qu'on a au moins 1 séance précédente de ce type
+  const previous = data.history.filter(h => h.session === currentSession);
+  if (previous.length === 0) return; // pas de données, pas de suggestion
+
+  const zone = document.getElementById('autosuggest-zone');
+  if (!zone) return;
+
+  zone.innerHTML = `
+    <div class="autosuggest-panel">
+      <div class="autosuggest-head">🤖 Le coach analyse ta progression...</div>
+      <div class="autosuggest-loading"><span class="adjust-loading-spinner"></span>Quelques secondes</div>
+    </div>
+  `;
+
+  // Construire le contexte historique enrichi (ordre + feeling)
+  const exoContext = session.exos.map(exo => {
+    const recent = previous.slice(-3).map(h => {
+      if (!h.exos[exo.id]) return null;
+      const u = unpackExoEntry(h.exos[exo.id]);
+      const setsTxt = u.sets.map(s => `${s.w || '?'}×${s.r || '?'}`).join('/');
+      const tags = [];
+      if (u.feeling) tags.push(u.feeling);
+      if (u.order) tags.push(`pos.${u.order}`);
+      return `${setsTxt}${tags.length ? ` [${tags.join(', ')}]` : ''}`;
+    }).filter(Boolean);
+    return { id: exo.id, name: exo.name, sets: exo.sets, history: recent };
+  });
+
+  const userMsg = `Analyse mes 3 dernières séances "${session.title}" (${currentSession}) et propose des poids/reps pour AUJOURD'HUI. Tiens compte :
+- Du FEELING (easy = pousser +, normal = +1 rep ou +1.25kg, hard = stagner ou -1 rep, et hard 2x de suite = baisser)
+- De la POSITION dans la séance (un exo fait en 4e position vs 1ère peut être plus fatigué, donc plus de tolérance)
+- De la progression sur les séances
+
+Historique des exos :
+${exoContext.map(e => `- ${e.name} (${e.sets} séries) :
+  ${e.history.length ? e.history.join(' → ') : 'jamais fait, propose un poids de départ raisonnable'}`).join('\n')}
+
+Règles :
+- Si la progression est claire (easy x2 ou easy + normal), augmente.
+- Si "hard" sur la dernière, stagne.
+- Si "hard" sur les 2 dernières, baisse.
+- Ne propose un changement QUE si c'est pertinent (sinon n'inclus pas l'exo).
+- Pour les exos jamais faits, propose un point de départ (homme ~84kg débutant intermédiaire).
+
+Réponds STRICTEMENT en JSON pur :
+{
+  "summary": "1 phrase résumant ton analyse globale (ex: Tu progresses bien sur les pectoraux, plateau sur les jambes)",
+  "adjustments": [
+    { "id": "A1", "name": "...", "newWeight": "22.5", "newReps": "10", "reason": "..." }
+  ]
+}`;
+
+  try {
+    const res = await fetch(CLAUDE_PROXY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SUPABASE_KEY}` },
+      body: JSON.stringify({
+        system: 'Tu es un coach sportif. Réponds en JSON pur uniquement.',
+        messages: [{ role: 'user', content: userMsg }],
+        tools: [],
+        max_tokens: 1500,
+        skip_agentic_loop: true,
+      })
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const claudeData = await res.json();
+    if (claudeData.error) throw new Error(claudeData.error);
+    const text = claudeData.content.filter(c => c.type === 'text').map(c => c.text).join('');
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('Pas de JSON');
+    const parsed = JSON.parse(jsonMatch[0]);
+
+    if (!parsed.adjustments || parsed.adjustments.length === 0) {
+      zone.innerHTML = `
+        <div class="autosuggest-panel">
+          <div class="autosuggest-head">✓ Pas de changement</div>
+          <div style="font-size: 13px; color: var(--text-dim);">${escapeHtml(parsed.summary || 'Continue sur la même base, tu progresseras.')}</div>
+          <div class="autosuggest-actions">
+            <button class="autosuggest-skip" onclick="document.getElementById('autosuggest-zone').innerHTML=''">OK</button>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    // Stocker pour application
+    window._pendingAutoAdjust = parsed.adjustments;
+
+    let suggestionsHtml = '';
+    parsed.adjustments.forEach(a => {
+      suggestionsHtml += `
+        <div style="padding: 8px 0; border-top: 1px solid var(--border); font-size: 12.5px;">
+          <strong style="color: var(--text);">${escapeHtml(a.name)}</strong><br>
+          <span style="color: var(--accent); font-weight: 700;">${escapeHtml(a.newWeight || '?')}kg × ${escapeHtml(a.newReps || '?')}</span>
+          ${a.reason ? `<div style="color: var(--text-dim); font-style: italic; font-size: 11.5px; margin-top: 2px;">${escapeHtml(a.reason)}</div>` : ''}
+        </div>
+      `;
+    });
+
+    zone.innerHTML = `
+      <div class="autosuggest-panel">
+        <div class="autosuggest-head">🤖 Propositions du coach</div>
+        <div style="font-size: 12.5px; color: var(--text); margin-bottom: 8px;">${escapeHtml(parsed.summary || '')}</div>
+        ${suggestionsHtml}
+        <div class="autosuggest-actions">
+          <button class="autosuggest-skip" onclick="document.getElementById('autosuggest-zone').innerHTML='';window._pendingAutoAdjust=null">Ignorer</button>
+          <button class="autosuggest-accept" onclick="applyAutoAdjust()">Appliquer</button>
+        </div>
+      </div>
+    `;
+  } catch (e) {
+    // Échec silencieux : pas grave, on n'affiche rien
+    zone.innerHTML = '';
+    console.warn('Auto-suggest failed:', e);
+  }
+}
+
+function applyAutoAdjust() {
+  const adjustments = window._pendingAutoAdjust;
+  if (!adjustments) return;
+  adjustments.forEach(a => {
+    if (!a.id || !a.newWeight) return;
+    document.querySelectorAll(`.set-input[data-exo="${a.id}"]`).forEach(input => {
+      const field = input.dataset.field;
+      if (field && field.startsWith('w')) {
+        input.placeholder = a.newWeight;
+      } else if (field && field.startsWith('r')) {
+        input.placeholder = a.newReps;
+      }
+    });
+  });
+  document.getElementById('autosuggest-zone').innerHTML = '';
+  window._pendingAutoAdjust = null;
+  showToast(`${adjustments.length} suggestion${adjustments.length>1?'s':''} appliquée${adjustments.length>1?'s':''} ✓`);
+}
+
+// === Recherche d'image pour un exo précis ===
+async function searchExoImage(exoId, btn) {
+  const zone = document.getElementById('imgs-' + exoId);
+  if (!zone) return;
+
+  // Toggle : si déjà ouvert, on ferme
+  if (zone.style.display !== 'none' && zone.innerHTML.includes('exo-img-card')) {
+    zone.style.display = 'none';
+    return;
+  }
+
+  // Récupérer le nom de l'exo
+  const s = getEffectiveSession(currentSession);
+  const exo = s ? s.exos.find(e => e.id === exoId) : null;
+  if (!exo) return;
+
+  zone.style.display = 'grid';
+  zone.innerHTML = `<div class="exo-images-loading">🔍 Recherche en cours...</div>`;
+
+  try {
+    const query = exo.name + ' machine gym exercise';
+    const res = await fetch(CLAUDE_PROXY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SUPABASE_KEY}` },
+      body: JSON.stringify({ tool_call: { name: 'search_images', input: { query, num: 4 } } })
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    const images = data.images || [];
+    if (images.length === 0) {
+      zone.innerHTML = `<div class="exo-images-loading">Aucune image trouvée</div>`;
+      return;
+    }
+    let html = '';
+    images.slice(0, 4).forEach(img => {
+      const src = img.thumbnail || img.original;
+      if (!src) return;
+      html += `<div class="msg-img-card" onclick="openImgViewer('${escapeAttr(img.original || src)}')">
+        <img src="${escapeAttr(src)}" alt="${escapeAttr(img.title || '')}" loading="lazy" onerror="this.parentElement.style.display='none'">
+        <div class="caption">${escapeHtml((img.title || '').slice(0, 40))}</div>
+      </div>`;
+    });
+    html += `<button class="exo-action-btn" style="grid-column: 1 / -1; justify-content: center;" onclick="document.getElementById('imgs-${exoId}').style.display='none'">Masquer</button>`;
+    zone.innerHTML = html;
+  } catch (e) {
+    zone.innerHTML = `<div class="exo-images-loading" style="color: #ff6b6b;">⚠️ ${escapeHtml(e.message)}</div>`;
+  }
+}
+
+// === Édition d'un exo existant ===
+let editingExo = null;
+
+function editExo(exoId) {
+  const s = getEffectiveSession(currentSession);
+  if (!s) return;
+  const exo = s.exos.find(e => e.id === exoId);
+  if (!exo) return;
+  editingExo = { exoId, isNew: false };
+  document.getElementById('editExoTitle').textContent = 'Modifier l\'exercice';
+  document.getElementById('editExoName').value = exo.name || '';
+  document.getElementById('editExoTarget').value = exo.target || '';
+  document.getElementById('editExoSets').value = exo.sets || 3;
+  document.getElementById('editExoRepsMin').value = exo.repsMin || 8;
+  document.getElementById('editExoRepsMax').value = exo.repsMax || 12;
+  document.getElementById('editExoTip').value = exo.tip || '';
+  document.getElementById('editExoDeleteBtn').style.display = 'block';
+  document.getElementById('editExoModal').classList.add('show');
+  document.getElementById('editExoModalOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function addNewExoToSession() {
+  editingExo = { exoId: null, isNew: true };
+  document.getElementById('editExoTitle').textContent = 'Nouvel exercice';
+  document.getElementById('editExoName').value = '';
+  document.getElementById('editExoTarget').value = '3 × 10-12 reps';
+  document.getElementById('editExoSets').value = 3;
+  document.getElementById('editExoRepsMin').value = 10;
+  document.getElementById('editExoRepsMax').value = 12;
+  document.getElementById('editExoTip').value = '';
+  document.getElementById('editExoDeleteBtn').style.display = 'none';
+  document.getElementById('editExoModal').classList.add('show');
+  document.getElementById('editExoModalOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeEditExo() {
+  document.getElementById('editExoModal').classList.remove('show');
+  document.getElementById('editExoModalOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+  editingExo = null;
+}
+
+function saveEditExo() {
+  if (!editingExo) return;
+  const name = document.getElementById('editExoName').value.trim();
+  const target = document.getElementById('editExoTarget').value.trim();
+  const sets = parseInt(document.getElementById('editExoSets').value) || 3;
+  const repsMin = parseInt(document.getElementById('editExoRepsMin').value) || 10;
+  const repsMax = parseInt(document.getElementById('editExoRepsMax').value) || 12;
+  const tip = document.getElementById('editExoTip').value.trim();
+
+  if (!name) { showToast('Nom requis'); return; }
+
+  const s = getEffectiveSession(currentSession);
+  if (!s) return;
+
+  if (editingExo.isNew) {
+    // Trouver un ID unique
+    const existingIds = new Set(s.exos.map(e => e.id));
+    let n = 1;
+    let newId;
+    do { newId = `${currentSession}${n++}`; } while (existingIds.has(newId));
+    s.exos.push({
+      id: newId,
+      name, target, tip,
+      icon: guessIcon(name),
+      sets, repsMin, repsMax
+    });
+  } else {
+    const exo = s.exos.find(e => e.id === editingExo.exoId);
+    if (!exo) return;
+    exo.name = name;
+    exo.target = target;
+    exo.tip = tip;
+    exo.sets = sets;
+    exo.repsMin = repsMin;
+    exo.repsMax = repsMax;
+    // Si le nom a changé, ré-essayer de deviner l'icône
+    exo.icon = guessIcon(name);
+  }
+  saveEffectiveSession(currentSession, s);
+  closeEditExo();
+  showToast(editingExo.isNew ? 'Exercice ajouté ✓' : 'Modifié ✓');
+  openSession(currentSession); // refresh
+}
+
+function deleteEditExo() {
+  if (!editingExo || editingExo.isNew) return;
+  if (!confirm('Supprimer cet exercice de la séance ?')) return;
+  const s = getEffectiveSession(currentSession);
+  s.exos = s.exos.filter(e => e.id !== editingExo.exoId);
+  saveEffectiveSession(currentSession, s);
+  // Nettoyer le brouillon pour cet exo
+  if (currentData[editingExo.exoId]) delete currentData[editingExo.exoId];
+  saveDraft(currentSession, currentData);
+  closeEditExo();
+  showToast('Exercice supprimé');
+  openSession(currentSession);
+}
+
+function removeExoFromSession(exoId) {
+  if (!confirm('Supprimer cet exercice de la séance ?')) return;
+  const s = getEffectiveSession(currentSession);
+  s.exos = s.exos.filter(e => e.id !== exoId);
+  saveEffectiveSession(currentSession, s);
+  if (currentData[exoId]) delete currentData[exoId];
+  saveDraft(currentSession, currentData);
+  showToast('Exercice supprimé');
+  openSession(currentSession);
+}
+
+// Demander à l'IA un exo de remplacement
+async function suggestReplacement(exoId) {
+  const s = getEffectiveSession(currentSession);
+  const exo = s.exos.find(e => e.id === exoId);
+  if (!exo) return;
+
+  showToast('🔄 Recherche d\'alternative...');
+
+  try {
+    const userMsg = `Donne-moi UN SEUL exercice de remplacement pour "${exo.name}" (cible : ${exo.target}). Même groupe musculaire ciblé, adapté à mes contraintes (genou + Achille gauche, machines guidées préférées).
+
+Réponds STRICTEMENT en JSON, sans markdown, sans texte autour :
+{
+  "name": "Nom du nouvel exo",
+  "target": "3 × 8-10 reps",
+  "tip": "Conseil clé en 1 phrase",
+  "sets": 3,
+  "repsMin": 8,
+  "repsMax": 10
+}`;
+
+    const res = await fetch(CLAUDE_PROXY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SUPABASE_KEY}` },
+      body: JSON.stringify({
+        system: 'Tu es un coach sportif. Tu réponds en JSON pur uniquement.',
+        messages: [{ role: 'user', content: userMsg }],
+        tools: [],
+        max_tokens: 500,
+        skip_agentic_loop: true,
+      })
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    const text = data.content.filter(c => c.type === 'text').map(c => c.text).join('');
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('Pas de JSON');
+    const replacement = JSON.parse(jsonMatch[0]);
+
+    if (!confirm(`Remplacer "${exo.name}" par "${replacement.name}" ?\n\n${replacement.tip || ''}`)) return;
+
+    exo.name = replacement.name;
+    exo.target = replacement.target || exo.target;
+    exo.tip = replacement.tip || exo.tip;
+    exo.sets = replacement.sets || exo.sets;
+    exo.repsMin = replacement.repsMin || exo.repsMin;
+    exo.repsMax = replacement.repsMax || exo.repsMax;
+    exo.icon = guessIcon(replacement.name);
+    saveEffectiveSession(currentSession, s);
+    showToast('Exercice remplacé ✓');
+    openSession(currentSession);
+  } catch (e) {
+    showToast(`⚠️ ${e.message}`);
+  }
+}
+
+// Si on est en train de reprendre une séance existante, son id est stocké ici
+let resumingEntryId = null;
 
 function finishSession() {
   const data = loadData();
-  const entry = {
-    date: new Date().toISOString(),
-    session: currentSession,
-    exos: {}
-  };
+  let entry;
+  let isResume = false;
+
+  if (resumingEntryId) {
+    // Mode reprise : on met à jour l'entrée existante
+    entry = data.history.find(h => h.id === resumingEntryId);
+    if (entry) {
+      entry.exos = {}; // on reconstruit les exos
+      isResume = true;
+    } else {
+      entry = { id: 'h_' + Date.now() + '_' + Math.random().toString(36).slice(2,8), date: new Date().toISOString(), session: currentSession, exos: {} };
+    }
+  } else {
+    entry = {
+      id: 'h_' + Date.now() + '_' + Math.random().toString(36).slice(2,8),
+      date: new Date().toISOString(),
+      session: currentSession,
+      exos: {}
+    };
+  }
+
   let hasData = false;
   Object.keys(currentData).forEach(exoId => {
-    const sets = currentData[exoId].sets.filter(s => s.w || s.r);
+    const exoData = currentData[exoId];
+    const sets = (exoData.sets || []).filter(s => s.w || s.r);
     if (sets.length > 0) {
-      entry.exos[exoId] = sets;
+      // Format enrichi : sets + order + feeling
+      entry.exos[exoId] = {
+        sets,
+        order: exoData.order || null,
+        feeling: exoData.feeling || null
+      };
       hasData = true;
-      // Update last values
-      data.lastValues[exoId] = data.lastValues[exoId] || {};
-      sets.forEach((s, i) => {
-        if (s.w) data.lastValues[exoId]['w' + (i+1)] = s.w;
-        if (s.r) data.lastValues[exoId]['r' + (i+1)] = s.r;
-      });
+      // Update last values (uniquement si pas une reprise d'ancienne séance, pour éviter d'écraser avec d'anciennes données)
+      if (!isResume || new Date(entry.date).getTime() > Date.now() - 86400000) {
+        data.lastValues[exoId] = data.lastValues[exoId] || {};
+        sets.forEach((s, i) => {
+          if (s.w) data.lastValues[exoId]['w' + (i+1)] = s.w;
+          if (s.r) data.lastValues[exoId]['r' + (i+1)] = s.r;
+        });
+      }
     }
   });
   if (!hasData) {
     if (!confirm("Aucune donnée saisie. Terminer quand même ?")) return;
   }
-  data.history.push(entry);
+  if (!isResume) data.history.push(entry);
   saveData(data);
-  showToast('Séance enregistrée ✓');
+  clearDraft(currentSession);
+  currentData = {};
+  resumingEntryId = null;
+  showToast(isResume ? 'Séance mise à jour ✓' : 'Séance enregistrée ✓');
   setTimeout(goHome, 800);
 }
 
@@ -2719,16 +3539,33 @@ function renderHistory() {
     list.innerHTML = `<div class="empty-state"><div class="icon">📊</div><div>Aucune séance encore.<br>Lance ta première séance !</div></div>`;
     return;
   }
+  // Garantir que chaque entry a un id (migration ancienne data)
+  let needSave = false;
+  data.history.forEach((h, i) => {
+    if (!h.id) {
+      h.id = 'h_' + new Date(h.date).getTime() + '_' + i;
+      needSave = true;
+    }
+  });
+  if (needSave) saveData(data);
+
   const sorted = [...data.history].reverse();
   list.innerHTML = sorted.map(h => {
     const d = new Date(h.date);
     const dateStr = d.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
     const timeStr = d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
     const exoCount = Object.keys(h.exos).length;
-    const totalSets = Object.values(h.exos).reduce((a, s) => a + s.length, 0);
+    const totalSets = Object.values(h.exos).reduce((a, s) => a + unpackExoEntry(s).sets.length, 0);
     let detailsHtml = '';
-    Object.keys(h.exos).forEach(exoId => {
-      const sets = h.exos[exoId];
+    // Trier les exos par ordre d'exécution si disponible
+    const sortedExoIds = Object.keys(h.exos).sort((a, b) => {
+      const oa = unpackExoEntry(h.exos[a]).order || 999;
+      const ob = unpackExoEntry(h.exos[b]).order || 999;
+      return oa - ob;
+    });
+    sortedExoIds.forEach(exoId => {
+      const unpacked = unpackExoEntry(h.exos[exoId]);
+      const { sets, order, feeling } = unpacked;
       let session = SESSIONS[h.session];
       if (!session) {
         session = (data.customSessions || []).find(cs => cs.key === h.session);
@@ -2737,7 +3574,9 @@ function renderHistory() {
       const exo = session.exos.find(e => e.id === exoId);
       if (!exo) return;
       const setsTxt = sets.map(s => `${s.w || '?'}×${s.r || '?'}`).join(' · ');
-      detailsHtml += `<div style="font-size: 12.5px; padding: 6px 0; border-top: 1px solid var(--border);"><strong style="color: var(--text);">${exo.name}</strong><br><span style="color: var(--text-dim);">${setsTxt}</span></div>`;
+      const feelingEmoji = feeling === 'easy' ? '😎' : feeling === 'normal' ? '👌' : feeling === 'hard' ? '😅' : '';
+      const orderTxt = order ? `<span style="display:inline-block;width:18px;height:18px;border-radius:50%;background:var(--accent);color:#fff;font-size:10px;font-weight:800;text-align:center;line-height:18px;margin-right:6px;">${order}</span>` : '';
+      detailsHtml += `<div style="font-size: 12.5px; padding: 6px 0; border-top: 1px solid var(--border);">${orderTxt}<strong style="color: var(--text);">${escapeHtml(exo.name)}</strong> ${feelingEmoji}<br><span style="color: var(--text-dim);">${setsTxt}</span></div>`;
     });
     return `
       <div class="history-item">
@@ -2750,9 +3589,60 @@ function renderHistory() {
           <span>${totalSets} séries</span>
         </div>
         <div style="margin-top: 10px;">${detailsHtml}</div>
+        <div style="display: flex; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+          <button onclick="resumeSessionFromHistory('${h.id}')" style="flex: 1; background: var(--surface-2); border: 1px solid var(--accent); color: var(--accent); padding: 9px; border-radius: 8px; font-size: 12px; font-weight: 700;">✏️ Modifier</button>
+          <button onclick="deleteHistoryEntry('${h.id}')" style="background: transparent; border: 1px solid var(--border); color: #ff6b6b; padding: 9px 14px; border-radius: 8px; font-size: 12px; font-weight: 700;">🗑</button>
+        </div>
       </div>
     `;
   }).join('');
+}
+
+function deleteHistoryEntry(entryId) {
+  if (!confirm('Supprimer définitivement cette séance ?')) return;
+  const data = loadData();
+  data.history = data.history.filter(h => h.id !== entryId);
+  saveData(data);
+  showToast('Séance supprimée');
+  renderHistory();
+}
+
+function resumeSessionFromHistory(entryId) {
+  const data = loadData();
+  const entry = data.history.find(h => h.id === entryId);
+  if (!entry) { showToast('Séance introuvable'); return; }
+
+  // Vérifier qu'on a pas déjà un brouillon en cours pour cette même séance
+  const existingDraft = loadDraft(entry.session);
+  if (existingDraft && existingDraft.data) {
+    const hasData = Object.values(existingDraft.data).some(exo => exo.sets && exo.sets.some(set => set.w || set.r || set.done));
+    if (hasData) {
+      if (!confirm(`Tu as déjà une séance ${entry.session} en cours (non terminée). Veux-tu vraiment reprendre cette ancienne séance ? Le brouillon en cours sera écrasé.`)) return;
+    }
+  }
+
+  // Reconstruire currentData à partir de l'entrée
+  const resumeData = {};
+  Object.keys(entry.exos).forEach(exoId => {
+    const unpacked = unpackExoEntry(entry.exos[exoId]);
+    resumeData[exoId] = {
+      sets: unpacked.sets.map(s => ({
+        w: s.w || '',
+        r: s.r || '',
+        done: !!(s.w || s.r) // marquer comme fait si valeurs présentes
+      })),
+      order: unpacked.order,
+      feeling: unpacked.feeling
+    };
+  });
+
+  // Sauvegarder comme brouillon pour cette séance + flagger l'id à reprendre
+  saveDraft(entry.session, resumeData);
+  resumingEntryId = entryId;
+
+  // Ouvrir la séance
+  openSession(entry.session);
+  showToast('Mode édition activé');
 }
 
 // ============== WEIGHT TRACKING ==============
@@ -3368,6 +4258,36 @@ function buildSystemPrompt() {
   const lastB = data.history.filter(h => h.session === 'B').pop();
   const customSessions = (data.customSessions || []).map(s => `Séance ${s.key} (${s.title})`).join(', ');
 
+  // Construire un résumé des 3 dernières séances avec ordre + feeling
+  const recentHistory = [...data.history].slice(-3).reverse();
+  let historyBlock = '';
+  if (recentHistory.length > 0) {
+    historyBlock = '\nHISTORIQUE RÉCENT (3 dernières séances) :\n';
+    recentHistory.forEach(h => {
+      const d = new Date(h.date);
+      const dateStr = d.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
+      historyBlock += `\n[${dateStr}] Séance ${h.session} :\n`;
+      // Trier par ordre d'exécution
+      const sortedIds = Object.keys(h.exos).sort((a, b) => {
+        const oa = unpackExoEntry(h.exos[a]).order || 999;
+        const ob = unpackExoEntry(h.exos[b]).order || 999;
+        return oa - ob;
+      });
+      // Récupérer la session de référence pour les noms d'exos
+      let session = SESSIONS[h.session] || (data.customSessions || []).find(cs => cs.key === h.session);
+      sortedIds.forEach(exoId => {
+        const u = unpackExoEntry(h.exos[exoId]);
+        const exo = session ? session.exos.find(e => e.id === exoId) : null;
+        const name = exo ? exo.name : exoId;
+        const setsTxt = u.sets.map(s => `${s.w||'?'}×${s.r||'?'}`).join('/');
+        const tags = [];
+        if (u.order) tags.push(`pos.${u.order}`);
+        if (u.feeling) tags.push(`feeling: ${u.feeling}`);
+        historyBlock += `  • ${name} → ${setsTxt}${tags.length ? ` [${tags.join(', ')}]` : ''}\n`;
+      });
+    });
+  }
+
   return `Tu es le coach personnel de Gabriel (27 ans, 1m70, basé à Paris, salle On Air Maison-Alfort).
 
 PROFIL :
@@ -3402,6 +4322,11 @@ ${customSessions ? `- Séances personnalisées créées : ${customSessions}` : '
 - Total séances enregistrées : ${totalSessions}
 ${lastA ? `- Dernière séance A : ${new Date(lastA.date).toLocaleDateString('fr-FR')}` : ''}
 ${lastB ? `- Dernière séance B : ${new Date(lastB.date).toLocaleDateString('fr-FR')}` : ''}
+${historyBlock}
+INTERPRÉTATION DES DONNÉES :
+- pos.X = ordre réel d'exécution dans la séance (1 = en premier, 4 = en quatrième). Un exo fait en fin de séance peut sous-performer à cause de la fatigue accumulée. Un exo "lourd" repoussé en fin de séance perd typiquement 5-15% de force.
+- feeling = ressenti de Gabriel après l'exo. easy = trop léger / normal = juste bien / hard = à la limite. Plusieurs "hard" consécutifs = signe de surcharge.
+- Si tu donnes des conseils, croise toujours feeling + ordre + progression (ex : "hard en position 1 = vrai signal de surcharge ; hard en position 5 = peut juste être de la fatigue").
 
 STYLE :
 - Tutoie-le, ton direct et professionnel
@@ -4002,14 +4927,17 @@ async function requestAdjust(feeling) {
   if (!session) session = (data.customSessions || []).find(cs => cs.key === currentSession);
   if (!session) return;
 
-  // Construire le contexte : pour chaque exo, donner les 3 dernières performances
+  // Construire le contexte : pour chaque exo, donner les 3 dernières performances avec ordre+feeling
   const exoContext = session.exos.map(exo => {
     const recentSessions = data.history
       .filter(h => h.session === currentSession && h.exos[exo.id])
       .slice(-3)
       .map(h => {
-        const sets = h.exos[exo.id];
-        return sets.map(s => `${s.w || '?'}kg × ${s.r || '?'}`).join(' / ');
+        const unpacked = unpackExoEntry(h.exos[exo.id]);
+        const setsTxt = unpacked.sets.map(s => `${s.w || '?'}kg × ${s.r || '?'}`).join(' / ');
+        const feelingTxt = unpacked.feeling ? ` [feeling: ${unpacked.feeling}]` : '';
+        const orderTxt = unpacked.order ? ` [exécuté en position ${unpacked.order}]` : '';
+        return `${setsTxt}${feelingTxt}${orderTxt}`;
       });
     const lastVals = data.lastValues[exo.id] || {};
     const lastSet = lastVals.w1 ? `${lastVals.w1}kg × ${lastVals.r1}` : 'jamais fait';
